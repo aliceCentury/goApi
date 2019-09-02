@@ -1,0 +1,5 @@
+/xray/xray
+/xray/archiver/archiver
+/xray/fetcher/fetcher
+*.swp
+go.sum
