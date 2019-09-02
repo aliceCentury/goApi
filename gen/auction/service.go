@@ -12,7 +12,7 @@ import (
 	"context"
 )
 
-// The auction service retrieves bottles given a set of criteria.
+// auction service.
 type Service interface {
 	// 获取拍卖列表
 	GetAuctionProductListByStatus(context.Context, *ListData) (res AuctionProductCollection, err error)
@@ -20,7 +20,7 @@ type Service interface {
 	// The "view" return value must have one of the following views
 	//	- "bid"
 	//	- "auctionList"
-	//	- "default": A StoredBottle describes a bottle retrieved by the storage service.
+	//	- "default": 拍卖、投标列表.
 	GetAuctionProductDetail(context.Context, *GetAuctionProductDetailPayload) (res *AuctionProduct, view string, err error)
 }
 
@@ -59,44 +59,75 @@ type GetAuctionProductDetailPayload struct {
 // AuctionProduct is the result type of the auction service
 // getAuctionProductDetail method.
 type AuctionProduct struct {
-	ID                    *string
-	AddPrice              *int
-	ArtNo                 *string
-	AuctionStatus         *int
-	AuctionType           *int
-	BidSceneID            *int
-	BondPrice             *int
-	BuyNumber             *int
-	BuyUnitPrice          *string
-	BuyoutPrice           *int
-	CapPrice              *int
+	// Id
+	ID *string
+	// 加价幅度
+	AddPrice *int
+	// 货号
+	ArtNo *string
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
+	AuctionStatus *int
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
+	AuctionType *int
+	// 所属投标场Id
+	BidSceneID *int
+	// 保证金
+	BondPrice *int
+	// 购买数量
+	BuyNumber *int
+	// 用户购买的单价
+	BuyUnitPrice *string
+	// 买断价格
+	BuyoutPrice *int
+	// 封顶价
+	CapPrice *int
+	// 所属众筹包ID
 	CrowdfundingPackageID *string
-	CurrentPrice          *int
-	EndTime               *int64
-	HeadPortrait          *string
-	IsHaveProxy           *int
-	IsReservePrice        *int
-	LastTime              *int64
-	LimitNumber           *int
-	MktPrice              *int
-	PicturesURL           *string
-	ProdID                *int32
-	ProdName              *string
-	QrURL                 *string
-	RemindTime            *int64
-	ReservePrice          *string
-	ResultStatus          *int
-	RuleID                *int
-	SerialNum             *string
-	ShareURL              *string
-	StartAuctionPrice     *int
-	StartTime             *int64
-	Title                 *string
-	TotalNumber           *int
-	TransactionNumber     *int
-	TransactionPrice      *string
-	UserID                *string
-	UserName              *string
+	// 当前价
+	CurrentPrice *int
+	EndTime      *int64
+	HeadPortrait *string
+	// 拍卖前有没有代理 0：没有 1：有
+	IsHaveProxy *int
+	// 1:有保留价 2:无保留价
+	IsReservePrice *int
+	LastTime       *int64
+	// 每人限购
+	LimitNumber *int
+	// 市场价
+	MktPrice *int
+	// 拍卖商品相关图片
+	PicturesURL *string
+	// 商品ID
+	ProdID *int32
+	// 商品名称
+	ProdName *string
+	// 分享二维码
+	QrURL *string
+	// 提醒时间
+	RemindTime   *int64
+	ReservePrice *string
+	// 保留价
+	ResultStatus *int
+	// 似乎没用到
+	RuleID *int
+	// 拍卖编号
+	SerialNum *string
+	// 分享图片链接
+	ShareURL *string
+	// 起拍价
+	StartAuctionPrice *int
+	StartTime         *int64
+	// 拍卖场名称
+	Title *string
+	// 总个数
+	TotalNumber *int
+	// 成交数量
+	TransactionNumber *int
+	// 成交总额
+	TransactionPrice *string
+	UserID           *string
+	UserName         *string
 }
 
 // NotFound is the type returned when attempting to show or delete a bottle

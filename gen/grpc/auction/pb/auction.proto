@@ -11,7 +11,7 @@ package auction;
 
 option go_package = "auctionpb";
 
-// The auction service retrieves bottles given a set of criteria.
+// auction service.
 service Auction {
 	// 获取拍卖列表
 	rpc GetAuctionProductListByStatus (GetAuctionProductListByStatusRequest) returns (AuctionProductCollection);
@@ -31,43 +31,74 @@ message GetAuctionProductListByStatusRequest {
 message AuctionProductCollection {
 	repeated AuctionProduct field = 1;
 }
-// A StoredBottle describes a bottle retrieved by the storage service.
+// 拍卖、投标列表.
 message AuctionProduct {
-	string id = 8;
+	// Id
+	string id = 1;
+	// 加价幅度
 	sint32 add_price = 2;
+	// 货号
 	string art_no = 3;
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
 	sint32 auction_status = 4;
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
 	sint32 auction_type = 5;
+	// 所属投标场Id
 	sint32 bid_scene_id = 6;
+	// 保证金
 	sint32 bond_price = 7;
-	sint32 buy_number = 10;
+	// 购买数量
+	sint32 buy_number = 8;
+	// 用户购买的单价
 	string buy_unit_price = 9;
+	// 买断价格
 	sint32 buyout_price = 11;
+	// 封顶价
 	sint32 cap_price = 12;
+	// 所属众筹包ID
 	string crowdfunding_package_id = 13;
+	// 当前价
 	sint32 current_price = 14;
 	sint64 end_time = 15;
 	string head_portrait = 16;
+	// 拍卖前有没有代理 0：没有 1：有
 	sint32 is_have_proxy = 17;
+	// 1:有保留价 2:无保留价
 	sint32 is_reserve_price = 18;
 	sint64 last_time = 19;
+	// 每人限购
 	sint32 limit_number = 20;
+	// 市场价
 	sint32 mkt_price = 21;
+	// 拍卖商品相关图片
 	string pictures_url = 22;
+	// 商品ID
 	sint32 prod_id = 23;
+	// 商品名称
 	string prod_name = 24;
+	// 分享二维码
 	string qr_url = 25;
+	// 提醒时间
 	sint64 remind_time = 26;
 	string reserve_price = 27;
+	// 保留价
 	sint32 result_status = 28;
+	// 似乎没用到
 	sint32 rule_id = 29;
+	// 拍卖编号
 	string serial_num = 30;
+	// 分享图片链接
 	string share_url = 31;
+	// 起拍价
 	sint32 start_auction_price = 32;
 	sint64 start_time = 33;
+	// 拍卖场名称
 	string title = 34;
+	// 总个数
 	sint32 total_number = 35;
+	// 成交数量
 	sint32 transaction_number = 36;
+	// 成交总额
 	string transaction_price = 37;
 	string user_id = 38;
 	string user_name = 39;
@@ -86,41 +117,72 @@ message GetAuctionProductDetailRequest {
 }
 
 message GetAuctionProductDetailResponse {
-	string id = 8;
+	// Id
+	string id = 1;
+	// 加价幅度
 	sint32 add_price = 2;
+	// 货号
 	string art_no = 3;
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
 	sint32 auction_status = 4;
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
 	sint32 auction_type = 5;
+	// 所属投标场Id
 	sint32 bid_scene_id = 6;
+	// 保证金
 	sint32 bond_price = 7;
-	sint32 buy_number = 10;
+	// 购买数量
+	sint32 buy_number = 8;
+	// 用户购买的单价
 	string buy_unit_price = 9;
+	// 买断价格
 	sint32 buyout_price = 11;
+	// 封顶价
 	sint32 cap_price = 12;
+	// 所属众筹包ID
 	string crowdfunding_package_id = 13;
+	// 当前价
 	sint32 current_price = 14;
 	sint64 end_time = 15;
 	string head_portrait = 16;
+	// 拍卖前有没有代理 0：没有 1：有
 	sint32 is_have_proxy = 17;
+	// 1:有保留价 2:无保留价
 	sint32 is_reserve_price = 18;
 	sint64 last_time = 19;
+	// 每人限购
 	sint32 limit_number = 20;
+	// 市场价
 	sint32 mkt_price = 21;
+	// 拍卖商品相关图片
 	string pictures_url = 22;
+	// 商品ID
 	sint32 prod_id = 23;
+	// 商品名称
 	string prod_name = 24;
+	// 分享二维码
 	string qr_url = 25;
+	// 提醒时间
 	sint64 remind_time = 26;
 	string reserve_price = 27;
+	// 保留价
 	sint32 result_status = 28;
+	// 似乎没用到
 	sint32 rule_id = 29;
+	// 拍卖编号
 	string serial_num = 30;
+	// 分享图片链接
 	string share_url = 31;
+	// 起拍价
 	sint32 start_auction_price = 32;
 	sint64 start_time = 33;
+	// 拍卖场名称
 	string title = 34;
+	// 总个数
 	sint32 total_number = 35;
+	// 成交数量
 	sint32 transaction_number = 36;
+	// 成交总额
 	string transaction_price = 37;
 	string user_id = 38;
 	string user_name = 39;

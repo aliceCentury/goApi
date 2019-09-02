@@ -60,6 +60,33 @@ paths:
             $ref: '#/definitions/AuctionAuctionProductResponseAuctionListCollection'
       schemes:
       - http
+  /api-product/product/{id}:
+    get:
+      tags:
+      - product
+      summary: product product
+      description: 商品信息
+      operationId: product#product
+      parameters:
+      - name: id
+        in: path
+        description: auctionId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK response.
+          schema:
+            $ref: '#/definitions/ProductProductResponseBody'
+        "404":
+          description: Not Found response.
+          schema:
+            $ref: '#/definitions/ProductProductNotFoundResponseBody'
+            required:
+            - message
+            - id
+      schemes:
+      - http
   /swagger/swagger.json:
     get:
       summary: Download ../../gen/http/openapi.json
@@ -186,7 +213,7 @@ paths:
             type: array
             items:
               type: string
-              example: Maxime doloremque qui mollitia architecto iure.
+              example: Iusto aut illum saepe non similique consequuntur.
       schemes:
       - http
   /user/multi_update:
@@ -249,13 +276,13 @@ definitions:
       bid_scene_id: -1
       bond_price: 20
       buy_number: 0
-      buy_unit_price: Consequatur nostrum dolore.
+      buy_unit_price: Voluptatem ex.
       buyout_price: 200
       cap_price: 390
-      crowdfunding_package_id: Maiores quidem iusto et.
+      crowdfunding_package_id: Aut non necessitatibus ab repellendus quidem modi.
       current_price: 110
       end_time: 1567396800000
-      head_portrait: Aut quaerat id.
+      head_portrait: Incidunt recusandae.
       id: "50611"
       is_have_proxy: 1
       is_reserve_price: 2
@@ -267,18 +294,18 @@ definitions:
       prod_name: 朱砂平安扣
       qr_url: ""
       remind_time: 1567389600000
-      reserve_price: Sed fugiat vel.
+      reserve_price: Eveniet voluptatem ut qui.
       result_status: -1
       serial_num: 10:00~12:00
-      share_url: Nisi est eum.
+      share_url: Sunt sit dolor magnam dolores.
       start_auction_price: 110
       start_time: 1567389600000
       title: 朱砂平安扣
       total_number: 1
       transaction_number: 0
-      transaction_price: Quis ipsa occaecati dolorum.
-      user_id: Corporis rem.
-      user_name: Et recusandae quam qui.
+      transaction_price: Quibusdam aut quibusdam.
+      user_id: Ex quis aut rem.
+      user_name: Veritatis aut animi.
     - add_price: 20
       art_no: ZS1908038
       auction_status: 1
@@ -286,13 +313,13 @@ definitions:
       bid_scene_id: -1
       bond_price: 20
       buy_number: 0
-      buy_unit_price: Consequatur nostrum dolore.
+      buy_unit_price: Voluptatem ex.
       buyout_price: 200
       cap_price: 390
-      crowdfunding_package_id: Maiores quidem iusto et.
+      crowdfunding_package_id: Aut non necessitatibus ab repellendus quidem modi.
       current_price: 110
       end_time: 1567396800000
-      head_portrait: Aut quaerat id.
+      head_portrait: Incidunt recusandae.
       id: "50611"
       is_have_proxy: 1
       is_reserve_price: 2
@@ -304,55 +331,18 @@ definitions:
       prod_name: 朱砂平安扣
       qr_url: ""
       remind_time: 1567389600000
-      reserve_price: Sed fugiat vel.
+      reserve_price: Eveniet voluptatem ut qui.
       result_status: -1
       serial_num: 10:00~12:00
-      share_url: Nisi est eum.
+      share_url: Sunt sit dolor magnam dolores.
       start_auction_price: 110
       start_time: 1567389600000
       title: 朱砂平安扣
       total_number: 1
       transaction_number: 0
-      transaction_price: Quis ipsa occaecati dolorum.
-      user_id: Corporis rem.
-      user_name: Et recusandae quam qui.
-    - add_price: 20
-      art_no: ZS1908038
-      auction_status: 1
-      auction_type: 2
-      bid_scene_id: -1
-      bond_price: 20
-      buy_number: 0
-      buy_unit_price: Consequatur nostrum dolore.
-      buyout_price: 200
-      cap_price: 390
-      crowdfunding_package_id: Maiores quidem iusto et.
-      current_price: 110
-      end_time: 1567396800000
-      head_portrait: Aut quaerat id.
-      id: "50611"
-      is_have_proxy: 1
-      is_reserve_price: 2
-      last_time: 1567396800000
-      limit_number: 1
-      mkt_price: 395
-      pictures_url: ""
-      prod_id: 21320
-      prod_name: 朱砂平安扣
-      qr_url: ""
-      remind_time: 1567389600000
-      reserve_price: Sed fugiat vel.
-      result_status: -1
-      serial_num: 10:00~12:00
-      share_url: Nisi est eum.
-      start_auction_price: 110
-      start_time: 1567389600000
-      title: 朱砂平安扣
-      total_number: 1
-      transaction_number: 0
-      transaction_price: Quis ipsa occaecati dolorum.
-      user_id: Corporis rem.
-      user_name: Et recusandae quam qui.
+      transaction_price: Quibusdam aut quibusdam.
+      user_id: Ex quis aut rem.
+      user_name: Veritatis aut animi.
   AuctionGetAuctionProductDetailNotFoundResponseBody:
     title: AuctionGetAuctionProductDetailNotFoundResponseBody
     type: object
@@ -360,14 +350,14 @@ definitions:
       id:
         type: string
         description: ID of missing bottle
-        example: Nemo quasi dolores ipsa tempora veritatis.
+        example: Provident omnis odit rerum id qui omnis.
       message:
         type: string
         description: Message of error
         example: bottle 1 not found
     description: Bottle not found
     example:
-      id: Voluptas esse aperiam sunt maiores qui deserunt.
+      id: Cupiditate et quaerat.
       message: bottle 1 not found
     required:
     - message
@@ -378,47 +368,59 @@ definitions:
     properties:
       add_price:
         type: integer
+        description: 加价幅度
         example: 20
         format: int64
       art_no:
         type: string
+        description: 货号
         example: ZS1908038
       auction_status:
         type: integer
+        description: '拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍'
         example: 1
         format: int64
       auction_type:
         type: integer
+        description: 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
         example: 2
         format: int64
       bid_scene_id:
         type: integer
+        description: 所属投标场Id
         example: -1
         format: int64
       bond_price:
         type: integer
+        description: 保证金
         example: 20
         format: int64
       buy_number:
         type: integer
+        description: 购买数量
         example: 0
         format: int64
       buy_unit_price:
         type: string
-        example: Quis illum doloremque nobis.
+        description: 用户购买的单价
+        example: Cum cupiditate et eligendi reiciendis nam.
       buyout_price:
         type: integer
+        description: 买断价格
         example: 200
         format: int64
       cap_price:
         type: integer
+        description: 封顶价
         example: 390
         format: int64
       crowdfunding_package_id:
         type: string
-        example: Eaque atque dicta non cumque.
+        description: 所属众筹包ID
+        example: Est earum quasi doloremque blanditiis.
       current_price:
         type: integer
+        description: 当前价
         example: 110
         format: int64
       end_time:
@@ -427,16 +429,19 @@ definitions:
         format: int64
       head_portrait:
         type: string
-        example: Occaecati blanditiis assumenda eum.
+        example: Reprehenderit vero magnam.
       id:
         type: string
+        description: Id
         example: "50611"
       is_have_proxy:
         type: integer
+        description: 拍卖前有没有代理 0：没有 1：有
         example: 1
         format: int64
       is_reserve_price:
         type: integer
+        description: 1:有保留价 2:无保留价
         example: 2
         format: int64
       last_time:
@@ -445,48 +450,60 @@ definitions:
         format: int64
       limit_number:
         type: integer
+        description: 每人限购
         example: 1
         format: int64
       mkt_price:
         type: integer
+        description: 市场价
         example: 395
         format: int64
       pictures_url:
         type: string
+        description: 拍卖商品相关图片
         example: ""
       prod_id:
         type: integer
+        description: 商品ID
         example: 21320
         format: int32
       prod_name:
         type: string
+        description: 商品名称
         example: 朱砂平安扣
       qr_url:
         type: string
+        description: 分享二维码
         example: ""
       remind_time:
         type: integer
+        description: 提醒时间
         example: 1567389600000
         format: int64
       reserve_price:
         type: string
-        example: Eos quia et magni cumque enim facere.
+        example: Id quis.
       result_status:
         type: integer
+        description: 保留价
         example: -1
         format: int64
       rule_id:
         type: integer
+        description: 似乎没用到
         example: 0
         format: int64
       serial_num:
         type: string
+        description: 拍卖编号
         example: 10:00~12:00
       share_url:
         type: string
-        example: Consequatur et.
+        description: 分享图片链接
+        example: Eveniet inventore sunt possimus delectus.
       start_auction_price:
         type: integer
+        description: 起拍价
         example: 110
         format: int64
       start_time:
@@ -495,24 +512,28 @@ definitions:
         format: int64
       title:
         type: string
+        description: 拍卖场名称
         example: 朱砂平安扣
       total_number:
         type: integer
+        description: 总个数
         example: 1
         format: int64
       transaction_number:
         type: integer
+        description: 成交数量
         example: 0
         format: int64
       transaction_price:
         type: string
-        example: Illum voluptatem eos.
+        description: 成交总额
+        example: Ut modi dolorem et.
       user_id:
         type: string
-        example: Inventore alias neque.
+        example: Cum tenetur impedit molestias inventore.
       user_name:
         type: string
-        example: Earum voluptatum adipisci ipsum sunt sed.
+        example: Qui earum incidunt alias quia.
     description: GetAuctionProductDetailResponseBody result type (default view)
     example:
       add_price: 20
@@ -522,13 +543,13 @@ definitions:
       bid_scene_id: -1
       bond_price: 20
       buy_number: 0
-      buy_unit_price: Velit corporis voluptate commodi minima deleniti error.
+      buy_unit_price: Est odit.
       buyout_price: 200
       cap_price: 390
-      crowdfunding_package_id: Id possimus sit ducimus.
+      crowdfunding_package_id: Tenetur est perspiciatis rerum expedita perspiciatis.
       current_price: 110
       end_time: 1567396800000
-      head_portrait: Non sed.
+      head_portrait: Dicta voluptatem.
       id: "50611"
       is_have_proxy: 1
       is_reserve_price: 2
@@ -540,19 +561,19 @@ definitions:
       prod_name: 朱砂平安扣
       qr_url: ""
       remind_time: 1567389600000
-      reserve_price: A quidem non autem temporibus voluptatum.
+      reserve_price: At repudiandae dicta.
       result_status: -1
       rule_id: 0
       serial_num: 10:00~12:00
-      share_url: Sit doloribus esse quod.
+      share_url: Sint placeat sequi adipisci dolorem corporis architecto.
       start_auction_price: 110
       start_time: 1567389600000
       title: 朱砂平安扣
       total_number: 1
       transaction_number: 0
-      transaction_price: Eos est minus consequatur.
-      user_id: Velit reiciendis nostrum aliquam magnam ipsa.
-      user_name: Maxime aspernatur pariatur tempore minus voluptatem.
+      transaction_price: Excepturi et odio.
+      user_id: Numquam aut accusamus aperiam aspernatur ut consequatur.
+      user_name: Voluptatum qui voluptas dolorem dicta.
   AuctionGetAuctionProductListByStatusRequestBody:
     title: AuctionGetAuctionProductListByStatusRequestBody
     type: object
@@ -582,47 +603,59 @@ definitions:
     properties:
       add_price:
         type: integer
+        description: 加价幅度
         example: 20
         format: int64
       art_no:
         type: string
+        description: 货号
         example: ZS1908038
       auction_status:
         type: integer
+        description: '拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍'
         example: 1
         format: int64
       auction_type:
         type: integer
+        description: 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
         example: 2
         format: int64
       bid_scene_id:
         type: integer
+        description: 所属投标场Id
         example: -1
         format: int64
       bond_price:
         type: integer
+        description: 保证金
         example: 20
         format: int64
       buy_number:
         type: integer
+        description: 购买数量
         example: 0
         format: int64
       buy_unit_price:
         type: string
-        example: Accusamus praesentium tenetur.
+        description: 用户购买的单价
+        example: Dolor cum minima velit.
       buyout_price:
         type: integer
+        description: 买断价格
         example: 200
         format: int64
       cap_price:
         type: integer
+        description: 封顶价
         example: 390
         format: int64
       crowdfunding_package_id:
         type: string
-        example: Aliquid magnam quae.
+        description: 所属众筹包ID
+        example: Esse ullam et incidunt qui aut.
       current_price:
         type: integer
+        description: 当前价
         example: 110
         format: int64
       end_time:
@@ -631,16 +664,19 @@ definitions:
         format: int64
       head_portrait:
         type: string
-        example: Dolorem tenetur.
+        example: Ea non magnam laudantium beatae qui aut.
       id:
         type: string
+        description: Id
         example: "50611"
       is_have_proxy:
         type: integer
+        description: 拍卖前有没有代理 0：没有 1：有
         example: 1
         format: int64
       is_reserve_price:
         type: integer
+        description: 1:有保留价 2:无保留价
         example: 2
         format: int64
       last_time:
@@ -649,44 +685,55 @@ definitions:
         format: int64
       limit_number:
         type: integer
+        description: 每人限购
         example: 1
         format: int64
       mkt_price:
         type: integer
+        description: 市场价
         example: 395
         format: int64
       pictures_url:
         type: string
+        description: 拍卖商品相关图片
         example: ""
       prod_id:
         type: integer
+        description: 商品ID
         example: 21320
         format: int32
       prod_name:
         type: string
+        description: 商品名称
         example: 朱砂平安扣
       qr_url:
         type: string
+        description: 分享二维码
         example: ""
       remind_time:
         type: integer
+        description: 提醒时间
         example: 1567389600000
         format: int64
       reserve_price:
         type: string
-        example: Aut deserunt veritatis non quae atque animi.
+        example: Minima quidem eveniet sed illum occaecati.
       result_status:
         type: integer
+        description: 保留价
         example: -1
         format: int64
       serial_num:
         type: string
+        description: 拍卖编号
         example: 10:00~12:00
       share_url:
         type: string
-        example: A provident rem.
+        description: 分享图片链接
+        example: Nemo officiis iste.
       start_auction_price:
         type: integer
+        description: 起拍价
         example: 110
         format: int64
       start_time:
@@ -695,26 +742,29 @@ definitions:
         format: int64
       title:
         type: string
+        description: 拍卖场名称
         example: 朱砂平安扣
       total_number:
         type: integer
+        description: 总个数
         example: 1
         format: int64
       transaction_number:
         type: integer
+        description: 成交数量
         example: 0
         format: int64
       transaction_price:
         type: string
-        example: Amet distinctio sit.
+        description: 成交总额
+        example: Ut natus quaerat.
       user_id:
         type: string
-        example: Sit nesciunt quia nisi nulla rerum expedita.
+        example: Animi non tempora.
       user_name:
         type: string
-        example: Totam architecto occaecati.
-    description: A StoredBottle describes a bottle retrieved by the storage service.
-      (auctionList view) (default view)
+        example: In blanditiis temporibus dolorem rerum.
+    description: 拍卖、投标列表. (auctionList view) (default view)
     example:
       add_price: 20
       art_no: ZS1908038
@@ -723,13 +773,13 @@ definitions:
       bid_scene_id: -1
       bond_price: 20
       buy_number: 0
-      buy_unit_price: Praesentium quaerat.
+      buy_unit_price: Quas molestiae assumenda autem voluptatem esse.
       buyout_price: 200
       cap_price: 390
-      crowdfunding_package_id: Maiores magni.
+      crowdfunding_package_id: Totam quia eum qui et quam nesciunt.
       current_price: 110
       end_time: 1567396800000
-      head_portrait: Sapiente repudiandae omnis eaque facilis non sed.
+      head_portrait: Commodi ipsa sapiente dolorem excepturi.
       id: "50611"
       is_have_proxy: 1
       is_reserve_price: 2
@@ -741,18 +791,18 @@ definitions:
       prod_name: 朱砂平安扣
       qr_url: ""
       remind_time: 1567389600000
-      reserve_price: Aut et.
+      reserve_price: Expedita placeat quo iste quo quisquam.
       result_status: -1
       serial_num: 10:00~12:00
-      share_url: Aperiam deleniti ut fugiat qui aut sed.
+      share_url: Impedit aut eius dolore dolore necessitatibus.
       start_auction_price: 110
       start_time: 1567389600000
       title: 朱砂平安扣
       total_number: 1
       transaction_number: 0
-      transaction_price: Itaque accusantium.
-      user_id: Assumenda odit deleniti laboriosam dolores cumque.
-      user_name: Inventore non ut ut et.
+      transaction_price: Vitae odio iusto doloribus in corporis mollitia.
+      user_id: Sed occaecati.
+      user_name: Nam voluptas dignissimos consequatur.
   BottleRequestBody:
     title: BottleRequestBody
     type: object
@@ -763,9 +813,11 @@ definitions:
           $ref: '#/definitions/ComponentRequestBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
-        - percentage: 81
+        - percentage: 64
+          varietal: Syrah
+        - percentage: 64
           varietal: Syrah
       description:
         type: string
@@ -781,13 +833,13 @@ definitions:
       rating:
         type: integer
         description: Rating of bottle from 1 (worst) to 5 (best)
-        example: 1
+        example: 4
         minimum: 1
         maximum: 5
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1948
+        example: 1925
         minimum: 1900
         maximum: 2020
       winery:
@@ -795,15 +847,19 @@ definitions:
     description: Bottle describes a bottle of wine to be stored.
     example:
       composition:
-      - percentage: 81
+      - percentage: 64
         varietal: Syrah
-      - percentage: 81
+      - percentage: 64
+        varietal: Syrah
+      - percentage: 64
+        varietal: Syrah
+      - percentage: 64
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       name: Blue's Cuvee
-      rating: 2
-      vintage: 1946
+      rating: 4
+      vintage: 1954
       winery:
         country: USA
         name: Longoria
@@ -820,7 +876,7 @@ definitions:
       percentage:
         type: integer
         description: Percentage of varietal in wine
-        example: 31
+        example: 17
         minimum: 1
         maximum: 100
       varietal:
@@ -830,7 +886,7 @@ definitions:
         pattern: '[A-Za-z'' ]+'
         maxLength: 100
     example:
-      percentage: 52
+      percentage: 39
       varietal: Syrah
     required:
     - varietal
@@ -841,7 +897,7 @@ definitions:
       percentage:
         type: integer
         description: Percentage of varietal in wine
-        example: 74
+        example: 9
         minimum: 1
         maximum: 100
       varietal:
@@ -851,10 +907,283 @@ definitions:
         pattern: '[A-Za-z'' ]+'
         maxLength: 100
     example:
-      percentage: 93
+      percentage: 47
       varietal: Syrah
     required:
     - varietal
+  MediaResponseBody:
+    title: MediaResponseBody
+    type: object
+    properties:
+      content:
+        type: integer
+        description: 视频链接
+        example: 1
+        format: int64
+      media_id:
+        type: integer
+        description: Id
+        example: 169686
+        format: int64
+      media_type:
+        type: integer
+        description: 媒体类型：0-图片，1-视频，2-未知
+        example: 0
+        format: int64
+      media_url:
+        type: string
+        description: 图片URL
+        example: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+      sequence:
+        type: integer
+        description: 上传顺序，默认为0
+        example: 1
+        format: int64
+    example:
+      content: 1
+      media_id: 169686
+      media_type: 0
+      media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+      sequence: 1
+  ProductProductNotFoundResponseBody:
+    title: ProductProductNotFoundResponseBody
+    type: object
+    properties:
+      id:
+        type: string
+        description: ID of missing bottle
+        example: Et sunt necessitatibus enim laboriosam officia.
+      message:
+        type: string
+        description: Message of error
+        example: bottle 1 not found
+    description: Bottle not found
+    example:
+      id: Quo eum optio voluptates excepturi consectetur.
+      message: bottle 1 not found
+    required:
+    - message
+    - id
+  ProductProductResponseBody:
+    title: 'Mediatype identifier: product; view=default'
+    type: object
+    properties:
+      art_no:
+        type: string
+        description: 编号
+        example: ZS1908038
+      carouselList:
+        type: array
+        items:
+          $ref: '#/definitions/MediaResponseBody'
+        example:
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+      category_id:
+        type: integer
+        example: 4482537499051224988
+        format: int64
+      categoryName:
+        type: string
+        example: 18K金镶嵌翡翠
+      cert_code:
+        type: integer
+        example: 2533094998625962217
+        format: int64
+      cert_type:
+        type: integer
+        example: 5430983705901641484
+        format: int64
+      colour:
+        type: string
+        example: Dignissimos delectus quis aut culpa sapiente.
+      colour_id:
+        type: integer
+        example: 843583157850833356
+        format: int64
+      created_at:
+        type: integer
+        example: 9148560457983445096
+        format: int64
+      crowd:
+        type: string
+        example: Voluptates necessitatibus beatae et possimus.
+      current_price:
+        type: integer
+        example: 5462332762198272151
+        format: int64
+      detailPics:
+        type: array
+        items:
+          $ref: '#/definitions/MediaResponseBody'
+        example:
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+        - content: 1
+          media_id: 169686
+          media_type: 0
+          media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+          sequence: 1
+      end_time:
+        type: integer
+        example: 4054326239755873016
+        format: int64
+      extAttrMap:
+        type: integer
+        example: 606180961827252239
+        format: int64
+      id:
+        type: integer
+        description: 商品Id
+        example: 15272
+        format: int64
+      level:
+        type: integer
+        example: 3248837449528108781
+        format: int64
+      level_id:
+        type: integer
+        example: 1946610086700734394
+        format: int64
+      mkt_price:
+        type: integer
+        example: 756138538825062831
+        format: int64
+      name:
+        type: string
+        example: Suscipit accusantium.
+      operator_id:
+        type: integer
+        example: 3442971926677727333
+        format: int64
+      recommendations:
+        type: string
+        example: Ipsam distinctio illum.
+      scenario:
+        type: string
+        example: Facilis quod.
+      scenarioList:
+        type: array
+        items:
+          type: string
+          example: "1"
+        example:
+        - "1"
+        - "1"
+      size:
+        type: string
+        example: Ut deserunt deleniti.
+      status:
+        type: integer
+        example: 4988229028296355710
+        format: int64
+      style:
+        type: string
+        example: Aperiam voluptatem officia iusto.
+      style_id:
+        type: string
+        example: Fuga rerum minima.
+      summary:
+        type: string
+        example: Nam nam praesentium quis.
+      template_id:
+        type: integer
+        example: 905726755904667550
+        format: int64
+      updated_at:
+        type: integer
+        example: 5763374062725037415
+        format: int64
+      version:
+        type: integer
+        example: 3275925694035348337
+        format: int64
+      weight:
+        type: string
+        example: Blanditiis rerum expedita amet.
+    description: ProductResponseBody result type (default view)
+    example:
+      art_no: ZS1908038
+      carouselList:
+      - content: 1
+        media_id: 169686
+        media_type: 0
+        media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+        sequence: 1
+      - content: 1
+        media_id: 169686
+        media_type: 0
+        media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+        sequence: 1
+      category_id: 4326852687865262773
+      categoryName: 18K金镶嵌翡翠
+      cert_code: 7644296537778396651
+      cert_type: 6321302060432734401
+      colour: Rem voluptatem assumenda delectus corrupti commodi.
+      colour_id: 9179107296571209048
+      created_at: 6638066124886776828
+      crowd: Consequuntur voluptatibus quia et.
+      current_price: 1604456867846254238
+      detailPics:
+      - content: 1
+        media_id: 169686
+        media_type: 0
+        media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+        sequence: 1
+      - content: 1
+        media_id: 169686
+        media_type: 0
+        media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+        sequence: 1
+      - content: 1
+        media_id: 169686
+        media_type: 0
+        media_url: https://img.cft.upmi.com.cn/o_1d3o3vcmu10723kgta21qb31v25a.jpg
+        sequence: 1
+      end_time: 8302124091010216481
+      extAttrMap: 3546869669647755401
+      id: 15272
+      level: 6823684965968876884
+      level_id: 8721319520708291317
+      mkt_price: 4157482281085871412
+      name: Facilis officiis quod.
+      operator_id: 3630304078323438114
+      recommendations: Quia tenetur dolores totam.
+      scenario: Voluptatem assumenda ullam.
+      scenarioList:
+      - "1"
+      - "1"
+      - "1"
+      size: Laborum in qui ut sint et dignissimos.
+      status: 8006147338144456856
+      style: Voluptatem officia tempora aut aut possimus alias.
+      style_id: Totam perferendis ullam voluptates placeat quod assumenda.
+      summary: Excepturi voluptatibus tempora est fugit velit molestiae.
+      template_id: 2023082694273874914
+      updated_at: 4119404029315103872
+      version: 2134172924211955258
+      weight: Odit facilis fugiat accusamus ut inventore quod.
   StoredBottleResponseTiny:
     title: 'Mediatype identifier: storedbottle; view=default'
     type: object
@@ -891,9 +1220,13 @@ definitions:
           $ref: '#/definitions/ComponentRequestBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
-        - percentage: 81
+        - percentage: 64
+          varietal: Syrah
+        - percentage: 64
+          varietal: Syrah
+        - percentage: 64
           varietal: Syrah
       description:
         type: string
@@ -915,22 +1248,22 @@ definitions:
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1927
+        example: 1988
         minimum: 1900
         maximum: 2020
       winery:
         $ref: '#/definitions/WineryRequestBody'
     example:
       composition:
-      - percentage: 81
+      - percentage: 64
         varietal: Syrah
-      - percentage: 81
+      - percentage: 64
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       name: Blue's Cuvee
-      rating: 3
-      vintage: 1927
+      rating: 2
+      vintage: 1948
       winery:
         country: USA
         name: Longoria
@@ -951,34 +1284,60 @@ definitions:
         description: Array of bottle info that matches the ids attribute
         example:
         - composition:
-          - percentage: 81
+          - percentage: 64
             varietal: Syrah
-          - percentage: 81
-            varietal: Syrah
-          - percentage: 81
+          - percentage: 64
             varietal: Syrah
           description: Red wine blend with an emphasis on the Cabernet Franc grape
             and including other Bordeaux grape varietals and some Syrah
           name: Blue's Cuvee
           rating: 2
-          vintage: 1979
+          vintage: 1945
           winery:
             country: USA
             name: Longoria
             region: Central Coast, California
             url: http://www.longoriawine.com/
         - composition:
-          - percentage: 81
+          - percentage: 64
             varietal: Syrah
-          - percentage: 81
-            varietal: Syrah
-          - percentage: 81
+          - percentage: 64
             varietal: Syrah
           description: Red wine blend with an emphasis on the Cabernet Franc grape
             and including other Bordeaux grape varietals and some Syrah
           name: Blue's Cuvee
           rating: 2
-          vintage: 1979
+          vintage: 1945
+          winery:
+            country: USA
+            name: Longoria
+            region: Central Coast, California
+            url: http://www.longoriawine.com/
+        - composition:
+          - percentage: 64
+            varietal: Syrah
+          - percentage: 64
+            varietal: Syrah
+          description: Red wine blend with an emphasis on the Cabernet Franc grape
+            and including other Bordeaux grape varietals and some Syrah
+          name: Blue's Cuvee
+          rating: 2
+          vintage: 1945
+          winery:
+            country: USA
+            name: Longoria
+            region: Central Coast, California
+            url: http://www.longoriawine.com/
+        - composition:
+          - percentage: 64
+            varietal: Syrah
+          - percentage: 64
+            varietal: Syrah
+          description: Red wine blend with an emphasis on the Cabernet Franc grape
+            and including other Bordeaux grape varietals and some Syrah
+          name: Blue's Cuvee
+          rating: 2
+          vintage: 1945
           winery:
             country: USA
             name: Longoria
@@ -987,34 +1346,60 @@ definitions:
     example:
       bottles:
       - composition:
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
-        - percentage: 81
-          varietal: Syrah
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
         description: Red wine blend with an emphasis on the Cabernet Franc grape and
           including other Bordeaux grape varietals and some Syrah
         name: Blue's Cuvee
         rating: 2
-        vintage: 1979
+        vintage: 1945
         winery:
           country: USA
           name: Longoria
           region: Central Coast, California
           url: http://www.longoriawine.com/
       - composition:
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
-        - percentage: 81
-          varietal: Syrah
-        - percentage: 81
+        - percentage: 64
           varietal: Syrah
         description: Red wine blend with an emphasis on the Cabernet Franc grape and
           including other Bordeaux grape varietals and some Syrah
         name: Blue's Cuvee
         rating: 2
-        vintage: 1979
+        vintage: 1945
+        winery:
+          country: USA
+          name: Longoria
+          region: Central Coast, California
+          url: http://www.longoriawine.com/
+      - composition:
+        - percentage: 64
+          varietal: Syrah
+        - percentage: 64
+          varietal: Syrah
+        description: Red wine blend with an emphasis on the Cabernet Franc grape and
+          including other Bordeaux grape varietals and some Syrah
+        name: Blue's Cuvee
+        rating: 2
+        vintage: 1945
+        winery:
+          country: USA
+          name: Longoria
+          region: Central Coast, California
+          url: http://www.longoriawine.com/
+      - composition:
+        - percentage: 64
+          varietal: Syrah
+        - percentage: 64
+          varietal: Syrah
+        description: Red wine blend with an emphasis on the Cabernet Franc grape and
+          including other Bordeaux grape varietals and some Syrah
+        name: Blue's Cuvee
+        rating: 2
+        vintage: 1945
         winery:
           country: USA
           name: Longoria
@@ -1029,14 +1414,14 @@ definitions:
       id:
         type: string
         description: ID of missing bottle
-        example: Molestiae qui voluptate nihil vitae rem.
+        example: Dicta dicta aliquid non est mollitia nostrum.
       message:
         type: string
         description: Message of error
         example: bottle 1 not found
     description: Bottle not found
     example:
-      id: Nemo tempora rerum vel voluptas magnam.
+      id: Vel id libero omnis cupiditate officia doloribus.
       message: bottle 1 not found
     required:
     - message
@@ -1051,9 +1436,13 @@ definitions:
           $ref: '#/definitions/ComponentResponseBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 76
+        - percentage: 29
           varietal: Syrah
-        - percentage: 76
+        - percentage: 29
+          varietal: Syrah
+        - percentage: 29
+          varietal: Syrah
+        - percentage: 29
           varietal: Syrah
       description:
         type: string
@@ -1079,7 +1468,7 @@ definitions:
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1947
+        example: 1993
         minimum: 1900
         maximum: 2020
       winery:
@@ -1087,18 +1476,18 @@ definitions:
     description: ShowResponseBody result type (default view)
     example:
       composition:
-      - percentage: 76
+      - percentage: 29
         varietal: Syrah
-      - percentage: 76
+      - percentage: 29
         varietal: Syrah
-      - percentage: 76
+      - percentage: 29
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       id: 123abc
       name: Blue's Cuvee
-      rating: 4
-      vintage: 1994
+      rating: 2
+      vintage: 1951
       winery:
         name: Longoria
     required:

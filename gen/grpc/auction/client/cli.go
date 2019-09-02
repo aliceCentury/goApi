@@ -52,7 +52,7 @@ func BuildGetAuctionProductDetailPayload(auctionGetAuctionProductDetailMessage s
 		if auctionGetAuctionProductDetailMessage != "" {
 			err = json.Unmarshal([]byte(auctionGetAuctionProductDetailMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, example of valid JSON:\n%s", "'{\n      \"id\": \"Doloremque dolorem dignissimos consequatur ad officia.\"\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, example of valid JSON:\n%s", "'{\n      \"id\": \"Distinctio sit possimus.\"\n   }'")
 			}
 		}
 	}

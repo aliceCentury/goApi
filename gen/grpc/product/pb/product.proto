@@ -1,0 +1,80 @@
+// Code generated with goa v3.0.4, DO NOT EDIT.
+//
+// product protocol buffer definition
+//
+// Command:
+// $ goa gen calcsvc/design
+
+syntax = "proto3";
+
+package product;
+
+option go_package = "productpb";
+
+// product service.
+service Product {
+	// 商品信息
+	rpc ProductEndpoint (ProductRequest) returns (ProductResponse);
+}
+
+message ProductNotFoundError {
+	// Message of error
+	string message_ = 1;
+	// ID of missing bottle
+	string id = 2;
+}
+
+message ProductRequest {
+	// auctionId
+	string id = 1;
+}
+
+message ProductResponse {
+	// 商品Id
+	sint32 id = 1;
+	// 编号
+	string art_no = 3;
+	repeated Media carousel_list = 4;
+	string category_name = 5;
+	sint32 category_id = 6;
+	sint32 cert_code = 7;
+	sint32 cert_type = 8;
+	string colour = 9;
+	sint32 colour_id = 11;
+	sint32 created_at = 12;
+	string crowd = 13;
+	sint32 current_price = 14;
+	sint32 end_time = 15;
+	repeated Media detail_pics = 16;
+	sint32 ext_attr_map = 17;
+	sint32 level = 18;
+	sint32 level_id = 19;
+	string name = 20;
+	sint32 mkt_price = 21;
+	sint32 operator_id = 22;
+	string recommendations = 23;
+	string scenario = 24;
+	repeated string scenario_list = 25;
+	string size = 26;
+	sint32 status = 27;
+	string style = 28;
+	string style_id = 29;
+	string summary = 30;
+	sint32 template_id = 31;
+	sint32 updated_at = 32;
+	sint32 version = 33;
+	string weight = 34;
+}
+
+message Media {
+	// 图片URL
+	string media_url = 5;
+	// 媒体类型：0-图片，1-视频，2-未知
+	sint32 media_type = 1;
+	// 视频链接
+	sint32 content = 2;
+	// 上传顺序，默认为0
+	sint32 sequence = 3;
+	// Id
+	sint32 media_id = 4;
+}

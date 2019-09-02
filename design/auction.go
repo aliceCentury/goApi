@@ -4,7 +4,7 @@ package design
 import . "goa.design/goa/v3/dsl"
 
 var _ = Service("auction", func() {
-	Description("The auction service retrieves bottles given a set of criteria.")
+	Description("auction service.")
 	HTTP(func() {
 		Path("/api-auction")
 	})

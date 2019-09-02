@@ -30,7 +30,9 @@ type AuctionProductResponseAuctionListCollection []*AuctionProductResponseAuctio
 // GetAuctionProductDetailResponseBodyBid is the type of the "auction" service
 // "getAuctionProductDetail" endpoint HTTP response body.
 type GetAuctionProductDetailResponseBodyBid struct {
-	AddPrice     *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	// 加价幅度
+	AddPrice *int `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	// 货号
 	ArtNo        *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
 	HeadPortrait *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
 }
@@ -38,86 +40,147 @@ type GetAuctionProductDetailResponseBodyBid struct {
 // GetAuctionProductDetailResponseBodyAuctionList is the type of the "auction"
 // service "getAuctionProductDetail" endpoint HTTP response body.
 type GetAuctionProductDetailResponseBodyAuctionList struct {
-	AddPrice              *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
-	ArtNo                 *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
-	AuctionStatus         *int    `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
-	AuctionType           *int    `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
-	BidSceneID            *int    `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
-	BondPrice             *int    `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
-	BuyNumber             *int    `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
-	BuyUnitPrice          *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
-	BuyoutPrice           *int    `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
-	CapPrice              *int    `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// 加价幅度
+	AddPrice *int `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	// 货号
+	ArtNo *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
+	AuctionStatus *int `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
+	AuctionType *int `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
+	// 所属投标场Id
+	BidSceneID *int `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
+	// 保证金
+	BondPrice *int `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
+	// 购买数量
+	BuyNumber *int `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
+	// 用户购买的单价
+	BuyUnitPrice *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
+	// 买断价格
+	BuyoutPrice *int `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
+	// 封顶价
+	CapPrice *int `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// 所属众筹包ID
 	CrowdfundingPackageID *string `form:"crowdfunding_package_id,omitempty" json:"crowdfunding_package_id,omitempty" xml:"crowdfunding_package_id,omitempty"`
-	CurrentPrice          *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
-	EndTime               *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
-	HeadPortrait          *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
-	ID                    *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	IsHaveProxy           *int    `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
-	IsReservePrice        *int    `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
-	LastTime              *int64  `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
-	LimitNumber           *int    `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
-	MktPrice              *int    `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
-	PicturesURL           *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
-	ProdID                *int32  `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
-	ProdName              *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
-	QrURL                 *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
-	RemindTime            *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
-	ReservePrice          *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
-	ResultStatus          *int    `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
-	SerialNum             *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
-	ShareURL              *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
-	StartAuctionPrice     *int    `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
-	StartTime             *int64  `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
-	Title                 *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
-	TotalNumber           *int    `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
-	TransactionNumber     *int    `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
-	TransactionPrice      *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
-	UserID                *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
-	UserName              *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	// 当前价
+	CurrentPrice *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
+	EndTime      *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
+	HeadPortrait *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
+	// Id
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// 拍卖前有没有代理 0：没有 1：有
+	IsHaveProxy *int `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
+	// 1:有保留价 2:无保留价
+	IsReservePrice *int   `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
+	LastTime       *int64 `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
+	// 每人限购
+	LimitNumber *int `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
+	// 市场价
+	MktPrice *int `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
+	// 拍卖商品相关图片
+	PicturesURL *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
+	// 商品ID
+	ProdID *int32 `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
+	// 商品名称
+	ProdName *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
+	// 分享二维码
+	QrURL *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
+	// 提醒时间
+	RemindTime   *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
+	ReservePrice *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
+	// 保留价
+	ResultStatus *int `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
+	// 拍卖编号
+	SerialNum *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
+	// 分享图片链接
+	ShareURL *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
+	// 起拍价
+	StartAuctionPrice *int   `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
+	StartTime         *int64 `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
+	// 拍卖场名称
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// 总个数
+	TotalNumber *int `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
+	// 成交数量
+	TransactionNumber *int `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
+	// 成交总额
+	TransactionPrice *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
+	UserID           *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	UserName         *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // GetAuctionProductDetailResponseBody is the type of the "auction" service
 // "getAuctionProductDetail" endpoint HTTP response body.
 type GetAuctionProductDetailResponseBody struct {
-	ID                    *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	AddPrice              *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
-	ArtNo                 *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
-	AuctionStatus         *int    `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
-	AuctionType           *int    `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
-	BidSceneID            *int    `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
-	BondPrice             *int    `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
-	BuyNumber             *int    `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
-	BuyUnitPrice          *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
-	BuyoutPrice           *int    `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
-	CapPrice              *int    `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// Id
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// 加价幅度
+	AddPrice *int `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	// 货号
+	ArtNo *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
+	AuctionStatus *int `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
+	AuctionType *int `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
+	// 所属投标场Id
+	BidSceneID *int `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
+	// 保证金
+	BondPrice *int `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
+	// 购买数量
+	BuyNumber *int `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
+	// 用户购买的单价
+	BuyUnitPrice *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
+	// 买断价格
+	BuyoutPrice *int `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
+	// 封顶价
+	CapPrice *int `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// 所属众筹包ID
 	CrowdfundingPackageID *string `form:"crowdfunding_package_id,omitempty" json:"crowdfunding_package_id,omitempty" xml:"crowdfunding_package_id,omitempty"`
-	CurrentPrice          *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
-	EndTime               *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
-	HeadPortrait          *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
-	IsHaveProxy           *int    `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
-	IsReservePrice        *int    `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
-	LastTime              *int64  `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
-	LimitNumber           *int    `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
-	MktPrice              *int    `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
-	PicturesURL           *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
-	ProdID                *int32  `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
-	ProdName              *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
-	QrURL                 *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
-	RemindTime            *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
-	ReservePrice          *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
-	ResultStatus          *int    `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
-	RuleID                *int    `form:"rule_id,omitempty" json:"rule_id,omitempty" xml:"rule_id,omitempty"`
-	SerialNum             *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
-	ShareURL              *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
-	StartAuctionPrice     *int    `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
-	StartTime             *int64  `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
-	Title                 *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
-	TotalNumber           *int    `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
-	TransactionNumber     *int    `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
-	TransactionPrice      *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
-	UserID                *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
-	UserName              *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	// 当前价
+	CurrentPrice *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
+	EndTime      *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
+	HeadPortrait *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
+	// 拍卖前有没有代理 0：没有 1：有
+	IsHaveProxy *int `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
+	// 1:有保留价 2:无保留价
+	IsReservePrice *int   `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
+	LastTime       *int64 `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
+	// 每人限购
+	LimitNumber *int `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
+	// 市场价
+	MktPrice *int `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
+	// 拍卖商品相关图片
+	PicturesURL *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
+	// 商品ID
+	ProdID *int32 `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
+	// 商品名称
+	ProdName *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
+	// 分享二维码
+	QrURL *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
+	// 提醒时间
+	RemindTime   *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
+	ReservePrice *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
+	// 保留价
+	ResultStatus *int `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
+	// 似乎没用到
+	RuleID *int `form:"rule_id,omitempty" json:"rule_id,omitempty" xml:"rule_id,omitempty"`
+	// 拍卖编号
+	SerialNum *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
+	// 分享图片链接
+	ShareURL *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
+	// 起拍价
+	StartAuctionPrice *int   `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
+	StartTime         *int64 `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
+	// 拍卖场名称
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// 总个数
+	TotalNumber *int `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
+	// 成交数量
+	TransactionNumber *int `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
+	// 成交总额
+	TransactionPrice *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
+	UserID           *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	UserName         *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // GetAuctionProductDetailNotFoundResponseBody is the type of the "auction"
@@ -133,43 +196,73 @@ type GetAuctionProductDetailNotFoundResponseBody struct {
 // AuctionProductResponseAuctionList is used to define fields on response body
 // types.
 type AuctionProductResponseAuctionList struct {
-	AddPrice              *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
-	ArtNo                 *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
-	AuctionStatus         *int    `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
-	AuctionType           *int    `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
-	BidSceneID            *int    `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
-	BondPrice             *int    `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
-	BuyNumber             *int    `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
-	BuyUnitPrice          *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
-	BuyoutPrice           *int    `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
-	CapPrice              *int    `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// 加价幅度
+	AddPrice *int `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	// 货号
+	ArtNo *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
+	// 拍卖结果:  0:成功 1:流拍 2:取当前订单状态   （成功竞得，待用户确认） 3:弃拍
+	AuctionStatus *int `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	// 拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；
+	AuctionType *int `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
+	// 所属投标场Id
+	BidSceneID *int `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
+	// 保证金
+	BondPrice *int `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
+	// 购买数量
+	BuyNumber *int `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
+	// 用户购买的单价
+	BuyUnitPrice *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
+	// 买断价格
+	BuyoutPrice *int `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
+	// 封顶价
+	CapPrice *int `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	// 所属众筹包ID
 	CrowdfundingPackageID *string `form:"crowdfunding_package_id,omitempty" json:"crowdfunding_package_id,omitempty" xml:"crowdfunding_package_id,omitempty"`
-	CurrentPrice          *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
-	EndTime               *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
-	HeadPortrait          *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
-	ID                    *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	IsHaveProxy           *int    `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
-	IsReservePrice        *int    `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
-	LastTime              *int64  `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
-	LimitNumber           *int    `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
-	MktPrice              *int    `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
-	PicturesURL           *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
-	ProdID                *int32  `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
-	ProdName              *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
-	QrURL                 *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
-	RemindTime            *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
-	ReservePrice          *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
-	ResultStatus          *int    `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
-	SerialNum             *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
-	ShareURL              *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
-	StartAuctionPrice     *int    `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
-	StartTime             *int64  `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
-	Title                 *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
-	TotalNumber           *int    `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
-	TransactionNumber     *int    `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
-	TransactionPrice      *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
-	UserID                *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
-	UserName              *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	// 当前价
+	CurrentPrice *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
+	EndTime      *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
+	HeadPortrait *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
+	// Id
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// 拍卖前有没有代理 0：没有 1：有
+	IsHaveProxy *int `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
+	// 1:有保留价 2:无保留价
+	IsReservePrice *int   `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
+	LastTime       *int64 `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
+	// 每人限购
+	LimitNumber *int `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
+	// 市场价
+	MktPrice *int `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
+	// 拍卖商品相关图片
+	PicturesURL *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
+	// 商品ID
+	ProdID *int32 `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
+	// 商品名称
+	ProdName *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
+	// 分享二维码
+	QrURL *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
+	// 提醒时间
+	RemindTime   *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
+	ReservePrice *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
+	// 保留价
+	ResultStatus *int `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
+	// 拍卖编号
+	SerialNum *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
+	// 分享图片链接
+	ShareURL *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
+	// 起拍价
+	StartAuctionPrice *int   `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
+	StartTime         *int64 `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
+	// 拍卖场名称
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	// 总个数
+	TotalNumber *int `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
+	// 成交数量
+	TransactionNumber *int `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
+	// 成交总额
+	TransactionPrice *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
+	UserID           *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	UserName         *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // NewAuctionProductResponseAuctionListCollection builds the HTTP response body

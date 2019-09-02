@@ -2,15 +2,51 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a893f096-100f-45d6-b1e9-38d0eb6ed2d2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/design/product.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/design/test" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/design/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/design/api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/design/auction.go" beforeDir="false" afterPath="$PROJECT_DIR$/design/auction.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/auction/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/auction/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/auction/views/view.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/auction/views/view.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/cli.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/encode_decode.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/types.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.proto" beforeDir="false" afterPath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/encode_decode.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/types.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/cli/api/cli.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/cli.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/client.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/encode_decode.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/types.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/pb/user.pb.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/pb/user.proto" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/encode_decode.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/types.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/http/auction/client/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/auction/server/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/http/auction/server/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/cli/api/cli.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/http/cli/api/cli.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/openapi.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/openapi.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/http/user/client/cli.go" beforeDir="false" afterPath="$PROJECT_DIR$/gen/http/user/client/cli.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="/usr/local/go" />
   <component name="Git.Settings">
@@ -21,6 +57,7 @@
   </component>
   <component name="ProjectId" id="1QGUGGG3dlpTjgHUYOBljmrUtOY" />
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />

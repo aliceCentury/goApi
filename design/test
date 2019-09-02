@@ -1,0 +1,99 @@
+CREATE TABLE `auction_result` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(18) DEFAULT NULL COMMENT '用户ID',
+  `auction_id` bigint(18) DEFAULT NULL COMMENT '拍卖ID，关联product_auction表ID',
+  `order_id` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT '订单ID，关联订单表auction_order',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `result_status` smallint(4) DEFAULT NULL COMMENT '拍卖结果:\n0:成功\n1:流拍\n2:取当前订单状态   （成功竞得，待用户确认）\n3:弃拍',
+  `bond_bonus` decimal(10,2) DEFAULT NULL COMMENT '分红,这里主要是针对保证金',
+  `user_name` varchar(45) DEFAULT NULL COMMENT '用户名称',
+  `head_portrait` varchar(250) CHARACTER SET utf8 DEFAULT NULL COMMENT '头像，此处放头像的url',
+  `transaction_price` decimal(10,2) DEFAULT NULL COMMENT ' 成交价',
+  `turn_status` int(11) DEFAULT '1' COMMENT '1:未转过来  2：转过来',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `result_auction_id_index` (`auction_id`),
+  KEY `result_order_id_index` (`order_id`),
+  KEY `result_result_status_index` (`result_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=44032 DEFAULT CHARSET=utf8mb4 COMMENT='商品拍卖结果表'
+`id` bigint(18) NOT NULL AUTO_INCREMENT COMMENT '唯一ID,自增长',
+  `prod_id` bigint(18) NOT NULL COMMENT '拍卖的商品ID',
+  `art_no` varchar(45) NOT NULL DEFAULT '' COMMENT '商品货号',
+  `prod_name` varchar(45) DEFAULT NULL COMMENT '拍卖的商品名称',
+  `cap_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '拍卖商品封顶价',
+  `start_time` datetime DEFAULT NULL COMMENT '拍卖开始时间',
+  `old_start_time` datetime DEFAULT NULL COMMENT '上一次的开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '拍卖结束时间',
+  `title` varchar(45) DEFAULT NULL COMMENT '拍卖标题',
+  `bond_price` decimal(10,2) NOT NULL COMMENT '保证金',
+  `start_auction_price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '起拍价',
+  `add_price` decimal(10,2) NOT NULL COMMENT '加价幅度',
+  `pictures_url` text COMMENT '拍卖商品相关图片',
+  `remind_time` datetime DEFAULT NULL COMMENT '提醒时间',
+  `auction_status` smallint(4) DEFAULT NULL COMMENT '拍卖状态 0:未上线 1:上线状态 2:拍卖确认中 3:拍卖成功 4:弃拍 5:流拍 -1：上线后下线',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `crowdfunding_package_id` bigint(18) DEFAULT NULL COMMENT '众筹包ID',
+  `audit_manager_id` int(11) DEFAULT NULL COMMENT '审核的管理者ID',
+  `audit_name` varchar(45) DEFAULT NULL COMMENT '审核的管理者的名字',
+  `auction_type` smallint(4) NOT NULL COMMENT '拍卖类型：0，新手拍(不可加入）；1，直拍(包括0元拍，直接拍,但不可以加入众筹）；2众筹拍（可以加入拍卖众筹）；3，投标拍（特殊的拍卖，可以加入投标众筹）；',
+  `serial_num` varchar(250) DEFAULT NULL COMMENT '拍卖编号',
+  `buyout_price` decimal(10,2) DEFAULT NULL COMMENT '买断价',
+  `is_have_proxy` smallint(4) DEFAULT NULL COMMENT '拍卖前有没有代理\n0：没有\n1：有',
+  `bid_scene_id` bigint(18) NOT NULL DEFAULT '-1' COMMENT '拍卖场场次',
+  `mkt_price` decimal(10,2) DEFAULT NULL COMMENT '市场价',
+  `qr_url` text COMMENT '拍品或投标品的二维码链接',
+  `total_number` int(11) DEFAULT NULL COMMENT '总个数',
+  `limit_number` int(11) DEFAULT NULL COMMENT '每人限购',
+  `is_reserve_price` smallint(4) DEFAULT NULL COMMENT '1:有保留价 2:无保留价',
+  `reserve_price` decimal(10,2) DEFAULT NULL COMMENT '保留价',
+  `share_url` text COMMENT '分享图片链接',
+  `auto_online` smallint(6) DEF
+  har(45) CHARACTER SET utf8 DEFAULT NULL COMMENT '支付中的授权号，微信支付宝和银联都有其授权号',
+    `online_pay` decimal(10,2) DEFAULT NULL COMMENT '在线付款金额',
+    `address_id` int(11) DEFAULT NULL COMMENT '关联用户地址表',
+    `send_status` smallint(4) DEFAULT '0' COMMENT '发货状态:  其中待发货是需要发货的,而未发货是不需要发货的\n0:待发货\n1:已发货\n2:已收货\n3:已拒收\n4:未发货\n',
+    `address_desc` varchar(500) CHARACTER SET utf8 DEFAULT NULL COMMENT '用户地址',
+    `user_phone` varchar(45) CHARACTER SET utf8 DEFAULT NULL COMMENT '联系方式电话等',
+    `prod_name` varchar(45)
+    CREATE TABLE `product_media` (
+      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+      `product_id` bigint(20) NOT NULL COMMENT '商品id',
+      `media_url` varchar(1024) NOT NULL DEFAULT '' COMMENT '多媒体链接',
+      `media_status` tinyint(3) NOT NULL DEFAULT '1' COMMENT '状态：是否有效； 0 无效， 1有效',
+      `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `media_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '媒体类型：0-图片，1-视频，2-未知',
+      `sequence` int(3) DEFAULT '0' COMMENT '上传顺序，默认为0，',
+      `usage_type` tinyint(3) NOT NULL COMMENT '图片在前台的展示位置：0商品轮播图、1商品详情图',
+      PRIMARY KEY (`id`),
+      KEY `pmu_key` (`product_id`,`media_status`,`usage_type`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=238158 DEFAULT CHARSET=utf8 COMMENT='商品多媒体信息表'
+
+    Field Type Comment
+     id bigint(20) NOT NULL
+     art_no varchar(20) NOT NULL 商品货号，article no是外贸中货号的英文写法
+     name varchar(45) NOT NULL 商品名称
+     summary text NOT NULL 单品描述
+     mkt_price decimal(11,2) NOT NULL 参考价
+     category_id tinyint(4) NOT NULL 商品分类id, product_category.id
+     style_id int(11) NULL 款式ID product_category_attribute.id
+     style varchar(45) NULL 属性：款式 product_category_attribute.name
+     colour_id int(11) NULL 颜色id product_category_attribute.id
+     colour varchar(45) NULL 颜色 product_category_attribute.name
+     level_id int(11) NULL 级别，比如：精品、收藏、经典等, product_category_attribute.id
+     level varchar(45) NULL 级别 product_category_attribute.name
+     crowd varchar(255) NULL 属性：适合人群 字段内容格式:1,2,3,男士,女士,学生
+     weight varchar(45) NOT NULL 重量
+     size varchar(45) NOT NULL 尺寸
+     cert_type int(2) NULL 证书类型ID， product_category_attribute.id
+     cert_code varchar(64) NULL 证书编号
+     status tinyint(4) NOT NULL (-1)-已删除 (0)-草稿 (1)-上线（拍品流拍、弃拍或流标、弃标后转为上线） (2)-拍卖中(不一定上线拍卖) (3)-投标中(不一定上线投标) (10)-售出 (11)-下线
+     operator_id bigint(20) NOT NULL 后台操作者ID
+     created_at datetime NOT NULL
+     updated_at datetime NOT NULL
+     version bigint(20) NOT NULL 乐观锁对比字段
+     template_id bigint(11) NOT NULL 模板id , user_pay_service.basic_model_rules
+     scenario varchar(255) NULL 使用场景
+     recommendations varchar(255) NULL 推荐语
+     floor_price decimal(10,2) NULL 底价
