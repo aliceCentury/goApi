@@ -13,59 +13,60 @@ option go_package = "auctionpb";
 
 // The auction service retrieves bottles given a set of criteria.
 service Auction {
-	// Pick implements pick.
-	rpc Pick (PickRequest) returns (StoredBottleCollection);
-	// get
-	rpc Get (GetRequest) returns (StoredBottleCollection);
+	// 获取拍卖列表
+	rpc GetAuctionProductListByStatus (GetAuctionProductListByStatusRequest) returns (AuctionProductCollection);
 }
 
-message PickRequest {
-	// Name of bottle to pick
-	string name = 1;
-	// Varietals in preference order
-	repeated string varietal = 2;
-	// Winery of bottle to pick
-	string winery = 3;
+message GetAuctionProductListByStatusRequest {
+	// 拍卖状态
+	sint32 auction_status = 1;
+	// 当前页数
+	sint32 current_page = 2;
+	// 每页返回的条数
+	sint32 page_size = 3;
 }
 
-message StoredBottleCollection {
-	repeated StoredBottle field = 1;
+message AuctionProductCollection {
+	repeated AuctionProduct field = 1;
 }
 // A StoredBottle describes a bottle retrieved by the storage service.
-message StoredBottle {
-	// ID is the unique id of the bottle.
+message AuctionProduct {
 	string id = 8;
-	// Name of bottle
-	string name = 1;
-	// Winery that produces wine
-	Winery winery = 2;
-	// Vintage of bottle
-	uint32 vintage = 3;
-	// Composition is the list of grape varietals and associated percentage.
-	repeated Component composition = 4;
-	// Description of bottle
-	string description = 5;
-	// Rating of bottle from 1 (worst) to 5 (best)
-	uint32 rating = 6;
-}
-
-message Winery {
-	// Name of winery
-	string name = 1;
-	// Region of winery
-	string region = 2;
-	// Country of winery
-	string country = 3;
-	// Winery website URL
-	string url = 4;
-}
-
-message Component {
-	// Grape varietal
-	string varietal = 1;
-	// Percentage of varietal in wine
-	uint32 percentage = 2;
-}
-
-message GetRequest {
+	sint32 add_price = 2;
+	string art_no = 3;
+	sint32 auction_status = 4;
+	sint32 auction_type = 5;
+	sint32 bid_scene_id = 6;
+	sint32 bond_price = 7;
+	sint32 buy_number = 10;
+	string buy_unit_price = 9;
+	sint32 buyout_price = 11;
+	sint32 cap_price = 12;
+	string crowdfunding_package_id = 13;
+	sint32 current_price = 14;
+	sint64 end_time = 15;
+	string head_portrait = 16;
+	sint32 is_have_proxy = 17;
+	sint32 is_reserve_price = 18;
+	sint64 last_time = 19;
+	sint32 limit_number = 20;
+	sint32 mkt_price = 21;
+	string pictures_url = 22;
+	sint32 prod_id = 23;
+	string prod_name = 24;
+	string qr_url = 25;
+	sint64 remind_time = 26;
+	string reserve_price = 27;
+	sint32 result_status = 28;
+	sint32 rule_id = 29;
+	string serial_num = 30;
+	string share_url = 31;
+	sint32 start_auction_price = 32;
+	sint64 start_time = 33;
+	string title = 34;
+	sint32 total_number = 35;
+	sint32 transaction_number = 36;
+	string transaction_price = 37;
+	string user_id = 38;
+	string user_name = 39;
 }

@@ -19,13 +19,14 @@ import (
 	goahttp "goa.design/goa/v3/http"
 )
 
-// BuildPickRequest instantiates a HTTP request object with method and path set
-// to call the "auction" service "pick" endpoint
-func (c *Client) BuildPickRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: PickAuctionPath()}
+// BuildGetAuctionProductListByStatusRequest instantiates a HTTP request object
+// with method and path set to call the "auction" service
+// "getAuctionProductListByStatus" endpoint
+func (c *Client) BuildGetAuctionProductListByStatusRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetAuctionProductListByStatusAuctionPath()}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
-		return nil, goahttp.ErrInvalidURL("auction", "pick", u.String(), err)
+		return nil, goahttp.ErrInvalidURL("auction", "getAuctionProductListByStatus", u.String(), err)
 	}
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -34,30 +35,26 @@ func (c *Client) BuildPickRequest(ctx context.Context, v interface{}) (*http.Req
 	return req, nil
 }
 
-// EncodePickRequest returns an encoder for requests sent to the auction pick
-// server.
-func EncodePickRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+// EncodeGetAuctionProductListByStatusRequest returns an encoder for requests
+// sent to the auction getAuctionProductListByStatus server.
+func EncodeGetAuctionProductListByStatusRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
 	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*auction.Criteria)
+		p, ok := v.(*auction.ListData)
 		if !ok {
-			return goahttp.ErrInvalidType("auction", "pick", "*auction.Criteria", v)
+			return goahttp.ErrInvalidType("auction", "getAuctionProductListByStatus", "*auction.ListData", v)
 		}
-		body := NewPickRequestBody(p)
+		body := NewGetAuctionProductListByStatusRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("auction", "pick", err)
+			return goahttp.ErrEncodingError("auction", "getAuctionProductListByStatus", err)
 		}
 		return nil
 	}
 }
 
-// DecodePickResponse returns a decoder for responses returned by the auction
-// pick endpoint. restoreBody controls whether the response body should be
-// restored after having been read.
-// DecodePickResponse may return the following errors:
-//	- "no_criteria" (type auction.NoCriteria): http.StatusBadRequest
-//	- "no_match" (type auction.NoMatch): http.StatusNotFound
-//	- error: internal error
-func DecodePickResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+// DecodeGetAuctionProductListByStatusResponse returns a decoder for responses
+// returned by the auction getAuctionProductListByStatus endpoint. restoreBody
+// controls whether the response body should be restored after having been read.
+func DecodeGetAuctionProductListByStatusResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
 			b, err := ioutil.ReadAll(resp.Body)
@@ -74,128 +71,24 @@ func DecodePickResponse(decoder func(*http.Response) goahttp.Decoder, restoreBod
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body PickResponseBody
+				body GetAuctionProductListByStatusResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("auction", "pick", err)
+				return nil, goahttp.ErrDecodingError("auction", "getAuctionProductListByStatus", err)
 			}
-			p := NewPickStoredBottleCollectionOK(body)
-			view := "default"
-			vres := auctionviews.StoredBottleCollection{p, view}
-			if err = auctionviews.ValidateStoredBottleCollection(vres); err != nil {
-				return nil, goahttp.ErrValidationError("auction", "pick", err)
+			p := NewGetAuctionProductListByStatusAuctionProductCollectionOK(body)
+			view := "auctionList"
+			vres := auctionviews.AuctionProductCollection{p, view}
+			if err = auctionviews.ValidateAuctionProductCollection(vres); err != nil {
+				return nil, goahttp.ErrValidationError("auction", "getAuctionProductListByStatus", err)
 			}
-			res := auction.NewStoredBottleCollection(vres)
-			return res, nil
-		case http.StatusBadRequest:
-			var (
-				body PickNoCriteriaResponseBody
-				err  error
-			)
-			err = decoder(resp).Decode(&body)
-			if err != nil {
-				return nil, goahttp.ErrDecodingError("auction", "pick", err)
-			}
-			return nil, NewPickNoCriteria(body)
-		case http.StatusNotFound:
-			var (
-				body PickNoMatchResponseBody
-				err  error
-			)
-			err = decoder(resp).Decode(&body)
-			if err != nil {
-				return nil, goahttp.ErrDecodingError("auction", "pick", err)
-			}
-			return nil, NewPickNoMatch(body)
-		default:
-			body, _ := ioutil.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("auction", "pick", resp.StatusCode, string(body))
-		}
-	}
-}
-
-// BuildGetRequest instantiates a HTTP request object with method and path set
-// to call the "auction" service "get" endpoint
-func (c *Client) BuildGetRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetAuctionPath()}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		return nil, goahttp.ErrInvalidURL("auction", "get", u.String(), err)
-	}
-	if ctx != nil {
-		req = req.WithContext(ctx)
-	}
-
-	return req, nil
-}
-
-// DecodeGetResponse returns a decoder for responses returned by the auction
-// get endpoint. restoreBody controls whether the response body should be
-// restored after having been read.
-func DecodeGetResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
-	return func(resp *http.Response) (interface{}, error) {
-		if restoreBody {
-			b, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				return nil, err
-			}
-			resp.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-			defer func() {
-				resp.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-			}()
-		} else {
-			defer resp.Body.Close()
-		}
-		switch resp.StatusCode {
-		case http.StatusOK:
-			var (
-				body GetResponseBody
-				err  error
-			)
-			err = decoder(resp).Decode(&body)
-			if err != nil {
-				return nil, goahttp.ErrDecodingError("auction", "get", err)
-			}
-			p := NewGetStoredBottleCollectionOK(body)
-			view := "default"
-			vres := auctionviews.StoredBottleCollection{p, view}
-			if err = auctionviews.ValidateStoredBottleCollection(vres); err != nil {
-				return nil, goahttp.ErrValidationError("auction", "get", err)
-			}
-			res := auction.NewStoredBottleCollection(vres)
+			res := auction.NewAuctionProductCollection(vres)
 			return res, nil
 		default:
 			body, _ := ioutil.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("auction", "get", resp.StatusCode, string(body))
+			return nil, goahttp.ErrInvalidResponse("auction", "getAuctionProductListByStatus", resp.StatusCode, string(body))
 		}
 	}
-}
-
-// unmarshalWineryResponseToAuctionviewsWineryView builds a value of type
-// *auctionviews.WineryView from a value of type *WineryResponse.
-func unmarshalWineryResponseToAuctionviewsWineryView(v *WineryResponse) *auctionviews.WineryView {
-	res := &auctionviews.WineryView{
-		Name:    v.Name,
-		Region:  v.Region,
-		Country: v.Country,
-		URL:     v.URL,
-	}
-
-	return res
-}
-
-// unmarshalComponentResponseToAuctionviewsComponentView builds a value of type
-// *auctionviews.ComponentView from a value of type *ComponentResponse.
-func unmarshalComponentResponseToAuctionviewsComponentView(v *ComponentResponse) *auctionviews.ComponentView {
-	if v == nil {
-		return nil
-	}
-	res := &auctionviews.ComponentView{
-		Varietal:   v.Varietal,
-		Percentage: v.Percentage,
-	}
-
-	return res
 }

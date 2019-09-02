@@ -21,7 +21,7 @@ var _ = API("cellar", func() {
 	})
 })
 
-var StoredBottle = ResultType("application/vnd.cellar.stored-bottle", func() {
+var StoredBottle = ResultType("StoredBottle", func() {
 	Description("A StoredBottle describes a bottle retrieved by the storage service.")
 	Reference(Bottle)
 	TypeName("StoredBottle")
@@ -161,6 +161,183 @@ var Criteria = Type("Criteria", func() {
 	})
 	Attribute("winery", String, "Winery of bottle to pick", func() {
 		Example("longoria")
+		Meta("rpc:tag", "3")
+	})
+})
+
+
+var AuctionProduct = ResultType("application/vnd.cellar.stored-bottle", func() {
+	Description("A StoredBottle describes a bottle retrieved by the storage service.")
+	Reference(Bottle)
+	TypeName("AuctionProduct")
+
+	Attributes(func() {
+		Attribute("id", String, func() {
+			Example("50611")
+			Meta("rpc:tag", "8")
+		})
+		Field(2, "add_price", Int,func() {
+			Example(20)
+		})
+		Field(3, "art_no",String, func() {
+			Example("ZS1908038")
+		})
+		Field(4, "auction_status", Int,func() {
+			Example(1)
+		})
+		Field(5, "auction_type", Int,func() {
+			Example(2)
+		})
+		Field(6, "bid_scene_id", Int,func() {
+			Example(-1)
+		})
+		Field(7, "bond_price", Int,func() {
+			Example(20)
+		})
+		Field(8,"buy_number", Int,func() {
+			Example(0)
+		})
+		Field(9,"buy_unit_price")
+		Field(10,"buy_number", Int,func() {
+			Example(0)
+		})
+		Field(11,"buyout_price", Int,func() {
+			Example(200)
+		})
+		Field(12,"cap_price", Int,func() {
+			Example(390)
+		})
+		Field(13,"crowdfunding_package_id")
+		Field(14,"current_price", Int,func() {
+			Example(110)
+		})
+		Field(15,"end_time", Int64,func() {
+			Example(1567396800000)
+		})
+		Field(16,"head_portrait")
+		Field(17,"is_have_proxy", Int,func() {
+			Example(1)
+		})
+		Field(18,"is_reserve_price", Int,func() {
+			Example(2)
+		})
+		Field(19,"last_time", Int64,func() {
+			Example(1567396800000)
+		})
+		Field(20,"limit_number", Int,func() {
+			Example(1)
+		})
+		Field(21,"mkt_price", Int,func() {
+			Example(395)
+		})
+		Field(22,"pictures_url", String,func() {
+			Example("")
+		})
+		Field(23,"prod_id", Int32,func() {
+			Example(21320)
+		})
+		Field(24,"prod_name", String,func() {
+			Example("朱砂平安扣")
+		})
+		Field(25,"qr_url", String,func() {
+			Example("")
+		})
+		Field(26,"remind_time", Int64,func() {
+			Example(1567389600000)
+		})
+		Field(27,"reserve_price")
+		Field(28,"result_status", Int,func() {
+			Example(-1)
+		})
+		Field(29,"rule_id", Int,func() {
+			Example(0)
+		})
+		Field(30,"serial_num", String,func() {
+			Example("10:00~12:00")
+		})
+		Field(31,"share_url")
+		Field(32,"start_auction_price", Int,func() {
+			Example(110)
+		})
+		Field(33,"start_time", Int64,func() {
+			Example(1567389600000)
+		})
+		Field(34,"title", String,func() {
+			Example("朱砂平安扣")
+		})
+		Field(35,"total_number", Int,func() {
+			Example(1)
+		})
+		Field(36,"transaction_number", Int,func() {
+			Example(0)
+		})
+		Field(37,"transaction_price")
+		Field(38,"user_id")
+		Field(39,"user_name")
+	})
+
+	View("bid", func() {
+		Attribute("add_price")
+		Attribute("art_no")
+		Attribute("head_portrait", func() {
+			View("auctionList")
+		})
+	})
+
+	View("auctionList", func() {
+		Attribute("add_price")
+		Attribute("art_no")
+		Attribute("auction_status")
+		Attribute("auction_type")
+		Attribute("bid_scene_id")
+		Attribute("bond_price")
+		Attribute("buy_number")
+		Attribute("buy_unit_price")
+		Attribute("buyout_price")
+		Attribute("cap_price")
+		Attribute("crowdfunding_package_id")
+		Attribute("current_price")
+		Attribute("end_time")
+		Attribute("head_portrait")
+		Attribute("id")
+		Attribute("is_have_proxy")
+		Attribute("is_reserve_price")
+		Attribute("last_time")
+		Attribute("limit_number")
+		Attribute("mkt_price")
+		Attribute("pictures_url")
+		Attribute("prod_id")
+		Attribute("prod_name")
+		Attribute("qr_url")
+		Attribute("remind_time")
+		Attribute("reserve_price")
+		Attribute("result_status")
+		Attribute("serial_num")
+		Attribute("share_url")
+		Attribute("start_auction_price")
+		Attribute("start_time")
+		Attribute("title")
+		Attribute("total_number")
+		Attribute("transaction_number")
+		Attribute("transaction_price")
+		Attribute("user_id")
+		Attribute("user_name")
+	})
+
+	//Required("id", "add_price", "title", "vintage")
+})
+var ListData = Type("ListData", func() {
+	Description("拍卖投标列表的参数")//{"auction_status":2,"current_page":1,"page_size":30}
+	Attribute("auction_status", Int, "拍卖状态", func() {
+		Example(2)
+		Meta("rpc:tag", "1")
+	})
+	Attribute("current_page", Int, "当前页数", func() {
+		Example(1)
+		Meta("rpc:tag", "2")
+	})
+	Attribute("page_size", Int, "每页返回的条数", func() {
+		Example(30)
 		Meta("rpc:tag", "3")
 	})
 })

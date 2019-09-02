@@ -14,31 +14,31 @@ import (
 	"fmt"
 )
 
-// BuildPickPayload builds the payload for the auction pick endpoint from CLI
-// flags.
-func BuildPickPayload(auctionPickMessage string) (*auction.Criteria, error) {
+// BuildGetAuctionProductListByStatusPayload builds the payload for the auction
+// getAuctionProductListByStatus endpoint from CLI flags.
+func BuildGetAuctionProductListByStatusPayload(auctionGetAuctionProductListByStatusMessage string) (*auction.ListData, error) {
 	var err error
-	var message auctionpb.PickRequest
+	var message auctionpb.GetAuctionProductListByStatusRequest
 	{
-		if auctionPickMessage != "" {
-			err = json.Unmarshal([]byte(auctionPickMessage), &message)
+		if auctionGetAuctionProductListByStatusMessage != "" {
+			err = json.Unmarshal([]byte(auctionGetAuctionProductListByStatusMessage), &message)
 			if err != nil {
-				return nil, fmt.Errorf("invalid JSON for message, example of valid JSON:\n%s", "'{\n      \"name\": \"Blue\\'s Cuvee\",\n      \"varietal\": [\n         \"pinot noir\",\n         \"merlot\",\n         \"cabernet franc\"\n      ],\n      \"winery\": \"longoria\"\n   }'")
+				return nil, fmt.Errorf("invalid JSON for message, example of valid JSON:\n%s", "'{\n      \"auction_status\": 2,\n      \"current_page\": 1,\n      \"page_size\": 30\n   }'")
 			}
 		}
 	}
-	v := &auction.Criteria{}
-	if message.Name != "" {
-		v.Name = &message.Name
+	v := &auction.ListData{}
+	if message.AuctionStatus != 0 {
+		auctionStatusptr := int(message.AuctionStatus)
+		v.AuctionStatus = &auctionStatusptr
 	}
-	if message.Winery != "" {
-		v.Winery = &message.Winery
+	if message.CurrentPage != 0 {
+		currentPageptr := int(message.CurrentPage)
+		v.CurrentPage = &currentPageptr
 	}
-	if message.Varietal != nil {
-		v.Varietal = make([]string, len(message.Varietal))
-		for i, val := range message.Varietal {
-			v.Varietal[i] = val
-		}
+	if message.PageSize != 0 {
+		pageSizeptr := int(message.PageSize)
+		v.PageSize = &pageSizeptr
 	}
 	return v, nil
 }

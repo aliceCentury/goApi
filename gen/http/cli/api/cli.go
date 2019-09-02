@@ -25,21 +25,17 @@ import (
 //    command (subcommand1|subcommand2|...)
 //
 func UsageCommands() string {
-	return `auction (pick|get)
+	return `auction get-auction-product-list-by-status
 user (list|show|add|remove|rate|multi-add|multi-update)
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` auction pick --body '{
-      "name": "Blue\'s Cuvee",
-      "varietal": [
-         "pinot noir",
-         "merlot",
-         "cabernet franc"
-      ],
-      "winery": "longoria"
+	return os.Args[0] + ` auction get--auction--product--list--by--status --body '{
+      "auction_status": 2,
+      "current_page": 1,
+      "page_size": 30
    }'` + "\n" +
 		os.Args[0] + ` user list` + "\n" +
 		""
@@ -59,10 +55,8 @@ func ParseEndpoint(
 	var (
 		auctionFlags = flag.NewFlagSet("auction", flag.ContinueOnError)
 
-		auctionPickFlags    = flag.NewFlagSet("pick", flag.ExitOnError)
-		auctionPickBodyFlag = auctionPickFlags.String("body", "REQUIRED", "")
-
-		auctionGetFlags = flag.NewFlagSet("get", flag.ExitOnError)
+		auctionGetAuctionProductListByStatusFlags    = flag.NewFlagSet("get-auction-product-list-by-status", flag.ExitOnError)
+		auctionGetAuctionProductListByStatusBodyFlag = auctionGetAuctionProductListByStatusFlags.String("body", "REQUIRED", "")
 
 		userFlags = flag.NewFlagSet("user", flag.ContinueOnError)
 
@@ -89,8 +83,7 @@ func ParseEndpoint(
 		userMultiUpdateIdsFlag  = userMultiUpdateFlags.String("ids", "REQUIRED", "")
 	)
 	auctionFlags.Usage = auctionUsage
-	auctionPickFlags.Usage = auctionPickUsage
-	auctionGetFlags.Usage = auctionGetUsage
+	auctionGetAuctionProductListByStatusFlags.Usage = auctionGetAuctionProductListByStatusUsage
 
 	userFlags.Usage = userUsage
 	userListFlags.Usage = userListUsage
@@ -137,11 +130,8 @@ func ParseEndpoint(
 		switch svcn {
 		case "auction":
 			switch epn {
-			case "pick":
-				epf = auctionPickFlags
-
-			case "get":
-				epf = auctionGetFlags
+			case "get-auction-product-list-by-status":
+				epf = auctionGetAuctionProductListByStatusFlags
 
 			}
 
@@ -193,12 +183,9 @@ func ParseEndpoint(
 		case "auction":
 			c := auctionc.NewClient(scheme, host, doer, enc, dec, restore)
 			switch epn {
-			case "pick":
-				endpoint = c.Pick()
-				data, err = auctionc.BuildPickPayload(*auctionPickBodyFlag)
-			case "get":
-				endpoint = c.Get()
-				data = nil
+			case "get-auction-product-list-by-status":
+				endpoint = c.GetAuctionProductListByStatus()
+				data, err = auctionc.BuildGetAuctionProductListByStatusPayload(*auctionGetAuctionProductListByStatusBodyFlag)
 			}
 		case "user":
 			c := userc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -222,7 +209,7 @@ func ParseEndpoint(
 				err = json.Unmarshal([]byte(*userRatePFlag), &val)
 				data = val
 				if err != nil {
-					return nil, nil, fmt.Errorf("invalid JSON for userRatePFlag, example of valid JSON:\n%s", "'{\n      \"\\u003cuint32 Value\\u003e\": [\n         \"Laboriosam consequatur delectus doloribus.\",\n         \"Est mollitia.\",\n         \"Voluptas ex enim.\",\n         \"Est explicabo eveniet dolore.\"\n      ]\n   }'")
+					return nil, nil, fmt.Errorf("invalid JSON for userRatePFlag, example of valid JSON:\n%s", "'{\n      \"\\u003cuint32 Value\\u003e\": [\n         \"Modi necessitatibus.\",\n         \"Blanditiis dolore laudantium repellat.\"\n      ]\n   }'")
 				}
 			case "multi-add":
 				endpoint = c.MultiAdd(userMultiAddEncoderFn)
@@ -247,39 +234,24 @@ Usage:
     %s [globalflags] auction COMMAND [flags]
 
 COMMAND:
-    pick: Pick implements pick.
-    get: get
+    get-auction-product-list-by-status: 获取拍卖列表
 
 Additional help:
     %s auction COMMAND --help
 `, os.Args[0], os.Args[0])
 }
-func auctionPickUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] auction pick -body JSON
+func auctionGetAuctionProductListByStatusUsage() {
+	fmt.Fprintf(os.Stderr, `%s [flags] auction get-auction-product-list-by-status -body JSON
 
-Pick implements pick.
+获取拍卖列表
     -body JSON: 
 
 Example:
-    `+os.Args[0]+` auction pick --body '{
-      "name": "Blue\'s Cuvee",
-      "varietal": [
-         "pinot noir",
-         "merlot",
-         "cabernet franc"
-      ],
-      "winery": "longoria"
+    `+os.Args[0]+` auction get--auction--product--list--by--status --body '{
+      "auction_status": 2,
+      "current_page": 1,
+      "page_size": 30
    }'
-`, os.Args[0])
-}
-
-func auctionGetUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] auction get
-
-get
-
-Example:
-    `+os.Args[0]+` auction get
 `, os.Args[0])
 }
 
@@ -320,7 +292,7 @@ Show bottle by ID
     -view STRING: 
 
 Example:
-    `+os.Args[0]+` user show --id "Soluta consequatur nostrum dolore et." --view "default"
+    `+os.Args[0]+` user show --id "Nulla architecto magni eos tempora sapiente." --view "tiny"
 `, os.Args[0])
 }
 
@@ -334,26 +306,22 @@ Example:
     `+os.Args[0]+` user add --body '{
       "composition": [
          {
-            "percentage": 71,
+            "percentage": 19,
             "varietal": "Syrah"
          },
          {
-            "percentage": 71,
+            "percentage": 19,
             "varietal": "Syrah"
          },
          {
-            "percentage": 71,
-            "varietal": "Syrah"
-         },
-         {
-            "percentage": 71,
+            "percentage": 19,
             "varietal": "Syrah"
          }
       ],
       "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
       "name": "Blue\'s Cuvee",
-      "rating": 1,
-      "vintage": 1974,
+      "rating": 2,
+      "vintage": 2006,
       "winery": {
          "country": "USA",
          "name": "Longoria",
@@ -371,7 +339,7 @@ Remove bottle from storage
     -id STRING: ID of bottle to remove
 
 Example:
-    `+os.Args[0]+` user remove --id "Animi enim nam nemo."
+    `+os.Args[0]+` user remove --id "Nobis nobis accusamus qui totam minus."
 `, os.Args[0])
 }
 
@@ -384,10 +352,8 @@ Rate bottles by IDs
 Example:
     `+os.Args[0]+` user rate --p '{
       "\u003cuint32 Value\u003e": [
-         "Laboriosam consequatur delectus doloribus.",
-         "Est mollitia.",
-         "Voluptas ex enim.",
-         "Est explicabo eveniet dolore."
+         "Modi necessitatibus.",
+         "Blanditiis dolore laudantium repellat."
       ]
    }'
 `, os.Args[0])
@@ -404,18 +370,22 @@ Example:
       {
          "composition": [
             {
-               "percentage": 71,
+               "percentage": 19,
                "varietal": "Syrah"
             },
             {
-               "percentage": 71,
+               "percentage": 19,
+               "varietal": "Syrah"
+            },
+            {
+               "percentage": 19,
                "varietal": "Syrah"
             }
          ],
          "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
          "name": "Blue\'s Cuvee",
-         "rating": 2,
-         "vintage": 1937,
+         "rating": 1,
+         "vintage": 1957,
          "winery": {
             "country": "USA",
             "name": "Longoria",
@@ -426,18 +396,22 @@ Example:
       {
          "composition": [
             {
-               "percentage": 71,
+               "percentage": 19,
                "varietal": "Syrah"
             },
             {
-               "percentage": 71,
+               "percentage": 19,
+               "varietal": "Syrah"
+            },
+            {
+               "percentage": 19,
                "varietal": "Syrah"
             }
          ],
          "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
          "name": "Blue\'s Cuvee",
-         "rating": 2,
-         "vintage": 1937,
+         "rating": 1,
+         "vintage": 1957,
          "winery": {
             "country": "USA",
             "name": "Longoria",
@@ -448,18 +422,48 @@ Example:
       {
          "composition": [
             {
-               "percentage": 71,
+               "percentage": 19,
                "varietal": "Syrah"
             },
             {
-               "percentage": 71,
+               "percentage": 19,
+               "varietal": "Syrah"
+            },
+            {
+               "percentage": 19,
                "varietal": "Syrah"
             }
          ],
          "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
          "name": "Blue\'s Cuvee",
-         "rating": 2,
-         "vintage": 1937,
+         "rating": 1,
+         "vintage": 1957,
+         "winery": {
+            "country": "USA",
+            "name": "Longoria",
+            "region": "Central Coast, California",
+            "url": "http://www.longoriawine.com/"
+         }
+      },
+      {
+         "composition": [
+            {
+               "percentage": 19,
+               "varietal": "Syrah"
+            },
+            {
+               "percentage": 19,
+               "varietal": "Syrah"
+            },
+            {
+               "percentage": 19,
+               "varietal": "Syrah"
+            }
+         ],
+         "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
+         "name": "Blue\'s Cuvee",
+         "rating": 1,
+         "vintage": 1957,
          "winery": {
             "country": "USA",
             "name": "Longoria",
@@ -484,18 +488,22 @@ Example:
          {
             "composition": [
                {
-                  "percentage": 71,
+                  "percentage": 19,
                   "varietal": "Syrah"
                },
                {
-                  "percentage": 71,
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               },
+               {
+                  "percentage": 19,
                   "varietal": "Syrah"
                }
             ],
             "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
             "name": "Blue\'s Cuvee",
-            "rating": 2,
-            "vintage": 1937,
+            "rating": 1,
+            "vintage": 1957,
             "winery": {
                "country": "USA",
                "name": "Longoria",
@@ -506,18 +514,22 @@ Example:
          {
             "composition": [
                {
-                  "percentage": 71,
+                  "percentage": 19,
                   "varietal": "Syrah"
                },
                {
-                  "percentage": 71,
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               },
+               {
+                  "percentage": 19,
                   "varietal": "Syrah"
                }
             ],
             "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
             "name": "Blue\'s Cuvee",
-            "rating": 2,
-            "vintage": 1937,
+            "rating": 1,
+            "vintage": 1957,
             "winery": {
                "country": "USA",
                "name": "Longoria",
@@ -528,18 +540,48 @@ Example:
          {
             "composition": [
                {
-                  "percentage": 71,
+                  "percentage": 19,
                   "varietal": "Syrah"
                },
                {
-                  "percentage": 71,
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               },
+               {
+                  "percentage": 19,
                   "varietal": "Syrah"
                }
             ],
             "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
             "name": "Blue\'s Cuvee",
-            "rating": 2,
-            "vintage": 1937,
+            "rating": 1,
+            "vintage": 1957,
+            "winery": {
+               "country": "USA",
+               "name": "Longoria",
+               "region": "Central Coast, California",
+               "url": "http://www.longoriawine.com/"
+            }
+         },
+         {
+            "composition": [
+               {
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               },
+               {
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               },
+               {
+                  "percentage": 19,
+                  "varietal": "Syrah"
+               }
+            ],
+            "description": "Red wine blend with an emphasis on the Cabernet Franc grape and including other Bordeaux grape varietals and some Syrah",
+            "name": "Blue\'s Cuvee",
+            "rating": 1,
+            "vintage": 1957,
             "winery": {
                "country": "USA",
                "name": "Longoria",
@@ -549,9 +591,9 @@ Example:
          }
       ]
    }' --ids '[
-      "Aut aut.",
-      "Fugiat aliquid facere doloremque placeat ea vel.",
-      "Incidunt earum dolorem suscipit ut iusto."
+      "Omnis magni natus.",
+      "Praesentium cum quaerat accusamus voluptatem et fugit.",
+      "Facere consequatur ut explicabo libero qui."
    ]'
 `, os.Args[0])
 }

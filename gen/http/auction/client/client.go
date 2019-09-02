@@ -17,11 +17,9 @@ import (
 
 // Client lists the auction service endpoint HTTP clients.
 type Client struct {
-	// Pick Doer is the HTTP client used to make requests to the pick endpoint.
-	PickDoer goahttp.Doer
-
-	// Get Doer is the HTTP client used to make requests to the get endpoint.
-	GetDoer goahttp.Doer
+	// GetAuctionProductListByStatus Doer is the HTTP client used to make requests
+	// to the getAuctionProductListByStatus endpoint.
+	GetAuctionProductListByStatusDoer goahttp.Doer
 
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
@@ -43,25 +41,24 @@ func NewClient(
 	restoreBody bool,
 ) *Client {
 	return &Client{
-		PickDoer:            doer,
-		GetDoer:             doer,
-		RestoreResponseBody: restoreBody,
-		scheme:              scheme,
-		host:                host,
-		decoder:             dec,
-		encoder:             enc,
+		GetAuctionProductListByStatusDoer: doer,
+		RestoreResponseBody:               restoreBody,
+		scheme:                            scheme,
+		host:                              host,
+		decoder:                           dec,
+		encoder:                           enc,
 	}
 }
 
-// Pick returns an endpoint that makes HTTP requests to the auction service
-// pick server.
-func (c *Client) Pick() goa.Endpoint {
+// GetAuctionProductListByStatus returns an endpoint that makes HTTP requests
+// to the auction service getAuctionProductListByStatus server.
+func (c *Client) GetAuctionProductListByStatus() goa.Endpoint {
 	var (
-		encodeRequest  = EncodePickRequest(c.encoder)
-		decodeResponse = DecodePickResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeGetAuctionProductListByStatusRequest(c.encoder)
+		decodeResponse = DecodeGetAuctionProductListByStatusResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
-		req, err := c.BuildPickRequest(ctx, v)
+		req, err := c.BuildGetAuctionProductListByStatusRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -69,30 +66,10 @@ func (c *Client) Pick() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.PickDoer.Do(req)
+		resp, err := c.GetAuctionProductListByStatusDoer.Do(req)
 
 		if err != nil {
-			return nil, goahttp.ErrRequestError("auction", "pick", err)
-		}
-		return decodeResponse(resp)
-	}
-}
-
-// Get returns an endpoint that makes HTTP requests to the auction service get
-// server.
-func (c *Client) Get() goa.Endpoint {
-	var (
-		decodeResponse = DecodeGetResponse(c.decoder, c.RestoreResponseBody)
-	)
-	return func(ctx context.Context, v interface{}) (interface{}, error) {
-		req, err := c.BuildGetRequest(ctx, v)
-		if err != nil {
-			return nil, err
-		}
-		resp, err := c.GetDoer.Do(req)
-
-		if err != nil {
-			return nil, goahttp.ErrRequestError("auction", "get", err)
+			return nil, goahttp.ErrRequestError("auction", "getAuctionProductListByStatus", err)
 		}
 		return decodeResponse(resp)
 	}

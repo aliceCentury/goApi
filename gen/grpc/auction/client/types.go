@@ -11,210 +11,164 @@ import (
 	auction "calcsvc/gen/auction"
 	auctionviews "calcsvc/gen/auction/views"
 	auctionpb "calcsvc/gen/grpc/auction/pb"
-	"unicode/utf8"
-
-	goa "goa.design/goa/v3/pkg"
 )
 
-// NewPickRequest builds the gRPC request type from the payload of the "pick"
-// endpoint of the "auction" service.
-func NewPickRequest(payload *auction.Criteria) *auctionpb.PickRequest {
-	message := &auctionpb.PickRequest{}
-	if payload.Name != nil {
-		message.Name = *payload.Name
+// NewGetAuctionProductListByStatusRequest builds the gRPC request type from
+// the payload of the "getAuctionProductListByStatus" endpoint of the "auction"
+// service.
+func NewGetAuctionProductListByStatusRequest(payload *auction.ListData) *auctionpb.GetAuctionProductListByStatusRequest {
+	message := &auctionpb.GetAuctionProductListByStatusRequest{}
+	if payload.AuctionStatus != nil {
+		message.AuctionStatus = int32(*payload.AuctionStatus)
 	}
-	if payload.Winery != nil {
-		message.Winery = *payload.Winery
+	if payload.CurrentPage != nil {
+		message.CurrentPage = int32(*payload.CurrentPage)
 	}
-	if payload.Varietal != nil {
-		message.Varietal = make([]string, len(payload.Varietal))
-		for i, val := range payload.Varietal {
-			message.Varietal[i] = val
-		}
+	if payload.PageSize != nil {
+		message.PageSize = int32(*payload.PageSize)
 	}
 	return message
 }
 
-// NewPickResult builds the result type of the "pick" endpoint of the "auction"
-// service from the gRPC response type.
-func NewPickResult(message *auctionpb.StoredBottleCollection) auctionviews.StoredBottleCollectionView {
-	result := make([]*auctionviews.StoredBottleView, len(message.Field))
+// NewGetAuctionProductListByStatusResult builds the result type of the
+// "getAuctionProductListByStatus" endpoint of the "auction" service from the
+// gRPC response type.
+func NewGetAuctionProductListByStatusResult(message *auctionpb.AuctionProductCollection) auctionviews.AuctionProductCollectionView {
+	result := make([]*auctionviews.AuctionProductView, len(message.Field))
 	for i, val := range message.Field {
-		result[i] = &auctionviews.StoredBottleView{
-			ID:      &val.Id,
-			Name:    &val.Name,
-			Vintage: &val.Vintage,
+		result[i] = &auctionviews.AuctionProductView{}
+		if val.Id != "" {
+			result[i].ID = &val.Id
 		}
-		if val.Description != "" {
-			result[i].Description = &val.Description
+		if val.AddPrice != 0 {
+			addPriceptr := int(val.AddPrice)
+			result[i].AddPrice = &addPriceptr
 		}
-		if val.Rating != 0 {
-			result[i].Rating = &val.Rating
+		if val.ArtNo != "" {
+			result[i].ArtNo = &val.ArtNo
 		}
-		if val.Winery != nil {
-			result[i].Winery = protobufAuctionpbWineryToAuctionviewsWineryView(val.Winery)
+		if val.AuctionStatus != 0 {
+			auctionStatusptr := int(val.AuctionStatus)
+			result[i].AuctionStatus = &auctionStatusptr
 		}
-		if val.Composition != nil {
-			result[i].Composition = make([]*auctionviews.ComponentView, len(val.Composition))
-			for j, val := range val.Composition {
-				result[i].Composition[j] = &auctionviews.ComponentView{
-					Varietal: &val.Varietal,
-				}
-				if val.Percentage != 0 {
-					result[i].Composition[j].Percentage = &val.Percentage
-				}
-			}
+		if val.AuctionType != 0 {
+			auctionTypeptr := int(val.AuctionType)
+			result[i].AuctionType = &auctionTypeptr
+		}
+		if val.BidSceneId != 0 {
+			bidSceneIDptr := int(val.BidSceneId)
+			result[i].BidSceneID = &bidSceneIDptr
+		}
+		if val.BondPrice != 0 {
+			bondPriceptr := int(val.BondPrice)
+			result[i].BondPrice = &bondPriceptr
+		}
+		if val.BuyNumber != 0 {
+			buyNumberptr := int(val.BuyNumber)
+			result[i].BuyNumber = &buyNumberptr
+		}
+		if val.BuyUnitPrice != "" {
+			result[i].BuyUnitPrice = &val.BuyUnitPrice
+		}
+		if val.BuyoutPrice != 0 {
+			buyoutPriceptr := int(val.BuyoutPrice)
+			result[i].BuyoutPrice = &buyoutPriceptr
+		}
+		if val.CapPrice != 0 {
+			capPriceptr := int(val.CapPrice)
+			result[i].CapPrice = &capPriceptr
+		}
+		if val.CrowdfundingPackageId != "" {
+			result[i].CrowdfundingPackageID = &val.CrowdfundingPackageId
+		}
+		if val.CurrentPrice != 0 {
+			currentPriceptr := int(val.CurrentPrice)
+			result[i].CurrentPrice = &currentPriceptr
+		}
+		if val.EndTime != 0 {
+			result[i].EndTime = &val.EndTime
+		}
+		if val.HeadPortrait != "" {
+			result[i].HeadPortrait = &val.HeadPortrait
+		}
+		if val.IsHaveProxy != 0 {
+			isHaveProxyptr := int(val.IsHaveProxy)
+			result[i].IsHaveProxy = &isHaveProxyptr
+		}
+		if val.IsReservePrice != 0 {
+			isReservePriceptr := int(val.IsReservePrice)
+			result[i].IsReservePrice = &isReservePriceptr
+		}
+		if val.LastTime != 0 {
+			result[i].LastTime = &val.LastTime
+		}
+		if val.LimitNumber != 0 {
+			limitNumberptr := int(val.LimitNumber)
+			result[i].LimitNumber = &limitNumberptr
+		}
+		if val.MktPrice != 0 {
+			mktPriceptr := int(val.MktPrice)
+			result[i].MktPrice = &mktPriceptr
+		}
+		if val.PicturesUrl != "" {
+			result[i].PicturesURL = &val.PicturesUrl
+		}
+		if val.ProdId != 0 {
+			result[i].ProdID = &val.ProdId
+		}
+		if val.ProdName != "" {
+			result[i].ProdName = &val.ProdName
+		}
+		if val.QrUrl != "" {
+			result[i].QrURL = &val.QrUrl
+		}
+		if val.RemindTime != 0 {
+			result[i].RemindTime = &val.RemindTime
+		}
+		if val.ReservePrice != "" {
+			result[i].ReservePrice = &val.ReservePrice
+		}
+		if val.ResultStatus != 0 {
+			resultStatusptr := int(val.ResultStatus)
+			result[i].ResultStatus = &resultStatusptr
+		}
+		if val.RuleId != 0 {
+			ruleIDptr := int(val.RuleId)
+			result[i].RuleID = &ruleIDptr
+		}
+		if val.SerialNum != "" {
+			result[i].SerialNum = &val.SerialNum
+		}
+		if val.ShareUrl != "" {
+			result[i].ShareURL = &val.ShareUrl
+		}
+		if val.StartAuctionPrice != 0 {
+			startAuctionPriceptr := int(val.StartAuctionPrice)
+			result[i].StartAuctionPrice = &startAuctionPriceptr
+		}
+		if val.StartTime != 0 {
+			result[i].StartTime = &val.StartTime
+		}
+		if val.Title != "" {
+			result[i].Title = &val.Title
+		}
+		if val.TotalNumber != 0 {
+			totalNumberptr := int(val.TotalNumber)
+			result[i].TotalNumber = &totalNumberptr
+		}
+		if val.TransactionNumber != 0 {
+			transactionNumberptr := int(val.TransactionNumber)
+			result[i].TransactionNumber = &transactionNumberptr
+		}
+		if val.TransactionPrice != "" {
+			result[i].TransactionPrice = &val.TransactionPrice
+		}
+		if val.UserId != "" {
+			result[i].UserID = &val.UserId
+		}
+		if val.UserName != "" {
+			result[i].UserName = &val.UserName
 		}
 	}
 	return result
-}
-
-// NewGetRequest builds the gRPC request type from the payload of the "get"
-// endpoint of the "auction" service.
-func NewGetRequest() *auctionpb.GetRequest {
-	message := &auctionpb.GetRequest{}
-	return message
-}
-
-// NewGetResult builds the result type of the "get" endpoint of the "auction"
-// service from the gRPC response type.
-func NewGetResult(message *auctionpb.StoredBottleCollection) auctionviews.StoredBottleCollectionView {
-	result := make([]*auctionviews.StoredBottleView, len(message.Field))
-	for i, val := range message.Field {
-		result[i] = &auctionviews.StoredBottleView{
-			ID:      &val.Id,
-			Name:    &val.Name,
-			Vintage: &val.Vintage,
-		}
-		if val.Description != "" {
-			result[i].Description = &val.Description
-		}
-		if val.Rating != 0 {
-			result[i].Rating = &val.Rating
-		}
-		if val.Winery != nil {
-			result[i].Winery = protobufAuctionpbWineryToAuctionviewsWineryView(val.Winery)
-		}
-		if val.Composition != nil {
-			result[i].Composition = make([]*auctionviews.ComponentView, len(val.Composition))
-			for j, val := range val.Composition {
-				result[i].Composition[j] = &auctionviews.ComponentView{
-					Varietal: &val.Varietal,
-				}
-				if val.Percentage != 0 {
-					result[i].Composition[j].Percentage = &val.Percentage
-				}
-			}
-		}
-	}
-	return result
-}
-
-// ValidateStoredBottleCollection runs the validations defined on
-// StoredBottleCollection.
-func ValidateStoredBottleCollection(message *auctionpb.StoredBottleCollection) (err error) {
-	for _, e := range message.Field {
-		if e != nil {
-			if err2 := ValidateStoredBottle(e); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// ValidateStoredBottle runs the validations defined on StoredBottle.
-func ValidateStoredBottle(message *auctionpb.StoredBottle) (err error) {
-	if message.Winery == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("winery", "message"))
-	}
-	if utf8.RuneCountInString(message.Name) > 100 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError("message.name", message.Name, utf8.RuneCountInString(message.Name), 100, false))
-	}
-	if message.Winery != nil {
-		if err2 := ValidateWinery(message.Winery); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	if message.Vintage < 1900 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.vintage", message.Vintage, 1900, true))
-	}
-	if message.Vintage > 2020 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.vintage", message.Vintage, 2020, false))
-	}
-	for _, e := range message.Composition {
-		if e != nil {
-			if err2 := ValidateComponent(e); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	if utf8.RuneCountInString(message.Description) > 2000 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError("message.description", message.Description, utf8.RuneCountInString(message.Description), 2000, false))
-	}
-	if message.Rating < 1 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.rating", message.Rating, 1, true))
-	}
-	if message.Rating > 5 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.rating", message.Rating, 5, false))
-	}
-	return
-}
-
-// ValidateWinery runs the validations defined on Winery.
-func ValidateWinery(message *auctionpb.Winery) (err error) {
-	err = goa.MergeErrors(err, goa.ValidatePattern("message.region", message.Region, "(?i)[a-z '\\.]+"))
-	err = goa.MergeErrors(err, goa.ValidatePattern("message.country", message.Country, "(?i)[a-z '\\.]+"))
-	err = goa.MergeErrors(err, goa.ValidatePattern("message.url", message.Url, "(?i)^(https?|ftp)://[^\\s/$.?#].[^\\s]*$"))
-	return
-}
-
-// ValidateComponent runs the validations defined on Component.
-func ValidateComponent(message *auctionpb.Component) (err error) {
-	err = goa.MergeErrors(err, goa.ValidatePattern("message.varietal", message.Varietal, "[A-Za-z' ]+"))
-	if utf8.RuneCountInString(message.Varietal) > 100 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError("message.varietal", message.Varietal, utf8.RuneCountInString(message.Varietal), 100, false))
-	}
-	if message.Percentage < 1 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.percentage", message.Percentage, 1, true))
-	}
-	if message.Percentage > 100 {
-		err = goa.MergeErrors(err, goa.InvalidRangeError("message.percentage", message.Percentage, 100, false))
-	}
-	return
-}
-
-// svcAuctionviewsWineryViewToAuctionpbWinery builds a value of type
-// *auctionpb.Winery from a value of type *auctionviews.WineryView.
-func svcAuctionviewsWineryViewToAuctionpbWinery(v *auctionviews.WineryView) *auctionpb.Winery {
-	res := &auctionpb.Winery{}
-	if v.Name != nil {
-		res.Name = *v.Name
-	}
-	if v.Region != nil {
-		res.Region = *v.Region
-	}
-	if v.Country != nil {
-		res.Country = *v.Country
-	}
-	if v.URL != nil {
-		res.Url = *v.URL
-	}
-
-	return res
-}
-
-// protobufAuctionpbWineryToAuctionviewsWineryView builds a value of type
-// *auctionviews.WineryView from a value of type *auctionpb.Winery.
-func protobufAuctionpbWineryToAuctionviewsWineryView(v *auctionpb.Winery) *auctionviews.WineryView {
-	res := &auctionviews.WineryView{
-		Name:    &v.Name,
-		Region:  &v.Region,
-		Country: &v.Country,
-	}
-	if v.Url != "" {
-		res.URL = &v.Url
-	}
-
-	return res
 }

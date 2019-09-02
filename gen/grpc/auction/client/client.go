@@ -12,7 +12,6 @@ import (
 	"context"
 
 	goagrpc "goa.design/goa/v3/grpc"
-	goapb "goa.design/goa/v3/grpc/pb"
 	goa "goa.design/goa/v3/pkg"
 	"google.golang.org/grpc"
 )
@@ -31,34 +30,14 @@ func NewClient(cc *grpc.ClientConn, opts ...grpc.CallOption) *Client {
 	}
 }
 
-// Pick calls the "Pick" function in auctionpb.AuctionClient interface.
-func (c *Client) Pick() goa.Endpoint {
+// GetAuctionProductListByStatus calls the "GetAuctionProductListByStatus"
+// function in auctionpb.AuctionClient interface.
+func (c *Client) GetAuctionProductListByStatus() goa.Endpoint {
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
 		inv := goagrpc.NewInvoker(
-			BuildPickFunc(c.grpccli, c.opts...),
-			EncodePickRequest,
-			DecodePickResponse)
-		res, err := inv.Invoke(ctx, v)
-		if err != nil {
-			resp := goagrpc.DecodeError(err)
-			switch message := resp.(type) {
-			case *goapb.ErrorResponse:
-				return nil, goagrpc.NewServiceError(message)
-			default:
-				return nil, goa.Fault(err.Error())
-			}
-		}
-		return res, nil
-	}
-}
-
-// Get calls the "Get" function in auctionpb.AuctionClient interface.
-func (c *Client) Get() goa.Endpoint {
-	return func(ctx context.Context, v interface{}) (interface{}, error) {
-		inv := goagrpc.NewInvoker(
-			BuildGetFunc(c.grpccli, c.opts...),
-			nil,
-			DecodeGetResponse)
+			BuildGetAuctionProductListByStatusFunc(c.grpccli, c.opts...),
+			EncodeGetAuctionProductListByStatusRequest,
+			DecodeGetAuctionProductListByStatusResponse)
 		res, err := inv.Invoke(ctx, v)
 		if err != nil {
 			return nil, goa.Fault(err.Error())

@@ -14,10 +14,8 @@ import (
 
 // The auction service retrieves bottles given a set of criteria.
 type Service interface {
-	// Pick implements pick.
-	Pick(context.Context, *Criteria) (res StoredBottleCollection, err error)
-	// get
-	Get(context.Context) (res StoredBottleCollection, err error)
+	// 获取拍卖列表
+	GetAuctionProductListByStatus(context.Context, *ListData) (res AuctionProductCollection, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -28,303 +26,362 @@ const ServiceName = "auction"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [2]string{"pick", "get"}
+var MethodNames = [1]string{"getAuctionProductListByStatus"}
 
-// Criteria is the payload type of the auction service pick method.
-type Criteria struct {
-	// Name of bottle to pick
-	Name *string
-	// Varietals in preference order
-	Varietal []string
-	// Winery of bottle to pick
-	Winery *string
+// ListData is the payload type of the auction service
+// getAuctionProductListByStatus method.
+type ListData struct {
+	// 拍卖状态
+	AuctionStatus *int
+	// 当前页数
+	CurrentPage *int
+	// 每页返回的条数
+	PageSize *int
 }
 
-// StoredBottleCollection is the result type of the auction service pick method.
-type StoredBottleCollection []*StoredBottle
+// AuctionProductCollection is the result type of the auction service
+// getAuctionProductListByStatus method.
+type AuctionProductCollection []*AuctionProduct
 
 // A StoredBottle describes a bottle retrieved by the storage service.
-type StoredBottle struct {
-	// ID is the unique id of the bottle.
-	ID string
-	// Name of bottle
-	Name string
-	// Winery that produces wine
-	Winery *Winery
-	// Vintage of bottle
-	Vintage uint32
-	// Composition is the list of grape varietals and associated percentage.
-	Composition []*Component
-	// Description of bottle
-	Description *string
-	// Rating of bottle from 1 (worst) to 5 (best)
-	Rating *uint32
+type AuctionProduct struct {
+	ID                    *string
+	AddPrice              *int
+	ArtNo                 *string
+	AuctionStatus         *int
+	AuctionType           *int
+	BidSceneID            *int
+	BondPrice             *int
+	BuyNumber             *int
+	BuyUnitPrice          *string
+	BuyoutPrice           *int
+	CapPrice              *int
+	CrowdfundingPackageID *string
+	CurrentPrice          *int
+	EndTime               *int64
+	HeadPortrait          *string
+	IsHaveProxy           *int
+	IsReservePrice        *int
+	LastTime              *int64
+	LimitNumber           *int
+	MktPrice              *int
+	PicturesURL           *string
+	ProdID                *int32
+	ProdName              *string
+	QrURL                 *string
+	RemindTime            *int64
+	ReservePrice          *string
+	ResultStatus          *int
+	RuleID                *int
+	SerialNum             *string
+	ShareURL              *string
+	StartAuctionPrice     *int
+	StartTime             *int64
+	Title                 *string
+	TotalNumber           *int
+	TransactionNumber     *int
+	TransactionPrice      *string
+	UserID                *string
+	UserName              *string
 }
 
-type Winery struct {
-	// Name of winery
-	Name string
-	// Region of winery
-	Region string
-	// Country of winery
-	Country string
-	// Winery website URL
-	URL *string
-}
-
-type Component struct {
-	// Grape varietal
-	Varietal string
-	// Percentage of varietal in wine
-	Percentage *uint32
-}
-
-// Missing criteria
-type NoCriteria string
-
-// No bottle matched given criteria
-type NoMatch string
-
-// Error returns an error description.
-func (e NoCriteria) Error() string {
-	return "Missing criteria"
-}
-
-// ErrorName returns "no_criteria".
-func (e NoCriteria) ErrorName() string {
-	return "no_criteria"
-}
-
-// Error returns an error description.
-func (e NoMatch) Error() string {
-	return "No bottle matched given criteria"
-}
-
-// ErrorName returns "no_match".
-func (e NoMatch) ErrorName() string {
-	return "no_match"
-}
-
-// NewStoredBottleCollection initializes result type StoredBottleCollection
-// from viewed result type StoredBottleCollection.
-func NewStoredBottleCollection(vres auctionviews.StoredBottleCollection) StoredBottleCollection {
-	var res StoredBottleCollection
+// NewAuctionProductCollection initializes result type AuctionProductCollection
+// from viewed result type AuctionProductCollection.
+func NewAuctionProductCollection(vres auctionviews.AuctionProductCollection) AuctionProductCollection {
+	var res AuctionProductCollection
 	switch vres.View {
+	case "bid":
+		res = newAuctionProductCollectionBid(vres.Projected)
+	case "auctionList":
+		res = newAuctionProductCollectionAuctionList(vres.Projected)
 	case "default", "":
-		res = newStoredBottleCollection(vres.Projected)
-	case "tiny":
-		res = newStoredBottleCollectionTiny(vres.Projected)
+		res = newAuctionProductCollection(vres.Projected)
 	}
 	return res
 }
 
-// NewViewedStoredBottleCollection initializes viewed result type
-// StoredBottleCollection from result type StoredBottleCollection using the
+// NewViewedAuctionProductCollection initializes viewed result type
+// AuctionProductCollection from result type AuctionProductCollection using the
 // given view.
-func NewViewedStoredBottleCollection(res StoredBottleCollection, view string) auctionviews.StoredBottleCollection {
-	var vres auctionviews.StoredBottleCollection
+func NewViewedAuctionProductCollection(res AuctionProductCollection, view string) auctionviews.AuctionProductCollection {
+	var vres auctionviews.AuctionProductCollection
 	switch view {
+	case "bid":
+		p := newAuctionProductCollectionViewBid(res)
+		vres = auctionviews.AuctionProductCollection{p, "bid"}
+	case "auctionList":
+		p := newAuctionProductCollectionViewAuctionList(res)
+		vres = auctionviews.AuctionProductCollection{p, "auctionList"}
 	case "default", "":
-		p := newStoredBottleCollectionView(res)
-		vres = auctionviews.StoredBottleCollection{p, "default"}
-	case "tiny":
-		p := newStoredBottleCollectionViewTiny(res)
-		vres = auctionviews.StoredBottleCollection{p, "tiny"}
+		p := newAuctionProductCollectionView(res)
+		vres = auctionviews.AuctionProductCollection{p, "default"}
 	}
 	return vres
 }
 
-// newStoredBottleCollection converts projected type StoredBottleCollection to
-// service type StoredBottleCollection.
-func newStoredBottleCollection(vres auctionviews.StoredBottleCollectionView) StoredBottleCollection {
-	res := make(StoredBottleCollection, len(vres))
+// newAuctionProductCollectionBid converts projected type
+// AuctionProductCollection to service type AuctionProductCollection.
+func newAuctionProductCollectionBid(vres auctionviews.AuctionProductCollectionView) AuctionProductCollection {
+	res := make(AuctionProductCollection, len(vres))
 	for i, n := range vres {
-		res[i] = newStoredBottle(n)
+		res[i] = newAuctionProductBid(n)
 	}
 	return res
 }
 
-// newStoredBottleCollectionTiny converts projected type StoredBottleCollection
-// to service type StoredBottleCollection.
-func newStoredBottleCollectionTiny(vres auctionviews.StoredBottleCollectionView) StoredBottleCollection {
-	res := make(StoredBottleCollection, len(vres))
+// newAuctionProductCollectionAuctionList converts projected type
+// AuctionProductCollection to service type AuctionProductCollection.
+func newAuctionProductCollectionAuctionList(vres auctionviews.AuctionProductCollectionView) AuctionProductCollection {
+	res := make(AuctionProductCollection, len(vres))
 	for i, n := range vres {
-		res[i] = newStoredBottleTiny(n)
+		res[i] = newAuctionProductAuctionList(n)
 	}
 	return res
 }
 
-// newStoredBottleCollectionView projects result type StoredBottleCollection to
-// projected type StoredBottleCollectionView using the "default" view.
-func newStoredBottleCollectionView(res StoredBottleCollection) auctionviews.StoredBottleCollectionView {
-	vres := make(auctionviews.StoredBottleCollectionView, len(res))
+// newAuctionProductCollection converts projected type AuctionProductCollection
+// to service type AuctionProductCollection.
+func newAuctionProductCollection(vres auctionviews.AuctionProductCollectionView) AuctionProductCollection {
+	res := make(AuctionProductCollection, len(vres))
+	for i, n := range vres {
+		res[i] = newAuctionProduct(n)
+	}
+	return res
+}
+
+// newAuctionProductCollectionViewBid projects result type
+// AuctionProductCollection to projected type AuctionProductCollectionView
+// using the "bid" view.
+func newAuctionProductCollectionViewBid(res AuctionProductCollection) auctionviews.AuctionProductCollectionView {
+	vres := make(auctionviews.AuctionProductCollectionView, len(res))
 	for i, n := range res {
-		vres[i] = newStoredBottleView(n)
+		vres[i] = newAuctionProductViewBid(n)
 	}
 	return vres
 }
 
-// newStoredBottleCollectionViewTiny projects result type
-// StoredBottleCollection to projected type StoredBottleCollectionView using
-// the "tiny" view.
-func newStoredBottleCollectionViewTiny(res StoredBottleCollection) auctionviews.StoredBottleCollectionView {
-	vres := make(auctionviews.StoredBottleCollectionView, len(res))
+// newAuctionProductCollectionViewAuctionList projects result type
+// AuctionProductCollection to projected type AuctionProductCollectionView
+// using the "auctionList" view.
+func newAuctionProductCollectionViewAuctionList(res AuctionProductCollection) auctionviews.AuctionProductCollectionView {
+	vres := make(auctionviews.AuctionProductCollectionView, len(res))
 	for i, n := range res {
-		vres[i] = newStoredBottleViewTiny(n)
+		vres[i] = newAuctionProductViewAuctionList(n)
 	}
 	return vres
 }
 
-// newStoredBottle converts projected type StoredBottle to service type
-// StoredBottle.
-func newStoredBottle(vres *auctionviews.StoredBottleView) *StoredBottle {
-	res := &StoredBottle{
-		Description: vres.Description,
-		Rating:      vres.Rating,
-	}
-	if vres.ID != nil {
-		res.ID = *vres.ID
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	if vres.Vintage != nil {
-		res.Vintage = *vres.Vintage
-	}
-	if vres.Composition != nil {
-		res.Composition = make([]*Component, len(vres.Composition))
-		for i, val := range vres.Composition {
-			res.Composition[i] = transformAuctionviewsComponentViewToComponent(val)
-		}
-	}
-	if vres.Winery != nil {
-		res.Winery = newWineryTiny(vres.Winery)
-	}
-	return res
-}
-
-// newStoredBottleTiny converts projected type StoredBottle to service type
-// StoredBottle.
-func newStoredBottleTiny(vres *auctionviews.StoredBottleView) *StoredBottle {
-	res := &StoredBottle{}
-	if vres.ID != nil {
-		res.ID = *vres.ID
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	if vres.Winery != nil {
-		res.Winery = newWineryTiny(vres.Winery)
-	}
-	return res
-}
-
-// newStoredBottleView projects result type StoredBottle to projected type
-// StoredBottleView using the "default" view.
-func newStoredBottleView(res *StoredBottle) *auctionviews.StoredBottleView {
-	vres := &auctionviews.StoredBottleView{
-		ID:          &res.ID,
-		Name:        &res.Name,
-		Vintage:     &res.Vintage,
-		Description: res.Description,
-		Rating:      res.Rating,
-	}
-	if res.Composition != nil {
-		vres.Composition = make([]*auctionviews.ComponentView, len(res.Composition))
-		for i, val := range res.Composition {
-			vres.Composition[i] = transformComponentToAuctionviewsComponentView(val)
-		}
-	}
-	if res.Winery != nil {
-		vres.Winery = newWineryViewTiny(res.Winery)
+// newAuctionProductCollectionView projects result type
+// AuctionProductCollection to projected type AuctionProductCollectionView
+// using the "default" view.
+func newAuctionProductCollectionView(res AuctionProductCollection) auctionviews.AuctionProductCollectionView {
+	vres := make(auctionviews.AuctionProductCollectionView, len(res))
+	for i, n := range res {
+		vres[i] = newAuctionProductView(n)
 	}
 	return vres
 }
 
-// newStoredBottleViewTiny projects result type StoredBottle to projected type
-// StoredBottleView using the "tiny" view.
-func newStoredBottleViewTiny(res *StoredBottle) *auctionviews.StoredBottleView {
-	vres := &auctionviews.StoredBottleView{
-		ID:   &res.ID,
-		Name: &res.Name,
+// newAuctionProductBid converts projected type AuctionProduct to service type
+// AuctionProduct.
+func newAuctionProductBid(vres *auctionviews.AuctionProductView) *AuctionProduct {
+	res := &AuctionProduct{
+		AddPrice:     vres.AddPrice,
+		ArtNo:        vres.ArtNo,
+		HeadPortrait: vres.HeadPortrait,
 	}
-	if res.Winery != nil {
-		vres.Winery = newWineryViewTiny(res.Winery)
+	return res
+}
+
+// newAuctionProductAuctionList converts projected type AuctionProduct to
+// service type AuctionProduct.
+func newAuctionProductAuctionList(vres *auctionviews.AuctionProductView) *AuctionProduct {
+	res := &AuctionProduct{
+		AddPrice:              vres.AddPrice,
+		ArtNo:                 vres.ArtNo,
+		AuctionStatus:         vres.AuctionStatus,
+		AuctionType:           vres.AuctionType,
+		BidSceneID:            vres.BidSceneID,
+		BondPrice:             vres.BondPrice,
+		BuyNumber:             vres.BuyNumber,
+		BuyUnitPrice:          vres.BuyUnitPrice,
+		BuyoutPrice:           vres.BuyoutPrice,
+		CapPrice:              vres.CapPrice,
+		CrowdfundingPackageID: vres.CrowdfundingPackageID,
+		CurrentPrice:          vres.CurrentPrice,
+		EndTime:               vres.EndTime,
+		HeadPortrait:          vres.HeadPortrait,
+		ID:                    vres.ID,
+		IsHaveProxy:           vres.IsHaveProxy,
+		IsReservePrice:        vres.IsReservePrice,
+		LastTime:              vres.LastTime,
+		LimitNumber:           vres.LimitNumber,
+		MktPrice:              vres.MktPrice,
+		PicturesURL:           vres.PicturesURL,
+		ProdID:                vres.ProdID,
+		ProdName:              vres.ProdName,
+		QrURL:                 vres.QrURL,
+		RemindTime:            vres.RemindTime,
+		ReservePrice:          vres.ReservePrice,
+		ResultStatus:          vres.ResultStatus,
+		SerialNum:             vres.SerialNum,
+		ShareURL:              vres.ShareURL,
+		StartAuctionPrice:     vres.StartAuctionPrice,
+		StartTime:             vres.StartTime,
+		Title:                 vres.Title,
+		TotalNumber:           vres.TotalNumber,
+		TransactionNumber:     vres.TransactionNumber,
+		TransactionPrice:      vres.TransactionPrice,
+		UserID:                vres.UserID,
+		UserName:              vres.UserName,
+	}
+	return res
+}
+
+// newAuctionProduct converts projected type AuctionProduct to service type
+// AuctionProduct.
+func newAuctionProduct(vres *auctionviews.AuctionProductView) *AuctionProduct {
+	res := &AuctionProduct{
+		ID:                    vres.ID,
+		AddPrice:              vres.AddPrice,
+		ArtNo:                 vres.ArtNo,
+		AuctionStatus:         vres.AuctionStatus,
+		AuctionType:           vres.AuctionType,
+		BidSceneID:            vres.BidSceneID,
+		BondPrice:             vres.BondPrice,
+		BuyNumber:             vres.BuyNumber,
+		BuyUnitPrice:          vres.BuyUnitPrice,
+		BuyoutPrice:           vres.BuyoutPrice,
+		CapPrice:              vres.CapPrice,
+		CrowdfundingPackageID: vres.CrowdfundingPackageID,
+		CurrentPrice:          vres.CurrentPrice,
+		EndTime:               vres.EndTime,
+		HeadPortrait:          vres.HeadPortrait,
+		IsHaveProxy:           vres.IsHaveProxy,
+		IsReservePrice:        vres.IsReservePrice,
+		LastTime:              vres.LastTime,
+		LimitNumber:           vres.LimitNumber,
+		MktPrice:              vres.MktPrice,
+		PicturesURL:           vres.PicturesURL,
+		ProdID:                vres.ProdID,
+		ProdName:              vres.ProdName,
+		QrURL:                 vres.QrURL,
+		RemindTime:            vres.RemindTime,
+		ReservePrice:          vres.ReservePrice,
+		ResultStatus:          vres.ResultStatus,
+		RuleID:                vres.RuleID,
+		SerialNum:             vres.SerialNum,
+		ShareURL:              vres.ShareURL,
+		StartAuctionPrice:     vres.StartAuctionPrice,
+		StartTime:             vres.StartTime,
+		Title:                 vres.Title,
+		TotalNumber:           vres.TotalNumber,
+		TransactionNumber:     vres.TransactionNumber,
+		TransactionPrice:      vres.TransactionPrice,
+		UserID:                vres.UserID,
+		UserName:              vres.UserName,
+	}
+	return res
+}
+
+// newAuctionProductViewBid projects result type AuctionProduct to projected
+// type AuctionProductView using the "bid" view.
+func newAuctionProductViewBid(res *AuctionProduct) *auctionviews.AuctionProductView {
+	vres := &auctionviews.AuctionProductView{
+		AddPrice:     res.AddPrice,
+		ArtNo:        res.ArtNo,
+		HeadPortrait: res.HeadPortrait,
 	}
 	return vres
 }
 
-// newWinery converts projected type Winery to service type Winery.
-func newWinery(vres *auctionviews.WineryView) *Winery {
-	res := &Winery{
-		URL: vres.URL,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	if vres.Region != nil {
-		res.Region = *vres.Region
-	}
-	if vres.Country != nil {
-		res.Country = *vres.Country
-	}
-	return res
-}
-
-// newWineryTiny converts projected type Winery to service type Winery.
-func newWineryTiny(vres *auctionviews.WineryView) *Winery {
-	res := &Winery{}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	return res
-}
-
-// newWineryView projects result type Winery to projected type WineryView using
-// the "default" view.
-func newWineryView(res *Winery) *auctionviews.WineryView {
-	vres := &auctionviews.WineryView{
-		Name:    &res.Name,
-		Region:  &res.Region,
-		Country: &res.Country,
-		URL:     res.URL,
-	}
-	return vres
-}
-
-// newWineryViewTiny projects result type Winery to projected type WineryView
-// using the "tiny" view.
-func newWineryViewTiny(res *Winery) *auctionviews.WineryView {
-	vres := &auctionviews.WineryView{
-		Name: &res.Name,
+// newAuctionProductViewAuctionList projects result type AuctionProduct to
+// projected type AuctionProductView using the "auctionList" view.
+func newAuctionProductViewAuctionList(res *AuctionProduct) *auctionviews.AuctionProductView {
+	vres := &auctionviews.AuctionProductView{
+		ID:                    res.ID,
+		AddPrice:              res.AddPrice,
+		ArtNo:                 res.ArtNo,
+		AuctionStatus:         res.AuctionStatus,
+		AuctionType:           res.AuctionType,
+		BidSceneID:            res.BidSceneID,
+		BondPrice:             res.BondPrice,
+		BuyNumber:             res.BuyNumber,
+		BuyUnitPrice:          res.BuyUnitPrice,
+		BuyoutPrice:           res.BuyoutPrice,
+		CapPrice:              res.CapPrice,
+		CrowdfundingPackageID: res.CrowdfundingPackageID,
+		CurrentPrice:          res.CurrentPrice,
+		EndTime:               res.EndTime,
+		HeadPortrait:          res.HeadPortrait,
+		IsHaveProxy:           res.IsHaveProxy,
+		IsReservePrice:        res.IsReservePrice,
+		LastTime:              res.LastTime,
+		LimitNumber:           res.LimitNumber,
+		MktPrice:              res.MktPrice,
+		PicturesURL:           res.PicturesURL,
+		ProdID:                res.ProdID,
+		ProdName:              res.ProdName,
+		QrURL:                 res.QrURL,
+		RemindTime:            res.RemindTime,
+		ReservePrice:          res.ReservePrice,
+		ResultStatus:          res.ResultStatus,
+		SerialNum:             res.SerialNum,
+		ShareURL:              res.ShareURL,
+		StartAuctionPrice:     res.StartAuctionPrice,
+		StartTime:             res.StartTime,
+		Title:                 res.Title,
+		TotalNumber:           res.TotalNumber,
+		TransactionNumber:     res.TransactionNumber,
+		TransactionPrice:      res.TransactionPrice,
+		UserID:                res.UserID,
+		UserName:              res.UserName,
 	}
 	return vres
 }
 
-// transformAuctionviewsComponentViewToComponent builds a value of type
-// *Component from a value of type *auctionviews.ComponentView.
-func transformAuctionviewsComponentViewToComponent(v *auctionviews.ComponentView) *Component {
-	if v == nil {
-		return nil
+// newAuctionProductView projects result type AuctionProduct to projected type
+// AuctionProductView using the "default" view.
+func newAuctionProductView(res *AuctionProduct) *auctionviews.AuctionProductView {
+	vres := &auctionviews.AuctionProductView{
+		ID:                    res.ID,
+		AddPrice:              res.AddPrice,
+		ArtNo:                 res.ArtNo,
+		AuctionStatus:         res.AuctionStatus,
+		AuctionType:           res.AuctionType,
+		BidSceneID:            res.BidSceneID,
+		BondPrice:             res.BondPrice,
+		BuyNumber:             res.BuyNumber,
+		BuyUnitPrice:          res.BuyUnitPrice,
+		BuyoutPrice:           res.BuyoutPrice,
+		CapPrice:              res.CapPrice,
+		CrowdfundingPackageID: res.CrowdfundingPackageID,
+		CurrentPrice:          res.CurrentPrice,
+		EndTime:               res.EndTime,
+		HeadPortrait:          res.HeadPortrait,
+		IsHaveProxy:           res.IsHaveProxy,
+		IsReservePrice:        res.IsReservePrice,
+		LastTime:              res.LastTime,
+		LimitNumber:           res.LimitNumber,
+		MktPrice:              res.MktPrice,
+		PicturesURL:           res.PicturesURL,
+		ProdID:                res.ProdID,
+		ProdName:              res.ProdName,
+		QrURL:                 res.QrURL,
+		RemindTime:            res.RemindTime,
+		ReservePrice:          res.ReservePrice,
+		ResultStatus:          res.ResultStatus,
+		RuleID:                res.RuleID,
+		SerialNum:             res.SerialNum,
+		ShareURL:              res.ShareURL,
+		StartAuctionPrice:     res.StartAuctionPrice,
+		StartTime:             res.StartTime,
+		Title:                 res.Title,
+		TotalNumber:           res.TotalNumber,
+		TransactionNumber:     res.TransactionNumber,
+		TransactionPrice:      res.TransactionPrice,
+		UserID:                res.UserID,
+		UserName:              res.UserName,
 	}
-	res := &Component{
-		Varietal:   *v.Varietal,
-		Percentage: v.Percentage,
-	}
-
-	return res
-}
-
-// transformComponentToAuctionviewsComponentView builds a value of type
-// *auctionviews.ComponentView from a value of type *Component.
-func transformComponentToAuctionviewsComponentView(v *Component) *auctionviews.ComponentView {
-	if v == nil {
-		return nil
-	}
-	res := &auctionviews.ComponentView{
-		Varietal:   &v.Varietal,
-		Percentage: v.Percentage,
-	}
-
-	return res
+	return vres
 }

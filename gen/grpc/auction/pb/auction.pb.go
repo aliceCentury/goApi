@@ -24,97 +24,97 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type PickRequest struct {
-	// Name of bottle to pick
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Varietals in preference order
-	Varietal []string `protobuf:"bytes,2,rep,name=varietal,proto3" json:"varietal,omitempty"`
-	// Winery of bottle to pick
-	Winery               string   `protobuf:"bytes,3,opt,name=winery,proto3" json:"winery,omitempty"`
+type GetAuctionProductListByStatusRequest struct {
+	// 拍卖状态
+	AuctionStatus int32 `protobuf:"zigzag32,1,opt,name=auction_status,json=auctionStatus,proto3" json:"auction_status,omitempty"`
+	// 当前页数
+	CurrentPage int32 `protobuf:"zigzag32,2,opt,name=current_page,json=currentPage,proto3" json:"current_page,omitempty"`
+	// 每页返回的条数
+	PageSize             int32    `protobuf:"zigzag32,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *PickRequest) Reset()         { *m = PickRequest{} }
-func (m *PickRequest) String() string { return proto.CompactTextString(m) }
-func (*PickRequest) ProtoMessage()    {}
-func (*PickRequest) Descriptor() ([]byte, []int) {
+func (m *GetAuctionProductListByStatusRequest) Reset()         { *m = GetAuctionProductListByStatusRequest{} }
+func (m *GetAuctionProductListByStatusRequest) String() string { return proto.CompactTextString(m) }
+func (*GetAuctionProductListByStatusRequest) ProtoMessage()    {}
+func (*GetAuctionProductListByStatusRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_622f477c3a3f2896, []int{0}
 }
 
-func (m *PickRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PickRequest.Unmarshal(m, b)
+func (m *GetAuctionProductListByStatusRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAuctionProductListByStatusRequest.Unmarshal(m, b)
 }
-func (m *PickRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PickRequest.Marshal(b, m, deterministic)
+func (m *GetAuctionProductListByStatusRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAuctionProductListByStatusRequest.Marshal(b, m, deterministic)
 }
-func (m *PickRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PickRequest.Merge(m, src)
+func (m *GetAuctionProductListByStatusRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAuctionProductListByStatusRequest.Merge(m, src)
 }
-func (m *PickRequest) XXX_Size() int {
-	return xxx_messageInfo_PickRequest.Size(m)
+func (m *GetAuctionProductListByStatusRequest) XXX_Size() int {
+	return xxx_messageInfo_GetAuctionProductListByStatusRequest.Size(m)
 }
-func (m *PickRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_PickRequest.DiscardUnknown(m)
+func (m *GetAuctionProductListByStatusRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAuctionProductListByStatusRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_PickRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetAuctionProductListByStatusRequest proto.InternalMessageInfo
 
-func (m *PickRequest) GetName() string {
+func (m *GetAuctionProductListByStatusRequest) GetAuctionStatus() int32 {
 	if m != nil {
-		return m.Name
+		return m.AuctionStatus
 	}
-	return ""
+	return 0
 }
 
-func (m *PickRequest) GetVarietal() []string {
+func (m *GetAuctionProductListByStatusRequest) GetCurrentPage() int32 {
 	if m != nil {
-		return m.Varietal
+		return m.CurrentPage
 	}
-	return nil
+	return 0
 }
 
-func (m *PickRequest) GetWinery() string {
+func (m *GetAuctionProductListByStatusRequest) GetPageSize() int32 {
 	if m != nil {
-		return m.Winery
+		return m.PageSize
 	}
-	return ""
+	return 0
 }
 
-type StoredBottleCollection struct {
-	Field                []*StoredBottle `protobuf:"bytes,1,rep,name=field,proto3" json:"field,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
-	XXX_unrecognized     []byte          `json:"-"`
-	XXX_sizecache        int32           `json:"-"`
+type AuctionProductCollection struct {
+	Field                []*AuctionProduct `protobuf:"bytes,1,rep,name=field,proto3" json:"field,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
 }
 
-func (m *StoredBottleCollection) Reset()         { *m = StoredBottleCollection{} }
-func (m *StoredBottleCollection) String() string { return proto.CompactTextString(m) }
-func (*StoredBottleCollection) ProtoMessage()    {}
-func (*StoredBottleCollection) Descriptor() ([]byte, []int) {
+func (m *AuctionProductCollection) Reset()         { *m = AuctionProductCollection{} }
+func (m *AuctionProductCollection) String() string { return proto.CompactTextString(m) }
+func (*AuctionProductCollection) ProtoMessage()    {}
+func (*AuctionProductCollection) Descriptor() ([]byte, []int) {
 	return fileDescriptor_622f477c3a3f2896, []int{1}
 }
 
-func (m *StoredBottleCollection) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_StoredBottleCollection.Unmarshal(m, b)
+func (m *AuctionProductCollection) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AuctionProductCollection.Unmarshal(m, b)
 }
-func (m *StoredBottleCollection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_StoredBottleCollection.Marshal(b, m, deterministic)
+func (m *AuctionProductCollection) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AuctionProductCollection.Marshal(b, m, deterministic)
 }
-func (m *StoredBottleCollection) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StoredBottleCollection.Merge(m, src)
+func (m *AuctionProductCollection) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AuctionProductCollection.Merge(m, src)
 }
-func (m *StoredBottleCollection) XXX_Size() int {
-	return xxx_messageInfo_StoredBottleCollection.Size(m)
+func (m *AuctionProductCollection) XXX_Size() int {
+	return xxx_messageInfo_AuctionProductCollection.Size(m)
 }
-func (m *StoredBottleCollection) XXX_DiscardUnknown() {
-	xxx_messageInfo_StoredBottleCollection.DiscardUnknown(m)
+func (m *AuctionProductCollection) XXX_DiscardUnknown() {
+	xxx_messageInfo_AuctionProductCollection.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StoredBottleCollection proto.InternalMessageInfo
+var xxx_messageInfo_AuctionProductCollection proto.InternalMessageInfo
 
-func (m *StoredBottleCollection) GetField() []*StoredBottle {
+func (m *AuctionProductCollection) GetField() []*AuctionProduct {
 	if m != nil {
 		return m.Field
 	}
@@ -122,285 +122,402 @@ func (m *StoredBottleCollection) GetField() []*StoredBottle {
 }
 
 // A StoredBottle describes a bottle retrieved by the storage service.
-type StoredBottle struct {
-	// ID is the unique id of the bottle.
-	Id string `protobuf:"bytes,8,opt,name=id,proto3" json:"id,omitempty"`
-	// Name of bottle
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Winery that produces wine
-	Winery *Winery `protobuf:"bytes,2,opt,name=winery,proto3" json:"winery,omitempty"`
-	// Vintage of bottle
-	Vintage uint32 `protobuf:"varint,3,opt,name=vintage,proto3" json:"vintage,omitempty"`
-	// Composition is the list of grape varietals and associated percentage.
-	Composition []*Component `protobuf:"bytes,4,rep,name=composition,proto3" json:"composition,omitempty"`
-	// Description of bottle
-	Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	// Rating of bottle from 1 (worst) to 5 (best)
-	Rating               uint32   `protobuf:"varint,6,opt,name=rating,proto3" json:"rating,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type AuctionProduct struct {
+	Id                    string   `protobuf:"bytes,8,opt,name=id,proto3" json:"id,omitempty"`
+	AddPrice              int32    `protobuf:"zigzag32,2,opt,name=add_price,json=addPrice,proto3" json:"add_price,omitempty"`
+	ArtNo                 string   `protobuf:"bytes,3,opt,name=art_no,json=artNo,proto3" json:"art_no,omitempty"`
+	AuctionStatus         int32    `protobuf:"zigzag32,4,opt,name=auction_status,json=auctionStatus,proto3" json:"auction_status,omitempty"`
+	AuctionType           int32    `protobuf:"zigzag32,5,opt,name=auction_type,json=auctionType,proto3" json:"auction_type,omitempty"`
+	BidSceneId            int32    `protobuf:"zigzag32,6,opt,name=bid_scene_id,json=bidSceneId,proto3" json:"bid_scene_id,omitempty"`
+	BondPrice             int32    `protobuf:"zigzag32,7,opt,name=bond_price,json=bondPrice,proto3" json:"bond_price,omitempty"`
+	BuyNumber             int32    `protobuf:"zigzag32,10,opt,name=buy_number,json=buyNumber,proto3" json:"buy_number,omitempty"`
+	BuyUnitPrice          string   `protobuf:"bytes,9,opt,name=buy_unit_price,json=buyUnitPrice,proto3" json:"buy_unit_price,omitempty"`
+	BuyoutPrice           int32    `protobuf:"zigzag32,11,opt,name=buyout_price,json=buyoutPrice,proto3" json:"buyout_price,omitempty"`
+	CapPrice              int32    `protobuf:"zigzag32,12,opt,name=cap_price,json=capPrice,proto3" json:"cap_price,omitempty"`
+	CrowdfundingPackageId string   `protobuf:"bytes,13,opt,name=crowdfunding_package_id,json=crowdfundingPackageId,proto3" json:"crowdfunding_package_id,omitempty"`
+	CurrentPrice          int32    `protobuf:"zigzag32,14,opt,name=current_price,json=currentPrice,proto3" json:"current_price,omitempty"`
+	EndTime               int64    `protobuf:"zigzag64,15,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	HeadPortrait          string   `protobuf:"bytes,16,opt,name=head_portrait,json=headPortrait,proto3" json:"head_portrait,omitempty"`
+	IsHaveProxy           int32    `protobuf:"zigzag32,17,opt,name=is_have_proxy,json=isHaveProxy,proto3" json:"is_have_proxy,omitempty"`
+	IsReservePrice        int32    `protobuf:"zigzag32,18,opt,name=is_reserve_price,json=isReservePrice,proto3" json:"is_reserve_price,omitempty"`
+	LastTime              int64    `protobuf:"zigzag64,19,opt,name=last_time,json=lastTime,proto3" json:"last_time,omitempty"`
+	LimitNumber           int32    `protobuf:"zigzag32,20,opt,name=limit_number,json=limitNumber,proto3" json:"limit_number,omitempty"`
+	MktPrice              int32    `protobuf:"zigzag32,21,opt,name=mkt_price,json=mktPrice,proto3" json:"mkt_price,omitempty"`
+	PicturesUrl           string   `protobuf:"bytes,22,opt,name=pictures_url,json=picturesUrl,proto3" json:"pictures_url,omitempty"`
+	ProdId                int32    `protobuf:"zigzag32,23,opt,name=prod_id,json=prodId,proto3" json:"prod_id,omitempty"`
+	ProdName              string   `protobuf:"bytes,24,opt,name=prod_name,json=prodName,proto3" json:"prod_name,omitempty"`
+	QrUrl                 string   `protobuf:"bytes,25,opt,name=qr_url,json=qrUrl,proto3" json:"qr_url,omitempty"`
+	RemindTime            int64    `protobuf:"zigzag64,26,opt,name=remind_time,json=remindTime,proto3" json:"remind_time,omitempty"`
+	ReservePrice          string   `protobuf:"bytes,27,opt,name=reserve_price,json=reservePrice,proto3" json:"reserve_price,omitempty"`
+	ResultStatus          int32    `protobuf:"zigzag32,28,opt,name=result_status,json=resultStatus,proto3" json:"result_status,omitempty"`
+	RuleId                int32    `protobuf:"zigzag32,29,opt,name=rule_id,json=ruleId,proto3" json:"rule_id,omitempty"`
+	SerialNum             string   `protobuf:"bytes,30,opt,name=serial_num,json=serialNum,proto3" json:"serial_num,omitempty"`
+	ShareUrl              string   `protobuf:"bytes,31,opt,name=share_url,json=shareUrl,proto3" json:"share_url,omitempty"`
+	StartAuctionPrice     int32    `protobuf:"zigzag32,32,opt,name=start_auction_price,json=startAuctionPrice,proto3" json:"start_auction_price,omitempty"`
+	StartTime             int64    `protobuf:"zigzag64,33,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	Title                 string   `protobuf:"bytes,34,opt,name=title,proto3" json:"title,omitempty"`
+	TotalNumber           int32    `protobuf:"zigzag32,35,opt,name=total_number,json=totalNumber,proto3" json:"total_number,omitempty"`
+	TransactionNumber     int32    `protobuf:"zigzag32,36,opt,name=transaction_number,json=transactionNumber,proto3" json:"transaction_number,omitempty"`
+	TransactionPrice      string   `protobuf:"bytes,37,opt,name=transaction_price,json=transactionPrice,proto3" json:"transaction_price,omitempty"`
+	UserId                string   `protobuf:"bytes,38,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserName              string   `protobuf:"bytes,39,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	XXX_NoUnkeyedLiteral  struct{} `json:"-"`
+	XXX_unrecognized      []byte   `json:"-"`
+	XXX_sizecache         int32    `json:"-"`
 }
 
-func (m *StoredBottle) Reset()         { *m = StoredBottle{} }
-func (m *StoredBottle) String() string { return proto.CompactTextString(m) }
-func (*StoredBottle) ProtoMessage()    {}
-func (*StoredBottle) Descriptor() ([]byte, []int) {
+func (m *AuctionProduct) Reset()         { *m = AuctionProduct{} }
+func (m *AuctionProduct) String() string { return proto.CompactTextString(m) }
+func (*AuctionProduct) ProtoMessage()    {}
+func (*AuctionProduct) Descriptor() ([]byte, []int) {
 	return fileDescriptor_622f477c3a3f2896, []int{2}
 }
 
-func (m *StoredBottle) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_StoredBottle.Unmarshal(m, b)
+func (m *AuctionProduct) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AuctionProduct.Unmarshal(m, b)
 }
-func (m *StoredBottle) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_StoredBottle.Marshal(b, m, deterministic)
+func (m *AuctionProduct) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AuctionProduct.Marshal(b, m, deterministic)
 }
-func (m *StoredBottle) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StoredBottle.Merge(m, src)
+func (m *AuctionProduct) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AuctionProduct.Merge(m, src)
 }
-func (m *StoredBottle) XXX_Size() int {
-	return xxx_messageInfo_StoredBottle.Size(m)
+func (m *AuctionProduct) XXX_Size() int {
+	return xxx_messageInfo_AuctionProduct.Size(m)
 }
-func (m *StoredBottle) XXX_DiscardUnknown() {
-	xxx_messageInfo_StoredBottle.DiscardUnknown(m)
+func (m *AuctionProduct) XXX_DiscardUnknown() {
+	xxx_messageInfo_AuctionProduct.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StoredBottle proto.InternalMessageInfo
+var xxx_messageInfo_AuctionProduct proto.InternalMessageInfo
 
-func (m *StoredBottle) GetId() string {
+func (m *AuctionProduct) GetId() string {
 	if m != nil {
 		return m.Id
 	}
 	return ""
 }
 
-func (m *StoredBottle) GetName() string {
+func (m *AuctionProduct) GetAddPrice() int32 {
 	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *StoredBottle) GetWinery() *Winery {
-	if m != nil {
-		return m.Winery
-	}
-	return nil
-}
-
-func (m *StoredBottle) GetVintage() uint32 {
-	if m != nil {
-		return m.Vintage
+		return m.AddPrice
 	}
 	return 0
 }
 
-func (m *StoredBottle) GetComposition() []*Component {
+func (m *AuctionProduct) GetArtNo() string {
 	if m != nil {
-		return m.Composition
-	}
-	return nil
-}
-
-func (m *StoredBottle) GetDescription() string {
-	if m != nil {
-		return m.Description
+		return m.ArtNo
 	}
 	return ""
 }
 
-func (m *StoredBottle) GetRating() uint32 {
+func (m *AuctionProduct) GetAuctionStatus() int32 {
 	if m != nil {
-		return m.Rating
+		return m.AuctionStatus
 	}
 	return 0
 }
 
-type Winery struct {
-	// Name of winery
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Region of winery
-	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
-	// Country of winery
-	Country string `protobuf:"bytes,3,opt,name=country,proto3" json:"country,omitempty"`
-	// Winery website URL
-	Url                  string   `protobuf:"bytes,4,opt,name=url,proto3" json:"url,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Winery) Reset()         { *m = Winery{} }
-func (m *Winery) String() string { return proto.CompactTextString(m) }
-func (*Winery) ProtoMessage()    {}
-func (*Winery) Descriptor() ([]byte, []int) {
-	return fileDescriptor_622f477c3a3f2896, []int{3}
-}
-
-func (m *Winery) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Winery.Unmarshal(m, b)
-}
-func (m *Winery) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Winery.Marshal(b, m, deterministic)
-}
-func (m *Winery) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Winery.Merge(m, src)
-}
-func (m *Winery) XXX_Size() int {
-	return xxx_messageInfo_Winery.Size(m)
-}
-func (m *Winery) XXX_DiscardUnknown() {
-	xxx_messageInfo_Winery.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Winery proto.InternalMessageInfo
-
-func (m *Winery) GetName() string {
+func (m *AuctionProduct) GetAuctionType() int32 {
 	if m != nil {
-		return m.Name
-	}
-	return ""
-}
-
-func (m *Winery) GetRegion() string {
-	if m != nil {
-		return m.Region
-	}
-	return ""
-}
-
-func (m *Winery) GetCountry() string {
-	if m != nil {
-		return m.Country
-	}
-	return ""
-}
-
-func (m *Winery) GetUrl() string {
-	if m != nil {
-		return m.Url
-	}
-	return ""
-}
-
-type Component struct {
-	// Grape varietal
-	Varietal string `protobuf:"bytes,1,opt,name=varietal,proto3" json:"varietal,omitempty"`
-	// Percentage of varietal in wine
-	Percentage           uint32   `protobuf:"varint,2,opt,name=percentage,proto3" json:"percentage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Component) Reset()         { *m = Component{} }
-func (m *Component) String() string { return proto.CompactTextString(m) }
-func (*Component) ProtoMessage()    {}
-func (*Component) Descriptor() ([]byte, []int) {
-	return fileDescriptor_622f477c3a3f2896, []int{4}
-}
-
-func (m *Component) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Component.Unmarshal(m, b)
-}
-func (m *Component) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Component.Marshal(b, m, deterministic)
-}
-func (m *Component) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Component.Merge(m, src)
-}
-func (m *Component) XXX_Size() int {
-	return xxx_messageInfo_Component.Size(m)
-}
-func (m *Component) XXX_DiscardUnknown() {
-	xxx_messageInfo_Component.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Component proto.InternalMessageInfo
-
-func (m *Component) GetVarietal() string {
-	if m != nil {
-		return m.Varietal
-	}
-	return ""
-}
-
-func (m *Component) GetPercentage() uint32 {
-	if m != nil {
-		return m.Percentage
+		return m.AuctionType
 	}
 	return 0
 }
 
-type GetRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+func (m *AuctionProduct) GetBidSceneId() int32 {
+	if m != nil {
+		return m.BidSceneId
+	}
+	return 0
 }
 
-func (m *GetRequest) Reset()         { *m = GetRequest{} }
-func (m *GetRequest) String() string { return proto.CompactTextString(m) }
-func (*GetRequest) ProtoMessage()    {}
-func (*GetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_622f477c3a3f2896, []int{5}
+func (m *AuctionProduct) GetBondPrice() int32 {
+	if m != nil {
+		return m.BondPrice
+	}
+	return 0
 }
 
-func (m *GetRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetRequest.Unmarshal(m, b)
-}
-func (m *GetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetRequest.Marshal(b, m, deterministic)
-}
-func (m *GetRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetRequest.Merge(m, src)
-}
-func (m *GetRequest) XXX_Size() int {
-	return xxx_messageInfo_GetRequest.Size(m)
-}
-func (m *GetRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetRequest.DiscardUnknown(m)
+func (m *AuctionProduct) GetBuyNumber() int32 {
+	if m != nil {
+		return m.BuyNumber
+	}
+	return 0
 }
 
-var xxx_messageInfo_GetRequest proto.InternalMessageInfo
+func (m *AuctionProduct) GetBuyUnitPrice() string {
+	if m != nil {
+		return m.BuyUnitPrice
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetBuyoutPrice() int32 {
+	if m != nil {
+		return m.BuyoutPrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetCapPrice() int32 {
+	if m != nil {
+		return m.CapPrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetCrowdfundingPackageId() string {
+	if m != nil {
+		return m.CrowdfundingPackageId
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetCurrentPrice() int32 {
+	if m != nil {
+		return m.CurrentPrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetEndTime() int64 {
+	if m != nil {
+		return m.EndTime
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetHeadPortrait() string {
+	if m != nil {
+		return m.HeadPortrait
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetIsHaveProxy() int32 {
+	if m != nil {
+		return m.IsHaveProxy
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetIsReservePrice() int32 {
+	if m != nil {
+		return m.IsReservePrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetLastTime() int64 {
+	if m != nil {
+		return m.LastTime
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetLimitNumber() int32 {
+	if m != nil {
+		return m.LimitNumber
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetMktPrice() int32 {
+	if m != nil {
+		return m.MktPrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetPicturesUrl() string {
+	if m != nil {
+		return m.PicturesUrl
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetProdId() int32 {
+	if m != nil {
+		return m.ProdId
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetProdName() string {
+	if m != nil {
+		return m.ProdName
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetQrUrl() string {
+	if m != nil {
+		return m.QrUrl
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetRemindTime() int64 {
+	if m != nil {
+		return m.RemindTime
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetReservePrice() string {
+	if m != nil {
+		return m.ReservePrice
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetResultStatus() int32 {
+	if m != nil {
+		return m.ResultStatus
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetRuleId() int32 {
+	if m != nil {
+		return m.RuleId
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetSerialNum() string {
+	if m != nil {
+		return m.SerialNum
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetShareUrl() string {
+	if m != nil {
+		return m.ShareUrl
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetStartAuctionPrice() int32 {
+	if m != nil {
+		return m.StartAuctionPrice
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetStartTime() int64 {
+	if m != nil {
+		return m.StartTime
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetTotalNumber() int32 {
+	if m != nil {
+		return m.TotalNumber
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetTransactionNumber() int32 {
+	if m != nil {
+		return m.TransactionNumber
+	}
+	return 0
+}
+
+func (m *AuctionProduct) GetTransactionPrice() string {
+	if m != nil {
+		return m.TransactionPrice
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *AuctionProduct) GetUserName() string {
+	if m != nil {
+		return m.UserName
+	}
+	return ""
+}
 
 func init() {
-	proto.RegisterType((*PickRequest)(nil), "auction.PickRequest")
-	proto.RegisterType((*StoredBottleCollection)(nil), "auction.StoredBottleCollection")
-	proto.RegisterType((*StoredBottle)(nil), "auction.StoredBottle")
-	proto.RegisterType((*Winery)(nil), "auction.Winery")
-	proto.RegisterType((*Component)(nil), "auction.Component")
-	proto.RegisterType((*GetRequest)(nil), "auction.GetRequest")
+	proto.RegisterType((*GetAuctionProductListByStatusRequest)(nil), "auction.GetAuctionProductListByStatusRequest")
+	proto.RegisterType((*AuctionProductCollection)(nil), "auction.AuctionProductCollection")
+	proto.RegisterType((*AuctionProduct)(nil), "auction.AuctionProduct")
 }
 
 func init() { proto.RegisterFile("auction.proto", fileDescriptor_622f477c3a3f2896) }
 
 var fileDescriptor_622f477c3a3f2896 = []byte{
-	// 393 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xcf, 0x8a, 0xdb, 0x30,
-	0x10, 0xc6, 0xf1, 0x9f, 0x38, 0xf1, 0x38, 0x69, 0x8b, 0xda, 0x06, 0x91, 0x43, 0x6b, 0x7c, 0xa9,
-	0xa1, 0x90, 0x43, 0xda, 0x5b, 0xe9, 0xa1, 0x09, 0x25, 0xd7, 0xe2, 0x52, 0x0a, 0x7b, 0x5a, 0xc7,
-	0x9e, 0x0d, 0x62, 0x1d, 0xc9, 0xab, 0xc8, 0x59, 0xf6, 0x01, 0xf6, 0x51, 0xf7, 0x3d, 0x16, 0xc9,
-	0xb6, 0xe2, 0x85, 0xc0, 0xde, 0xf4, 0x8d, 0x67, 0xf4, 0xfd, 0xfc, 0x69, 0x60, 0x96, 0x37, 0x85,
-	0x62, 0x82, 0x2f, 0x6b, 0x29, 0x94, 0x20, 0xe3, 0x4e, 0x26, 0xff, 0x20, 0xfa, 0xc3, 0x8a, 0xdb,
-	0x0c, 0xef, 0x1a, 0x3c, 0x2a, 0x42, 0xc0, 0xe7, 0xf9, 0x01, 0xa9, 0x13, 0x3b, 0x69, 0x98, 0x99,
-	0x33, 0x59, 0xc0, 0xe4, 0x94, 0x4b, 0x86, 0x2a, 0xaf, 0xa8, 0x1b, 0x7b, 0x69, 0x98, 0x59, 0x4d,
-	0xe6, 0x10, 0xdc, 0x33, 0x8e, 0xf2, 0x81, 0x7a, 0x66, 0xa2, 0x53, 0xc9, 0x6f, 0x98, 0xff, 0x55,
-	0x42, 0x62, 0xb9, 0x16, 0x4a, 0x55, 0xb8, 0x11, 0x55, 0x85, 0xc6, 0x90, 0x7c, 0x85, 0xd1, 0x0d,
-	0xc3, 0xaa, 0xa4, 0x4e, 0xec, 0xa5, 0xd1, 0xea, 0xe3, 0xb2, 0x07, 0x1b, 0xf6, 0x67, 0x6d, 0x4f,
-	0xf2, 0xe4, 0xc0, 0x74, 0x58, 0x27, 0x6f, 0xc0, 0x65, 0x25, 0x9d, 0x18, 0x2f, 0x97, 0x95, 0x17,
-	0x79, 0xbf, 0x58, 0x26, 0x37, 0x76, 0xd2, 0x68, 0xf5, 0xd6, 0x5a, 0xfc, 0x37, 0xe5, 0x1e, 0x92,
-	0x50, 0x18, 0x9f, 0x18, 0x57, 0xf9, 0x1e, 0x0d, 0xfd, 0x2c, 0xeb, 0x25, 0xf9, 0x0e, 0x51, 0x21,
-	0x0e, 0xb5, 0x38, 0x32, 0x3d, 0x47, 0x7d, 0x83, 0x4a, 0xec, 0x3d, 0x1b, 0xfd, 0x8d, 0x23, 0x57,
-	0xd9, 0xb0, 0x8d, 0xc4, 0x10, 0x95, 0x78, 0x2c, 0x24, 0xab, 0xcd, 0xd4, 0xc8, 0x30, 0x0d, 0x4b,
-	0x3a, 0x2e, 0x99, 0x2b, 0xc6, 0xf7, 0x34, 0x30, 0x86, 0x9d, 0x4a, 0xae, 0x21, 0x68, 0xd9, 0x2e,
-	0xfe, 0x90, 0x9e, 0xc2, 0xbd, 0xbe, 0xd2, 0x6d, 0x43, 0x6e, 0x95, 0xe6, 0x2f, 0x44, 0xc3, 0x95,
-	0x4d, 0xbf, 0x97, 0xe4, 0x1d, 0x78, 0x8d, 0xac, 0xa8, 0x6f, 0xaa, 0xfa, 0x98, 0x6c, 0x21, 0xb4,
-	0xd4, 0x2f, 0x5e, 0xb4, 0x35, 0x3a, 0xbf, 0xe8, 0x27, 0x80, 0x1a, 0x65, 0x81, 0x6d, 0x2e, 0xae,
-	0xc1, 0x1c, 0x54, 0x92, 0x29, 0xc0, 0x16, 0x55, 0xb7, 0x2f, 0xab, 0x47, 0x07, 0xc6, 0xbf, 0xda,
-	0x54, 0xc8, 0x4f, 0xf0, 0xf5, 0x2a, 0x91, 0x0f, 0x36, 0xa7, 0xc1, 0x66, 0x2d, 0x3e, 0x5f, 0x7c,
-	0xe8, 0xc1, 0x62, 0xfc, 0x00, 0x6f, 0x8b, 0x8a, 0xbc, 0xb7, 0x7d, 0x67, 0x9b, 0x57, 0x87, 0xd7,
-	0xd1, 0x55, 0xd8, 0x75, 0xd4, 0xbb, 0x5d, 0x60, 0x76, 0xfc, 0xdb, 0x73, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0xa6, 0x74, 0xd4, 0x96, 0xf4, 0x02, 0x00, 0x00,
+	// 810 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x55, 0x4d, 0x6f, 0x1b, 0x37,
+	0x10, 0x85, 0x9c, 0x5a, 0xd2, 0x8e, 0x3e, 0x6a, 0x33, 0x71, 0xc5, 0x44, 0x75, 0x23, 0x29, 0x4e,
+	0x2b, 0xa0, 0xb0, 0x0f, 0x29, 0xd0, 0x7b, 0xd3, 0x43, 0x2b, 0xa0, 0x10, 0x04, 0x39, 0xb9, 0xf4,
+	0xb2, 0xa0, 0x96, 0x8c, 0x4d, 0x78, 0xbf, 0xc4, 0x8f, 0xb4, 0x0a, 0xfa, 0x17, 0xfa, 0x77, 0x7b,
+	0x2e, 0x38, 0xc3, 0x55, 0x24, 0xa0, 0x29, 0x72, 0xe4, 0x7b, 0x8f, 0xb3, 0x6f, 0xde, 0x90, 0x5c,
+	0x18, 0x08, 0x9f, 0x39, 0x5d, 0x95, 0x37, 0xb5, 0xa9, 0x5c, 0xc5, 0x3a, 0x71, 0x39, 0xfb, 0xbb,
+	0x05, 0x57, 0xbf, 0x28, 0xf7, 0x13, 0x2d, 0x57, 0xa6, 0x92, 0x3e, 0x73, 0xbf, 0x69, 0xeb, 0x5e,
+	0xef, 0x6e, 0x9d, 0x70, 0xde, 0xae, 0xd5, 0xd6, 0x2b, 0xeb, 0xd8, 0x4b, 0x18, 0xc6, 0x3d, 0xa9,
+	0x45, 0x82, 0xb7, 0x26, 0xad, 0xf9, 0xf9, 0xba, 0x29, 0x4c, 0x6a, 0x36, 0x85, 0x7e, 0xe6, 0x8d,
+	0x51, 0xa5, 0x4b, 0x6b, 0x71, 0xa7, 0xf8, 0x09, 0x8a, 0x7a, 0x11, 0x5b, 0x89, 0x3b, 0xc5, 0xc6,
+	0x90, 0x04, 0x2a, 0xb5, 0xfa, 0x83, 0xe2, 0x8f, 0x90, 0xef, 0x06, 0xe0, 0x56, 0x7f, 0x50, 0xb3,
+	0x05, 0xf0, 0x63, 0x2f, 0x3f, 0x57, 0x79, 0xae, 0x10, 0x60, 0xd7, 0x70, 0xfa, 0x4e, 0xab, 0x5c,
+	0xf2, 0xd6, 0xe4, 0xd1, 0xbc, 0xf7, 0x6a, 0x74, 0xd3, 0xf4, 0x74, 0xbc, 0x63, 0x4d, 0xaa, 0xd9,
+	0x3f, 0x09, 0x0c, 0x8f, 0x19, 0x36, 0x84, 0x13, 0x2d, 0x79, 0x77, 0xd2, 0x9a, 0x27, 0xeb, 0x13,
+	0x2d, 0x83, 0x15, 0x21, 0x65, 0x5a, 0x1b, 0x9d, 0x35, 0x56, 0xbb, 0x42, 0xca, 0x55, 0x58, 0xb3,
+	0x0b, 0x68, 0x0b, 0xe3, 0xd2, 0xb2, 0x42, 0x93, 0xc9, 0xfa, 0x54, 0x18, 0xb7, 0xac, 0xfe, 0x23,
+	0x88, 0x2f, 0x3e, 0x11, 0x44, 0x23, 0x73, 0xbb, 0x5a, 0xf1, 0x53, 0x0a, 0x22, 0x62, 0x6f, 0x76,
+	0xb5, 0x62, 0x13, 0xe8, 0x6f, 0xb4, 0x4c, 0x6d, 0xa6, 0x4a, 0x95, 0x6a, 0xc9, 0xdb, 0x28, 0x81,
+	0x8d, 0x96, 0xb7, 0x01, 0x5a, 0x48, 0x76, 0x09, 0xb0, 0xa9, 0xca, 0xc6, 0x60, 0x07, 0xf9, 0x24,
+	0x20, 0xe4, 0x30, 0xd0, 0x7e, 0x97, 0x96, 0xbe, 0xd8, 0x28, 0xc3, 0x21, 0xd2, 0x7e, 0xb7, 0x44,
+	0x80, 0x5d, 0xc1, 0x30, 0xd0, 0xbe, 0xd4, 0x2e, 0x56, 0x48, 0xb0, 0x91, 0xfe, 0xc6, 0xef, 0xde,
+	0x96, 0xda, 0x51, 0x91, 0x29, 0x84, 0x75, 0xe5, 0x1b, 0x4d, 0x8f, 0x8c, 0x12, 0x46, 0x92, 0x31,
+	0x24, 0x99, 0xa8, 0x23, 0xdf, 0xa7, 0x98, 0x32, 0x51, 0x13, 0xf9, 0x23, 0x8c, 0x32, 0x53, 0xfd,
+	0x21, 0xdf, 0xf9, 0x52, 0xea, 0xf2, 0x2e, 0xad, 0x45, 0xf6, 0x10, 0xc6, 0xab, 0x25, 0x1f, 0xe0,
+	0xe7, 0x2e, 0x0e, 0xe9, 0x15, 0xb1, 0x0b, 0xc9, 0x5e, 0xc0, 0x60, 0x7f, 0x52, 0xb0, 0xf0, 0x10,
+	0x0b, 0x37, 0xc7, 0x87, 0x8a, 0x3f, 0x85, 0xae, 0x2a, 0x65, 0xea, 0x74, 0xa1, 0xf8, 0x97, 0x93,
+	0xd6, 0x9c, 0xad, 0x3b, 0xaa, 0x94, 0x6f, 0x74, 0xa1, 0xc2, 0xfe, 0x7b, 0x25, 0x64, 0x5a, 0x57,
+	0xc6, 0x19, 0xa1, 0x1d, 0x3f, 0xa3, 0xe6, 0x02, 0xb8, 0x8a, 0x18, 0x9b, 0xc1, 0x40, 0xdb, 0xf4,
+	0x5e, 0xbc, 0x57, 0x69, 0x6d, 0xaa, 0x3f, 0x77, 0xfc, 0x9c, 0xba, 0xd3, 0xf6, 0x57, 0xf1, 0x5e,
+	0xad, 0x02, 0xc4, 0xe6, 0x70, 0xa6, 0x6d, 0x6a, 0x94, 0x55, 0x06, 0x65, 0xc1, 0x0b, 0x43, 0xd9,
+	0x50, 0xdb, 0x35, 0xc1, 0xfb, 0x1c, 0x72, 0x61, 0x1d, 0xd9, 0x79, 0x8c, 0x76, 0xba, 0x01, 0x40,
+	0x3f, 0x53, 0xe8, 0xe7, 0xba, 0xd0, 0xae, 0x19, 0xc7, 0x13, 0xfa, 0x12, 0x62, 0x71, 0x20, 0x63,
+	0x48, 0x8a, 0x87, 0xa6, 0xdd, 0x0b, 0xca, 0xb1, 0x78, 0xf8, 0x38, 0x87, 0x5a, 0x67, 0xce, 0x1b,
+	0x65, 0x53, 0x6f, 0x72, 0xfe, 0x15, 0xb6, 0xd3, 0x6b, 0xb0, 0xb7, 0x26, 0x67, 0x23, 0xe8, 0xd4,
+	0xa6, 0x92, 0x21, 0xda, 0x11, 0xee, 0x6e, 0x87, 0xe5, 0x02, 0xcf, 0x31, 0x12, 0xa5, 0x28, 0x14,
+	0xe7, 0xb8, 0xb1, 0x1b, 0x80, 0xa5, 0x28, 0xf0, 0x1c, 0x6f, 0x0d, 0x96, 0x7c, 0x4a, 0xe7, 0x78,
+	0x6b, 0x42, 0xb1, 0xe7, 0xd0, 0x33, 0xaa, 0xd0, 0x4d, 0xba, 0xcf, 0xb0, 0x1d, 0x20, 0xa8, 0x09,
+	0xf8, 0x38, 0x94, 0x31, 0x05, 0x6c, 0x0e, 0x23, 0x21, 0x91, 0xcf, 0x5d, 0x73, 0x19, 0xbe, 0xa6,
+	0x29, 0x12, 0x18, 0xef, 0xc2, 0x08, 0x3a, 0xc6, 0xe7, 0x78, 0x24, 0x2e, 0xc9, 0x77, 0x58, 0xd2,
+	0xf9, 0xb6, 0xca, 0x68, 0x91, 0x87, 0xd0, 0xf8, 0x37, 0x58, 0x3f, 0x21, 0x64, 0xe9, 0x8b, 0xd0,
+	0x96, 0xbd, 0x17, 0x46, 0xa1, 0xf9, 0xe7, 0xd4, 0x16, 0x02, 0xc1, 0xff, 0x0d, 0x3c, 0xb6, 0x2e,
+	0x5c, 0xd0, 0xe6, 0x9a, 0x91, 0xc9, 0x09, 0x7e, 0xe0, 0x1c, 0xa9, 0xfd, 0xed, 0x8f, 0x97, 0x85,
+	0xf4, 0xd8, 0xee, 0x14, 0xdb, 0x4d, 0x10, 0xc1, 0x6e, 0x9f, 0xc0, 0xa9, 0xd3, 0x2e, 0x57, 0x7c,
+	0x46, 0x21, 0xe1, 0x22, 0x0c, 0xc5, 0x55, 0x8e, 0xfc, 0x85, 0xa1, 0xbe, 0xa0, 0xa1, 0x22, 0x16,
+	0x87, 0x7a, 0x0d, 0xcc, 0x19, 0x51, 0x5a, 0x41, 0x2e, 0xa2, 0xf0, 0x8a, 0x6c, 0x1c, 0x30, 0x51,
+	0xfe, 0x3d, 0x1c, 0x82, 0xd1, 0xf4, 0x4b, 0xfc, 0xe6, 0xd9, 0x01, 0x41, 0x9e, 0x47, 0xd0, 0xf1,
+	0x56, 0x99, 0x10, 0xdc, 0xb7, 0x28, 0x69, 0x87, 0x25, 0x0d, 0x1c, 0x09, 0x1c, 0xf8, 0x77, 0x94,
+	0x4c, 0x00, 0xc2, 0xc0, 0x5f, 0xfd, 0x05, 0x9d, 0xd8, 0x39, 0xdb, 0xc2, 0xe5, 0xff, 0xbe, 0xee,
+	0xec, 0x7a, 0xff, 0x88, 0x7e, 0xce, 0x5f, 0xe0, 0xd9, 0xf4, 0x13, 0x6f, 0xee, 0xc7, 0x57, 0xfa,
+	0x75, 0xef, 0xf7, 0x24, 0x6a, 0xea, 0xcd, 0xa6, 0x8d, 0xbf, 0x9b, 0x1f, 0xfe, 0x0d, 0x00, 0x00,
+	0xff, 0xff, 0xe2, 0xe2, 0x8c, 0x16, 0x7f, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -415,10 +532,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type AuctionClient interface {
-	// Pick implements pick.
-	Pick(ctx context.Context, in *PickRequest, opts ...grpc.CallOption) (*StoredBottleCollection, error)
-	// get
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*StoredBottleCollection, error)
+	// 获取拍卖列表
+	GetAuctionProductListByStatus(ctx context.Context, in *GetAuctionProductListByStatusRequest, opts ...grpc.CallOption) (*AuctionProductCollection, error)
 }
 
 type auctionClient struct {
@@ -429,18 +544,9 @@ func NewAuctionClient(cc *grpc.ClientConn) AuctionClient {
 	return &auctionClient{cc}
 }
 
-func (c *auctionClient) Pick(ctx context.Context, in *PickRequest, opts ...grpc.CallOption) (*StoredBottleCollection, error) {
-	out := new(StoredBottleCollection)
-	err := c.cc.Invoke(ctx, "/auction.Auction/Pick", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *auctionClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*StoredBottleCollection, error) {
-	out := new(StoredBottleCollection)
-	err := c.cc.Invoke(ctx, "/auction.Auction/Get", in, out, opts...)
+func (c *auctionClient) GetAuctionProductListByStatus(ctx context.Context, in *GetAuctionProductListByStatusRequest, opts ...grpc.CallOption) (*AuctionProductCollection, error) {
+	out := new(AuctionProductCollection)
+	err := c.cc.Invoke(ctx, "/auction.Auction/GetAuctionProductListByStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -449,59 +555,36 @@ func (c *auctionClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.Ca
 
 // AuctionServer is the server API for Auction service.
 type AuctionServer interface {
-	// Pick implements pick.
-	Pick(context.Context, *PickRequest) (*StoredBottleCollection, error)
-	// get
-	Get(context.Context, *GetRequest) (*StoredBottleCollection, error)
+	// 获取拍卖列表
+	GetAuctionProductListByStatus(context.Context, *GetAuctionProductListByStatusRequest) (*AuctionProductCollection, error)
 }
 
 // UnimplementedAuctionServer can be embedded to have forward compatible implementations.
 type UnimplementedAuctionServer struct {
 }
 
-func (*UnimplementedAuctionServer) Pick(ctx context.Context, req *PickRequest) (*StoredBottleCollection, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Pick not implemented")
-}
-func (*UnimplementedAuctionServer) Get(ctx context.Context, req *GetRequest) (*StoredBottleCollection, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+func (*UnimplementedAuctionServer) GetAuctionProductListByStatus(ctx context.Context, req *GetAuctionProductListByStatusRequest) (*AuctionProductCollection, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuctionProductListByStatus not implemented")
 }
 
 func RegisterAuctionServer(s *grpc.Server, srv AuctionServer) {
 	s.RegisterService(&_Auction_serviceDesc, srv)
 }
 
-func _Auction_Pick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PickRequest)
+func _Auction_GetAuctionProductListByStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuctionProductListByStatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuctionServer).Pick(ctx, in)
+		return srv.(AuctionServer).GetAuctionProductListByStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/auction.Auction/Pick",
+		FullMethod: "/auction.Auction/GetAuctionProductListByStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuctionServer).Pick(ctx, req.(*PickRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Auction_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuctionServer).Get(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/auction.Auction/Get",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuctionServer).Get(ctx, req.(*GetRequest))
+		return srv.(AuctionServer).GetAuctionProductListByStatus(ctx, req.(*GetAuctionProductListByStatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -511,12 +594,8 @@ var _Auction_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*AuctionServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Pick",
-			Handler:    _Auction_Pick_Handler,
-		},
-		{
-			MethodName: "Get",
-			Handler:    _Auction_Get_Handler,
+			MethodName: "GetAuctionProductListByStatus",
+			Handler:    _Auction_GetAuctionProductListByStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

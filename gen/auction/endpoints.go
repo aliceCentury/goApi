@@ -15,47 +15,31 @@ import (
 
 // Endpoints wraps the "auction" service endpoints.
 type Endpoints struct {
-	Pick goa.Endpoint
-	Get  goa.Endpoint
+	GetAuctionProductListByStatus goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "auction" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
-		Pick: NewPickEndpoint(s),
-		Get:  NewGetEndpoint(s),
+		GetAuctionProductListByStatus: NewGetAuctionProductListByStatusEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "auction" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
-	e.Pick = m(e.Pick)
-	e.Get = m(e.Get)
+	e.GetAuctionProductListByStatus = m(e.GetAuctionProductListByStatus)
 }
 
-// NewPickEndpoint returns an endpoint function that calls the method "pick" of
-// service "auction".
-func NewPickEndpoint(s Service) goa.Endpoint {
+// NewGetAuctionProductListByStatusEndpoint returns an endpoint function that
+// calls the method "getAuctionProductListByStatus" of service "auction".
+func NewGetAuctionProductListByStatusEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
-		p := req.(*Criteria)
-		res, err := s.Pick(ctx, p)
+		p := req.(*ListData)
+		res, err := s.GetAuctionProductListByStatus(ctx, p)
 		if err != nil {
 			return nil, err
 		}
-		vres := NewViewedStoredBottleCollection(res, "default")
-		return vres, nil
-	}
-}
-
-// NewGetEndpoint returns an endpoint function that calls the method "get" of
-// service "auction".
-func NewGetEndpoint(s Service) goa.Endpoint {
-	return func(ctx context.Context, req interface{}) (interface{}, error) {
-		res, err := s.Get(ctx)
-		if err != nil {
-			return nil, err
-		}
-		vres := NewViewedStoredBottleCollection(res, "default")
+		vres := NewViewedAuctionProductCollection(res, "auctionList")
 		return vres, nil
 	}
 }

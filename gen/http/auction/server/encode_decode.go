@@ -8,7 +8,6 @@
 package server
 
 import (
-	auction "calcsvc/gen/auction"
 	auctionviews "calcsvc/gen/auction/views"
 	"context"
 	"io"
@@ -18,24 +17,24 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// EncodePickResponse returns an encoder for responses returned by the auction
-// pick endpoint.
-func EncodePickResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+// EncodeGetAuctionProductListByStatusResponse returns an encoder for responses
+// returned by the auction getAuctionProductListByStatus endpoint.
+func EncodeGetAuctionProductListByStatusResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res := v.(auctionviews.StoredBottleCollection)
+		res := v.(auctionviews.AuctionProductCollection)
 		enc := encoder(ctx, w)
-		body := NewStoredBottleResponseCollection(res.Projected)
+		body := NewAuctionProductResponseAuctionListCollection(res.Projected)
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
 }
 
-// DecodePickRequest returns a decoder for requests sent to the auction pick
-// endpoint.
-func DecodePickRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+// DecodeGetAuctionProductListByStatusRequest returns a decoder for requests
+// sent to the auction getAuctionProductListByStatus endpoint.
+func DecodeGetAuctionProductListByStatusRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			body PickRequestBody
+			body GetAuctionProductListByStatusRequestBody
 			err  error
 		)
 		err = decoder(r).Decode(&body)
@@ -45,74 +44,8 @@ func DecodePickRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.De
 			}
 			return nil, goa.DecodePayloadError(err.Error())
 		}
-		payload := NewPickCriteria(&body)
+		payload := NewGetAuctionProductListByStatusListData(&body)
 
 		return payload, nil
 	}
-}
-
-// EncodePickError returns an encoder for errors returned by the pick auction
-// endpoint.
-func EncodePickError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, error) error {
-	encodeError := goahttp.ErrorEncoder(encoder)
-	return func(ctx context.Context, w http.ResponseWriter, v error) error {
-		en, ok := v.(ErrorNamer)
-		if !ok {
-			return encodeError(ctx, w, v)
-		}
-		switch en.ErrorName() {
-		case "no_criteria":
-			res := v.(auction.NoCriteria)
-			enc := encoder(ctx, w)
-			body := NewPickNoCriteriaResponseBody(res)
-			w.Header().Set("goa-error", "no_criteria")
-			w.WriteHeader(http.StatusBadRequest)
-			return enc.Encode(body)
-		case "no_match":
-			res := v.(auction.NoMatch)
-			enc := encoder(ctx, w)
-			body := NewPickNoMatchResponseBody(res)
-			w.Header().Set("goa-error", "no_match")
-			w.WriteHeader(http.StatusNotFound)
-			return enc.Encode(body)
-		default:
-			return encodeError(ctx, w, v)
-		}
-	}
-}
-
-// EncodeGetResponse returns an encoder for responses returned by the auction
-// get endpoint.
-func EncodeGetResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
-	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res := v.(auctionviews.StoredBottleCollection)
-		enc := encoder(ctx, w)
-		body := NewStoredBottleResponseTinyCollection(res.Projected)
-		w.WriteHeader(http.StatusOK)
-		return enc.Encode(body)
-	}
-}
-
-// marshalAuctionviewsWineryViewToWineryResponseTiny builds a value of type
-// *WineryResponseTiny from a value of type *auctionviews.WineryView.
-func marshalAuctionviewsWineryViewToWineryResponseTiny(v *auctionviews.WineryView) *WineryResponseTiny {
-	res := &WineryResponseTiny{
-		Name: *v.Name,
-	}
-
-	return res
-}
-
-// marshalAuctionviewsComponentViewToComponentResponse builds a value of type
-// *ComponentResponse from a value of type *auctionviews.ComponentView.
-func marshalAuctionviewsComponentViewToComponentResponse(v *auctionviews.ComponentView) *ComponentResponse {
-	if v == nil {
-		return nil
-	}
-	res := &ComponentResponse{
-		Varietal:   *v.Varietal,
-		Percentage: v.Percentage,
-	}
-
-	return res
 }

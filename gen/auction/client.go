@@ -15,38 +15,23 @@ import (
 
 // Client is the "auction" service client.
 type Client struct {
-	PickEndpoint goa.Endpoint
-	GetEndpoint  goa.Endpoint
+	GetAuctionProductListByStatusEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "auction" service client given the endpoints.
-func NewClient(pick, get goa.Endpoint) *Client {
+func NewClient(getAuctionProductListByStatus goa.Endpoint) *Client {
 	return &Client{
-		PickEndpoint: pick,
-		GetEndpoint:  get,
+		GetAuctionProductListByStatusEndpoint: getAuctionProductListByStatus,
 	}
 }
 
-// Pick calls the "pick" endpoint of the "auction" service.
-// Pick may return the following errors:
-//	- "no_criteria" (type NoCriteria)
-//	- "no_match" (type NoMatch)
-//	- error: internal error
-func (c *Client) Pick(ctx context.Context, p *Criteria) (res StoredBottleCollection, err error) {
+// GetAuctionProductListByStatus calls the "getAuctionProductListByStatus"
+// endpoint of the "auction" service.
+func (c *Client) GetAuctionProductListByStatus(ctx context.Context, p *ListData) (res AuctionProductCollection, err error) {
 	var ires interface{}
-	ires, err = c.PickEndpoint(ctx, p)
+	ires, err = c.GetAuctionProductListByStatusEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(StoredBottleCollection), nil
-}
-
-// Get calls the "get" endpoint of the "auction" service.
-func (c *Client) Get(ctx context.Context) (res StoredBottleCollection, err error) {
-	var ires interface{}
-	ires, err = c.GetEndpoint(ctx, nil)
-	if err != nil {
-		return
-	}
-	return ires.(StoredBottleCollection), nil
+	return ires.(AuctionProductCollection), nil
 }

@@ -13,97 +13,147 @@ import (
 	auctionpb "calcsvc/gen/grpc/auction/pb"
 )
 
-// NewPickPayload builds the payload of the "pick" endpoint of the "auction"
-// service from the gRPC request type.
-func NewPickPayload(message *auctionpb.PickRequest) *auction.Criteria {
-	v := &auction.Criteria{}
-	if message.Name != "" {
-		v.Name = &message.Name
+// NewGetAuctionProductListByStatusPayload builds the payload of the
+// "getAuctionProductListByStatus" endpoint of the "auction" service from the
+// gRPC request type.
+func NewGetAuctionProductListByStatusPayload(message *auctionpb.GetAuctionProductListByStatusRequest) *auction.ListData {
+	v := &auction.ListData{}
+	if message.AuctionStatus != 0 {
+		auctionStatusptr := int(message.AuctionStatus)
+		v.AuctionStatus = &auctionStatusptr
 	}
-	if message.Winery != "" {
-		v.Winery = &message.Winery
+	if message.CurrentPage != 0 {
+		currentPageptr := int(message.CurrentPage)
+		v.CurrentPage = &currentPageptr
 	}
-	if message.Varietal != nil {
-		v.Varietal = make([]string, len(message.Varietal))
-		for i, val := range message.Varietal {
-			v.Varietal[i] = val
-		}
+	if message.PageSize != 0 {
+		pageSizeptr := int(message.PageSize)
+		v.PageSize = &pageSizeptr
 	}
 	return v
 }
 
-// NewStoredBottleCollection builds the gRPC response type from the result of
-// the "pick" endpoint of the "auction" service.
-func NewStoredBottleCollection(result auctionviews.StoredBottleCollectionView) *auctionpb.StoredBottleCollection {
-	message := &auctionpb.StoredBottleCollection{}
-	message.Field = make([]*auctionpb.StoredBottle, len(result))
+// NewAuctionProductCollection builds the gRPC response type from the result of
+// the "getAuctionProductListByStatus" endpoint of the "auction" service.
+func NewAuctionProductCollection(result auctionviews.AuctionProductCollectionView) *auctionpb.AuctionProductCollection {
+	message := &auctionpb.AuctionProductCollection{}
+	message.Field = make([]*auctionpb.AuctionProduct, len(result))
 	for i, val := range result {
-		message.Field[i] = &auctionpb.StoredBottle{}
+		message.Field[i] = &auctionpb.AuctionProduct{}
 		if val.ID != nil {
 			message.Field[i].Id = *val.ID
 		}
-		if val.Name != nil {
-			message.Field[i].Name = *val.Name
+		if val.AddPrice != nil {
+			message.Field[i].AddPrice = int32(*val.AddPrice)
 		}
-		if val.Vintage != nil {
-			message.Field[i].Vintage = *val.Vintage
+		if val.ArtNo != nil {
+			message.Field[i].ArtNo = *val.ArtNo
 		}
-		if val.Description != nil {
-			message.Field[i].Description = *val.Description
+		if val.AuctionStatus != nil {
+			message.Field[i].AuctionStatus = int32(*val.AuctionStatus)
 		}
-		if val.Rating != nil {
-			message.Field[i].Rating = *val.Rating
+		if val.AuctionType != nil {
+			message.Field[i].AuctionType = int32(*val.AuctionType)
 		}
-		if val.Winery != nil {
-			message.Field[i].Winery = svcAuctionviewsWineryViewToAuctionpbWinery(val.Winery)
+		if val.BidSceneID != nil {
+			message.Field[i].BidSceneId = int32(*val.BidSceneID)
 		}
-		if val.Composition != nil {
-			message.Field[i].Composition = make([]*auctionpb.Component, len(val.Composition))
-			for j, val := range val.Composition {
-				message.Field[i].Composition[j] = &auctionpb.Component{}
-				if val.Varietal != nil {
-					message.Field[i].Composition[j].Varietal = *val.Varietal
-				}
-				if val.Percentage != nil {
-					message.Field[i].Composition[j].Percentage = *val.Percentage
-				}
-			}
+		if val.BondPrice != nil {
+			message.Field[i].BondPrice = int32(*val.BondPrice)
+		}
+		if val.BuyNumber != nil {
+			message.Field[i].BuyNumber = int32(*val.BuyNumber)
+		}
+		if val.BuyUnitPrice != nil {
+			message.Field[i].BuyUnitPrice = *val.BuyUnitPrice
+		}
+		if val.BuyoutPrice != nil {
+			message.Field[i].BuyoutPrice = int32(*val.BuyoutPrice)
+		}
+		if val.CapPrice != nil {
+			message.Field[i].CapPrice = int32(*val.CapPrice)
+		}
+		if val.CrowdfundingPackageID != nil {
+			message.Field[i].CrowdfundingPackageId = *val.CrowdfundingPackageID
+		}
+		if val.CurrentPrice != nil {
+			message.Field[i].CurrentPrice = int32(*val.CurrentPrice)
+		}
+		if val.EndTime != nil {
+			message.Field[i].EndTime = *val.EndTime
+		}
+		if val.HeadPortrait != nil {
+			message.Field[i].HeadPortrait = *val.HeadPortrait
+		}
+		if val.IsHaveProxy != nil {
+			message.Field[i].IsHaveProxy = int32(*val.IsHaveProxy)
+		}
+		if val.IsReservePrice != nil {
+			message.Field[i].IsReservePrice = int32(*val.IsReservePrice)
+		}
+		if val.LastTime != nil {
+			message.Field[i].LastTime = *val.LastTime
+		}
+		if val.LimitNumber != nil {
+			message.Field[i].LimitNumber = int32(*val.LimitNumber)
+		}
+		if val.MktPrice != nil {
+			message.Field[i].MktPrice = int32(*val.MktPrice)
+		}
+		if val.PicturesURL != nil {
+			message.Field[i].PicturesUrl = *val.PicturesURL
+		}
+		if val.ProdID != nil {
+			message.Field[i].ProdId = *val.ProdID
+		}
+		if val.ProdName != nil {
+			message.Field[i].ProdName = *val.ProdName
+		}
+		if val.QrURL != nil {
+			message.Field[i].QrUrl = *val.QrURL
+		}
+		if val.RemindTime != nil {
+			message.Field[i].RemindTime = *val.RemindTime
+		}
+		if val.ReservePrice != nil {
+			message.Field[i].ReservePrice = *val.ReservePrice
+		}
+		if val.ResultStatus != nil {
+			message.Field[i].ResultStatus = int32(*val.ResultStatus)
+		}
+		if val.RuleID != nil {
+			message.Field[i].RuleId = int32(*val.RuleID)
+		}
+		if val.SerialNum != nil {
+			message.Field[i].SerialNum = *val.SerialNum
+		}
+		if val.ShareURL != nil {
+			message.Field[i].ShareUrl = *val.ShareURL
+		}
+		if val.StartAuctionPrice != nil {
+			message.Field[i].StartAuctionPrice = int32(*val.StartAuctionPrice)
+		}
+		if val.StartTime != nil {
+			message.Field[i].StartTime = *val.StartTime
+		}
+		if val.Title != nil {
+			message.Field[i].Title = *val.Title
+		}
+		if val.TotalNumber != nil {
+			message.Field[i].TotalNumber = int32(*val.TotalNumber)
+		}
+		if val.TransactionNumber != nil {
+			message.Field[i].TransactionNumber = int32(*val.TransactionNumber)
+		}
+		if val.TransactionPrice != nil {
+			message.Field[i].TransactionPrice = *val.TransactionPrice
+		}
+		if val.UserID != nil {
+			message.Field[i].UserId = *val.UserID
+		}
+		if val.UserName != nil {
+			message.Field[i].UserName = *val.UserName
 		}
 	}
 	return message
-}
-
-// svcAuctionviewsWineryViewToAuctionpbWinery builds a value of type
-// *auctionpb.Winery from a value of type *auctionviews.WineryView.
-func svcAuctionviewsWineryViewToAuctionpbWinery(v *auctionviews.WineryView) *auctionpb.Winery {
-	res := &auctionpb.Winery{}
-	if v.Name != nil {
-		res.Name = *v.Name
-	}
-	if v.Region != nil {
-		res.Region = *v.Region
-	}
-	if v.Country != nil {
-		res.Country = *v.Country
-	}
-	if v.URL != nil {
-		res.Url = *v.URL
-	}
-
-	return res
-}
-
-// protobufAuctionpbWineryToAuctionviewsWineryView builds a value of type
-// *auctionviews.WineryView from a value of type *auctionpb.Winery.
-func protobufAuctionpbWineryToAuctionviewsWineryView(v *auctionpb.Winery) *auctionviews.WineryView {
-	res := &auctionviews.WineryView{
-		Name:    &v.Name,
-		Region:  &v.Region,
-		Country: &v.Country,
-	}
-	if v.Url != "" {
-		res.URL = &v.Url
-	}
-
-	return res
 }

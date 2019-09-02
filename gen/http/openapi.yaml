@@ -13,45 +13,24 @@ produces:
 - application/xml
 - application/gob
 paths:
-  /auction:
+  /api-auction/getAuctionProductListByStatus:
     post:
       tags:
       - auction
-      summary: pick auction
-      operationId: auction#pick
+      summary: getAuctionProductListByStatus auction
+      description: 获取拍卖列表
+      operationId: auction#getAuctionProductListByStatus
       parameters:
-      - name: PickRequestBody
+      - name: GetAuctionProductListByStatusRequestBody
         in: body
         required: true
         schema:
-          $ref: '#/definitions/AuctionPickRequestBody'
+          $ref: '#/definitions/AuctionGetAuctionProductListByStatusRequestBody'
       responses:
         "200":
           description: OK response.
           schema:
-            $ref: '#/definitions/AuctionStoredBottleResponseCollection'
-        "400":
-          description: Bad Request response.
-          schema:
-            $ref: '#/definitions/AuctionPickNoCriteriaResponseBody'
-        "404":
-          description: Not Found response.
-          schema:
-            $ref: '#/definitions/AuctionPickNoMatchResponseBody'
-      schemes:
-      - http
-  /auction/get:
-    get:
-      tags:
-      - auction
-      summary: get auction
-      description: get
-      operationId: auction#get
-      responses:
-        "200":
-          description: OK response.
-          schema:
-            $ref: '#/definitions/AuctionStoredBottleResponseTinyCollection'
+            $ref: '#/definitions/AuctionAuctionProductResponseAuctionListCollection'
       schemes:
       - http
   /swagger/swagger.json:
@@ -180,7 +159,7 @@ paths:
             type: array
             items:
               type: string
-              example: Iusto consequatur.
+              example: Reiciendis quod consectetur quas consequatur error atque.
       schemes:
       - http
   /user/multi_update:
@@ -227,135 +206,363 @@ paths:
       schemes:
       - http
 definitions:
-  AuctionPickNoCriteriaResponseBody:
-    title: AuctionPickNoCriteriaResponseBody
-    type: string
-    description: Missing criteria
-    example: Consequuntur sed ut officiis voluptatem.
-  AuctionPickNoMatchResponseBody:
-    title: AuctionPickNoMatchResponseBody
-    type: string
-    description: No bottle matched given criteria
-    example: Magni natus optio praesentium cum quaerat.
-  AuctionPickRequestBody:
-    title: AuctionPickRequestBody
+  AuctionAuctionProductResponseAuctionListCollection:
+    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; type=collection;
+      view=auctionList'
+    type: array
+    items:
+      $ref: '#/definitions/AuctionProductResponseAuctionList'
+    description: AuctionAuctionProductResponseAuctionListCollection is the result
+      type for an array of AuctionProductResponseAuctionList (default view)
+    example:
+    - add_price: 20
+      art_no: ZS1908038
+      auction_status: 1
+      auction_type: 2
+      bid_scene_id: -1
+      bond_price: 20
+      buy_number: 0
+      buy_unit_price: Est eum illum.
+      buyout_price: 200
+      cap_price: 390
+      crowdfunding_package_id: Ipsa occaecati dolorum et corporis rem voluptatem.
+      current_price: 110
+      end_time: 1567396800000
+      head_portrait: Recusandae quam qui labore animi.
+      id: "50611"
+      is_have_proxy: 1
+      is_reserve_price: 2
+      last_time: 1567396800000
+      limit_number: 1
+      mkt_price: 395
+      pictures_url: ""
+      prod_id: 21320
+      prod_name: 朱砂平安扣
+      qr_url: ""
+      remind_time: 1567389600000
+      reserve_price: Nam nemo pariatur.
+      result_status: -1
+      serial_num: 10:00~12:00
+      share_url: Quo laudantium qui ducimus animi eos a.
+      start_auction_price: 110
+      start_time: 1567389600000
+      title: 朱砂平安扣
+      total_number: 1
+      transaction_number: 0
+      transaction_price: Quia omnis.
+      user_id: Atque voluptatem.
+      user_name: Distinctio aut non.
+    - add_price: 20
+      art_no: ZS1908038
+      auction_status: 1
+      auction_type: 2
+      bid_scene_id: -1
+      bond_price: 20
+      buy_number: 0
+      buy_unit_price: Est eum illum.
+      buyout_price: 200
+      cap_price: 390
+      crowdfunding_package_id: Ipsa occaecati dolorum et corporis rem voluptatem.
+      current_price: 110
+      end_time: 1567396800000
+      head_portrait: Recusandae quam qui labore animi.
+      id: "50611"
+      is_have_proxy: 1
+      is_reserve_price: 2
+      last_time: 1567396800000
+      limit_number: 1
+      mkt_price: 395
+      pictures_url: ""
+      prod_id: 21320
+      prod_name: 朱砂平安扣
+      qr_url: ""
+      remind_time: 1567389600000
+      reserve_price: Nam nemo pariatur.
+      result_status: -1
+      serial_num: 10:00~12:00
+      share_url: Quo laudantium qui ducimus animi eos a.
+      start_auction_price: 110
+      start_time: 1567389600000
+      title: 朱砂平安扣
+      total_number: 1
+      transaction_number: 0
+      transaction_price: Quia omnis.
+      user_id: Atque voluptatem.
+      user_name: Distinctio aut non.
+    - add_price: 20
+      art_no: ZS1908038
+      auction_status: 1
+      auction_type: 2
+      bid_scene_id: -1
+      bond_price: 20
+      buy_number: 0
+      buy_unit_price: Est eum illum.
+      buyout_price: 200
+      cap_price: 390
+      crowdfunding_package_id: Ipsa occaecati dolorum et corporis rem voluptatem.
+      current_price: 110
+      end_time: 1567396800000
+      head_portrait: Recusandae quam qui labore animi.
+      id: "50611"
+      is_have_proxy: 1
+      is_reserve_price: 2
+      last_time: 1567396800000
+      limit_number: 1
+      mkt_price: 395
+      pictures_url: ""
+      prod_id: 21320
+      prod_name: 朱砂平安扣
+      qr_url: ""
+      remind_time: 1567389600000
+      reserve_price: Nam nemo pariatur.
+      result_status: -1
+      serial_num: 10:00~12:00
+      share_url: Quo laudantium qui ducimus animi eos a.
+      start_auction_price: 110
+      start_time: 1567389600000
+      title: 朱砂平安扣
+      total_number: 1
+      transaction_number: 0
+      transaction_price: Quia omnis.
+      user_id: Atque voluptatem.
+      user_name: Distinctio aut non.
+    - add_price: 20
+      art_no: ZS1908038
+      auction_status: 1
+      auction_type: 2
+      bid_scene_id: -1
+      bond_price: 20
+      buy_number: 0
+      buy_unit_price: Est eum illum.
+      buyout_price: 200
+      cap_price: 390
+      crowdfunding_package_id: Ipsa occaecati dolorum et corporis rem voluptatem.
+      current_price: 110
+      end_time: 1567396800000
+      head_portrait: Recusandae quam qui labore animi.
+      id: "50611"
+      is_have_proxy: 1
+      is_reserve_price: 2
+      last_time: 1567396800000
+      limit_number: 1
+      mkt_price: 395
+      pictures_url: ""
+      prod_id: 21320
+      prod_name: 朱砂平安扣
+      qr_url: ""
+      remind_time: 1567389600000
+      reserve_price: Nam nemo pariatur.
+      result_status: -1
+      serial_num: 10:00~12:00
+      share_url: Quo laudantium qui ducimus animi eos a.
+      start_auction_price: 110
+      start_time: 1567389600000
+      title: 朱砂平安扣
+      total_number: 1
+      transaction_number: 0
+      transaction_price: Quia omnis.
+      user_id: Atque voluptatem.
+      user_name: Distinctio aut non.
+  AuctionGetAuctionProductListByStatusRequestBody:
+    title: AuctionGetAuctionProductListByStatusRequestBody
     type: object
     properties:
-      name:
+      auction_status:
+        type: integer
+        description: 拍卖状态
+        example: 2
+        format: int64
+      current_page:
+        type: integer
+        description: 当前页数
+        example: 1
+        format: int64
+      page_size:
+        type: integer
+        description: 每页返回的条数
+        example: 30
+        format: int64
+    example:
+      auction_status: 2
+      current_page: 1
+      page_size: 30
+  AuctionProductResponseAuctionList:
+    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; view=default'
+    type: object
+    properties:
+      add_price:
+        type: integer
+        example: 20
+        format: int64
+      art_no:
         type: string
-        description: Name of bottle to pick
-        example: Blue's Cuvee
-      varietal:
-        type: array
-        items:
-          type: string
-          example: Voluptatem et.
-        description: Varietals in preference order
-        example:
-        - pinot noir
-        - merlot
-        - cabernet franc
-      winery:
+        example: ZS1908038
+      auction_status:
+        type: integer
+        example: 1
+        format: int64
+      auction_type:
+        type: integer
+        example: 2
+        format: int64
+      bid_scene_id:
+        type: integer
+        example: -1
+        format: int64
+      bond_price:
+        type: integer
+        example: 20
+        format: int64
+      buy_number:
+        type: integer
+        example: 0
+        format: int64
+      buy_unit_price:
         type: string
-        description: Winery of bottle to pick
-        example: longoria
+        example: Adipisci ut laboriosam porro soluta.
+      buyout_price:
+        type: integer
+        example: 200
+        format: int64
+      cap_price:
+        type: integer
+        example: 390
+        format: int64
+      crowdfunding_package_id:
+        type: string
+        example: Ducimus et culpa et.
+      current_price:
+        type: integer
+        example: 110
+        format: int64
+      end_time:
+        type: integer
+        example: 1567396800000
+        format: int64
+      head_portrait:
+        type: string
+        example: Eum quis dolor mollitia est.
+      id:
+        type: string
+        example: "50611"
+      is_have_proxy:
+        type: integer
+        example: 1
+        format: int64
+      is_reserve_price:
+        type: integer
+        example: 2
+        format: int64
+      last_time:
+        type: integer
+        example: 1567396800000
+        format: int64
+      limit_number:
+        type: integer
+        example: 1
+        format: int64
+      mkt_price:
+        type: integer
+        example: 395
+        format: int64
+      pictures_url:
+        type: string
+        example: ""
+      prod_id:
+        type: integer
+        example: 21320
+        format: int32
+      prod_name:
+        type: string
+        example: 朱砂平安扣
+      qr_url:
+        type: string
+        example: ""
+      remind_time:
+        type: integer
+        example: 1567389600000
+        format: int64
+      reserve_price:
+        type: string
+        example: Rerum dignissimos est non est ipsam.
+      result_status:
+        type: integer
+        example: -1
+        format: int64
+      serial_num:
+        type: string
+        example: 10:00~12:00
+      share_url:
+        type: string
+        example: Hic qui iusto nobis dolores voluptate odit.
+      start_auction_price:
+        type: integer
+        example: 110
+        format: int64
+      start_time:
+        type: integer
+        example: 1567389600000
+        format: int64
+      title:
+        type: string
+        example: 朱砂平安扣
+      total_number:
+        type: integer
+        example: 1
+        format: int64
+      transaction_number:
+        type: integer
+        example: 0
+        format: int64
+      transaction_price:
+        type: string
+        example: Facilis sit necessitatibus.
+      user_id:
+        type: string
+        example: Numquam dolor esse ullam nisi.
+      user_name:
+        type: string
+        example: Architecto voluptas aut harum perferendis est.
+    description: A StoredBottle describes a bottle retrieved by the storage service.
+      (auctionList view) (default view)
     example:
-      name: Blue's Cuvee
-      varietal:
-      - pinot noir
-      - merlot
-      - cabernet franc
-      winery: longoria
-  AuctionStoredBottleResponseCollection:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; type=collection;
-      view=default'
-    type: array
-    items:
-      $ref: '#/definitions/StoredBottleResponse'
-    description: PickResponseBody is the result type for an array of StoredBottleResponse
-      (default view)
-    example:
-    - composition:
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      description: Red wine blend with an emphasis on the Cabernet Franc grape and
-        including other Bordeaux grape varietals and some Syrah
-      id: 123abc
-      name: Blue's Cuvee
-      rating: 3
-      vintage: 1941
-      winery:
-        name: Longoria
-    - composition:
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      description: Red wine blend with an emphasis on the Cabernet Franc grape and
-        including other Bordeaux grape varietals and some Syrah
-      id: 123abc
-      name: Blue's Cuvee
-      rating: 3
-      vintage: 1941
-      winery:
-        name: Longoria
-    - composition:
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      description: Red wine blend with an emphasis on the Cabernet Franc grape and
-        including other Bordeaux grape varietals and some Syrah
-      id: 123abc
-      name: Blue's Cuvee
-      rating: 3
-      vintage: 1941
-      winery:
-        name: Longoria
-    - composition:
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      description: Red wine blend with an emphasis on the Cabernet Franc grape and
-        including other Bordeaux grape varietals and some Syrah
-      id: 123abc
-      name: Blue's Cuvee
-      rating: 3
-      vintage: 1941
-      winery:
-        name: Longoria
-  AuctionStoredBottleResponseTinyCollection:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; type=collection;
-      view=tiny'
-    type: array
-    items:
-      $ref: '#/definitions/StoredBottleResponseTiny'
-    description: AuctionStoredBottleResponseTinyCollection is the result type for
-      an array of StoredBottleResponseTiny (default view)
-    example:
-    - id: 123abc
-      name: Blue's Cuvee
-      winery:
-        name: Longoria
-    - id: 123abc
-      name: Blue's Cuvee
-      winery:
-        name: Longoria
-    - id: 123abc
-      name: Blue's Cuvee
-      winery:
-        name: Longoria
+      add_price: 20
+      art_no: ZS1908038
+      auction_status: 1
+      auction_type: 2
+      bid_scene_id: -1
+      bond_price: 20
+      buy_number: 0
+      buy_unit_price: Libero accusantium molestiae voluptatibus quo.
+      buyout_price: 200
+      cap_price: 390
+      crowdfunding_package_id: Quibusdam aperiam blanditiis qui id.
+      current_price: 110
+      end_time: 1567396800000
+      head_portrait: Recusandae soluta ut.
+      id: "50611"
+      is_have_proxy: 1
+      is_reserve_price: 2
+      last_time: 1567396800000
+      limit_number: 1
+      mkt_price: 395
+      pictures_url: ""
+      prod_id: 21320
+      prod_name: 朱砂平安扣
+      qr_url: ""
+      remind_time: 1567389600000
+      reserve_price: Error accusamus.
+      result_status: -1
+      serial_num: 10:00~12:00
+      share_url: Mollitia quam.
+      start_auction_price: 110
+      start_time: 1567389600000
+      title: 朱砂平安扣
+      total_number: 1
+      transaction_number: 0
+      transaction_price: Et quisquam unde similique.
+      user_id: Aliquam dicta quo voluptas quod sit.
+      user_name: Voluptatem accusantium.
   BottleRequestBody:
     title: BottleRequestBody
     type: object
@@ -366,13 +573,11 @@ definitions:
           $ref: '#/definitions/ComponentRequestBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
-          varietal: Syrah
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
       description:
         type: string
@@ -388,13 +593,13 @@ definitions:
       rating:
         type: integer
         description: Rating of bottle from 1 (worst) to 5 (best)
-        example: 2
+        example: 3
         minimum: 1
         maximum: 5
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1909
+        example: 2015
         minimum: 1900
         maximum: 2020
       winery:
@@ -402,17 +607,15 @@ definitions:
     description: Bottle describes a bottle of wine to be stored.
     example:
       composition:
-      - percentage: 71
+      - percentage: 19
         varietal: Syrah
-      - percentage: 71
-        varietal: Syrah
-      - percentage: 71
+      - percentage: 19
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       name: Blue's Cuvee
-      rating: 3
-      vintage: 1962
+      rating: 1
+      vintage: 1968
       winery:
         country: USA
         name: Longoria
@@ -429,7 +632,7 @@ definitions:
       percentage:
         type: integer
         description: Percentage of varietal in wine
-        example: 72
+        example: 91
         minimum: 1
         maximum: 100
       varietal:
@@ -439,28 +642,7 @@ definitions:
         pattern: '[A-Za-z'' ]+'
         maxLength: 100
     example:
-      percentage: 62
-      varietal: Syrah
-    required:
-    - varietal
-  ComponentResponse:
-    title: ComponentResponse
-    type: object
-    properties:
-      percentage:
-        type: integer
-        description: Percentage of varietal in wine
-        example: 82
-        minimum: 1
-        maximum: 100
-      varietal:
-        type: string
-        description: Grape varietal
-        example: Syrah
-        pattern: '[A-Za-z'' ]+'
-        maxLength: 100
-    example:
-      percentage: 20
+      percentage: 50
       varietal: Syrah
     required:
     - varietal
@@ -471,7 +653,7 @@ definitions:
       percentage:
         type: integer
         description: Percentage of varietal in wine
-        example: 58
+        example: 55
         minimum: 1
         maximum: 100
       varietal:
@@ -481,80 +663,12 @@ definitions:
         pattern: '[A-Za-z'' ]+'
         maxLength: 100
     example:
-      percentage: 87
+      percentage: 64
       varietal: Syrah
     required:
     - varietal
-  StoredBottleResponse:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; view=default'
-    type: object
-    properties:
-      composition:
-        type: array
-        items:
-          $ref: '#/definitions/ComponentResponse'
-        description: Composition is the list of grape varietals and associated percentage.
-        example:
-        - percentage: 82
-          varietal: Syrah
-        - percentage: 82
-          varietal: Syrah
-        - percentage: 82
-          varietal: Syrah
-      description:
-        type: string
-        description: Description of bottle
-        example: Red wine blend with an emphasis on the Cabernet Franc grape and including
-          other Bordeaux grape varietals and some Syrah
-        maxLength: 2000
-      id:
-        type: string
-        description: ID is the unique id of the bottle.
-        example: 123abc
-      name:
-        type: string
-        description: Name of bottle
-        example: Blue's Cuvee
-        maxLength: 100
-      rating:
-        type: integer
-        description: Rating of bottle from 1 (worst) to 5 (best)
-        example: 4
-        minimum: 1
-        maximum: 5
-      vintage:
-        type: integer
-        description: Vintage of bottle
-        example: 1993
-        minimum: 1900
-        maximum: 2020
-      winery:
-        $ref: '#/definitions/WineryResponseTiny'
-    description: A StoredBottle describes a bottle retrieved by the storage service.
-      (default view)
-    example:
-      composition:
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      - percentage: 82
-        varietal: Syrah
-      description: Red wine blend with an emphasis on the Cabernet Franc grape and
-        including other Bordeaux grape varietals and some Syrah
-      id: 123abc
-      name: Blue's Cuvee
-      rating: 1
-      vintage: 1965
-      winery:
-        name: Longoria
-    required:
-    - id
-    - name
-    - winery
-    - vintage
   StoredBottleResponseTiny:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; view=default'
+    title: 'Mediatype identifier: storedbottle; view=default'
     type: object
     properties:
       id:
@@ -589,11 +703,13 @@ definitions:
           $ref: '#/definitions/ComponentRequestBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
+        - percentage: 19
+          varietal: Syrah
+        - percentage: 19
           varietal: Syrah
       description:
         type: string
@@ -615,24 +731,24 @@ definitions:
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1986
+        example: 1918
         minimum: 1900
         maximum: 2020
       winery:
         $ref: '#/definitions/WineryRequestBody'
     example:
       composition:
-      - percentage: 71
+      - percentage: 19
         varietal: Syrah
-      - percentage: 71
+      - percentage: 19
         varietal: Syrah
-      - percentage: 71
+      - percentage: 19
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       name: Blue's Cuvee
-      rating: 4
-      vintage: 1920
+      rating: 2
+      vintage: 1904
       winery:
         country: USA
         name: Longoria
@@ -653,45 +769,68 @@ definitions:
         description: Array of bottle info that matches the ids attribute
         example:
         - composition:
-          - percentage: 71
+          - percentage: 19
             varietal: Syrah
-          - percentage: 71
+          - percentage: 19
+            varietal: Syrah
+          - percentage: 19
             varietal: Syrah
           description: Red wine blend with an emphasis on the Cabernet Franc grape
             and including other Bordeaux grape varietals and some Syrah
           name: Blue's Cuvee
-          rating: 2
-          vintage: 1937
+          rating: 1
+          vintage: 1957
           winery:
             country: USA
             name: Longoria
             region: Central Coast, California
             url: http://www.longoriawine.com/
         - composition:
-          - percentage: 71
+          - percentage: 19
             varietal: Syrah
-          - percentage: 71
+          - percentage: 19
+            varietal: Syrah
+          - percentage: 19
             varietal: Syrah
           description: Red wine blend with an emphasis on the Cabernet Franc grape
             and including other Bordeaux grape varietals and some Syrah
           name: Blue's Cuvee
-          rating: 2
-          vintage: 1937
+          rating: 1
+          vintage: 1957
           winery:
             country: USA
             name: Longoria
             region: Central Coast, California
             url: http://www.longoriawine.com/
         - composition:
-          - percentage: 71
+          - percentage: 19
             varietal: Syrah
-          - percentage: 71
+          - percentage: 19
+            varietal: Syrah
+          - percentage: 19
             varietal: Syrah
           description: Red wine blend with an emphasis on the Cabernet Franc grape
             and including other Bordeaux grape varietals and some Syrah
           name: Blue's Cuvee
-          rating: 2
-          vintage: 1937
+          rating: 1
+          vintage: 1957
+          winery:
+            country: USA
+            name: Longoria
+            region: Central Coast, California
+            url: http://www.longoriawine.com/
+        - composition:
+          - percentage: 19
+            varietal: Syrah
+          - percentage: 19
+            varietal: Syrah
+          - percentage: 19
+            varietal: Syrah
+          description: Red wine blend with an emphasis on the Cabernet Franc grape
+            and including other Bordeaux grape varietals and some Syrah
+          name: Blue's Cuvee
+          rating: 1
+          vintage: 1957
           winery:
             country: USA
             name: Longoria
@@ -700,30 +839,51 @@ definitions:
     example:
       bottles:
       - composition:
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
+        - percentage: 19
+          varietal: Syrah
+        - percentage: 19
           varietal: Syrah
         description: Red wine blend with an emphasis on the Cabernet Franc grape and
           including other Bordeaux grape varietals and some Syrah
         name: Blue's Cuvee
-        rating: 2
-        vintage: 1937
+        rating: 1
+        vintage: 1957
         winery:
           country: USA
           name: Longoria
           region: Central Coast, California
           url: http://www.longoriawine.com/
       - composition:
-        - percentage: 71
+        - percentage: 19
           varietal: Syrah
-        - percentage: 71
+        - percentage: 19
+          varietal: Syrah
+        - percentage: 19
           varietal: Syrah
         description: Red wine blend with an emphasis on the Cabernet Franc grape and
           including other Bordeaux grape varietals and some Syrah
         name: Blue's Cuvee
-        rating: 2
-        vintage: 1937
+        rating: 1
+        vintage: 1957
+        winery:
+          country: USA
+          name: Longoria
+          region: Central Coast, California
+          url: http://www.longoriawine.com/
+      - composition:
+        - percentage: 19
+          varietal: Syrah
+        - percentage: 19
+          varietal: Syrah
+        - percentage: 19
+          varietal: Syrah
+        description: Red wine blend with an emphasis on the Cabernet Franc grape and
+          including other Bordeaux grape varietals and some Syrah
+        name: Blue's Cuvee
+        rating: 1
+        vintage: 1957
         winery:
           country: USA
           name: Longoria
@@ -738,20 +898,20 @@ definitions:
       id:
         type: string
         description: ID of missing bottle
-        example: Et beatae nisi soluta ex ab accusamus.
+        example: Hic fuga.
       message:
         type: string
         description: Message of error
         example: bottle 1 not found
     description: Bottle not found
     example:
-      id: Rerum dicta quo.
+      id: Ut labore velit laborum facilis repudiandae.
       message: bottle 1 not found
     required:
     - message
     - id
   UserShowResponseBody:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; view=default'
+    title: 'Mediatype identifier: storedbottle; view=default'
     type: object
     properties:
       composition:
@@ -760,13 +920,13 @@ definitions:
           $ref: '#/definitions/ComponentResponseBody'
         description: Composition is the list of grape varietals and associated percentage.
         example:
-        - percentage: 92
+        - percentage: 49
           varietal: Syrah
-        - percentage: 92
+        - percentage: 49
           varietal: Syrah
-        - percentage: 92
+        - percentage: 49
           varietal: Syrah
-        - percentage: 92
+        - percentage: 49
           varietal: Syrah
       description:
         type: string
@@ -786,13 +946,13 @@ definitions:
       rating:
         type: integer
         description: Rating of bottle from 1 (worst) to 5 (best)
-        example: 1
+        example: 3
         minimum: 1
         maximum: 5
       vintage:
         type: integer
         description: Vintage of bottle
-        example: 1980
+        example: 1964
         minimum: 1900
         maximum: 2020
       winery:
@@ -800,18 +960,18 @@ definitions:
     description: ShowResponseBody result type (default view)
     example:
       composition:
-      - percentage: 92
+      - percentage: 49
         varietal: Syrah
-      - percentage: 92
+      - percentage: 49
         varietal: Syrah
-      - percentage: 92
+      - percentage: 49
         varietal: Syrah
       description: Red wine blend with an emphasis on the Cabernet Franc grape and
         including other Bordeaux grape varietals and some Syrah
       id: 123abc
       name: Blue's Cuvee
-      rating: 1
-      vintage: 2018
+      rating: 4
+      vintage: 1984
       winery:
         name: Longoria
     required:
@@ -820,14 +980,17 @@ definitions:
     - winery
     - vintage
   UserStoredBottleResponseTinyCollection:
-    title: 'Mediatype identifier: application/vnd.cellar.stored-bottle; type=collection;
-      view=tiny'
+    title: 'Mediatype identifier: storedbottle; type=collection; view=tiny'
     type: array
     items:
       $ref: '#/definitions/StoredBottleResponseTiny'
     description: UserStoredBottleResponseTinyCollection is the result type for an
       array of StoredBottleResponseTiny (default view)
     example:
+    - id: 123abc
+      name: Blue's Cuvee
+      winery:
+        name: Longoria
     - id: 123abc
       name: Blue's Cuvee
       winery:

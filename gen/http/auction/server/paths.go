@@ -7,12 +7,7 @@
 
 package server
 
-// PickAuctionPath returns the URL path to the auction service pick HTTP endpoint.
-func PickAuctionPath() string {
-	return "/auction"
-}
-
-// GetAuctionPath returns the URL path to the auction service get HTTP endpoint.
-func GetAuctionPath() string {
-	return "/auction/get"
+// GetAuctionProductListByStatusAuctionPath returns the URL path to the auction service getAuctionProductListByStatus HTTP endpoint.
+func GetAuctionProductListByStatusAuctionPath() string {
+	return "/api-auction/getAuctionProductListByStatus"
 }

@@ -13,26 +13,21 @@ import (
 	"fmt"
 )
 
-// BuildPickPayload builds the payload for the auction pick endpoint from CLI
-// flags.
-func BuildPickPayload(auctionPickBody string) (*auction.Criteria, error) {
+// BuildGetAuctionProductListByStatusPayload builds the payload for the auction
+// getAuctionProductListByStatus endpoint from CLI flags.
+func BuildGetAuctionProductListByStatusPayload(auctionGetAuctionProductListByStatusBody string) (*auction.ListData, error) {
 	var err error
-	var body PickRequestBody
+	var body GetAuctionProductListByStatusRequestBody
 	{
-		err = json.Unmarshal([]byte(auctionPickBody), &body)
+		err = json.Unmarshal([]byte(auctionGetAuctionProductListByStatusBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, example of valid JSON:\n%s", "'{\n      \"name\": \"Blue\\'s Cuvee\",\n      \"varietal\": [\n         \"pinot noir\",\n         \"merlot\",\n         \"cabernet franc\"\n      ],\n      \"winery\": \"longoria\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, example of valid JSON:\n%s", "'{\n      \"auction_status\": 2,\n      \"current_page\": 1,\n      \"page_size\": 30\n   }'")
 		}
 	}
-	v := &auction.Criteria{
-		Name:   body.Name,
-		Winery: body.Winery,
-	}
-	if body.Varietal != nil {
-		v.Varietal = make([]string, len(body.Varietal))
-		for i, val := range body.Varietal {
-			v.Varietal[i] = val
-		}
+	v := &auction.ListData{
+		AuctionStatus: body.AuctionStatus,
+		CurrentPage:   body.CurrentPage,
+		PageSize:      body.PageSize,
 	}
 	return v, nil
 }

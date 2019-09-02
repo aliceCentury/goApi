@@ -10,255 +10,123 @@ package client
 import (
 	auction "calcsvc/gen/auction"
 	auctionviews "calcsvc/gen/auction/views"
-	"unicode/utf8"
-
-	goa "goa.design/goa/v3/pkg"
 )
 
-// PickRequestBody is the type of the "auction" service "pick" endpoint HTTP
-// request body.
-type PickRequestBody struct {
-	// Name of bottle to pick
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	// Varietals in preference order
-	Varietal []string `form:"varietal,omitempty" json:"varietal,omitempty" xml:"varietal,omitempty"`
-	// Winery of bottle to pick
-	Winery *string `form:"winery,omitempty" json:"winery,omitempty" xml:"winery,omitempty"`
+// GetAuctionProductListByStatusRequestBody is the type of the "auction"
+// service "getAuctionProductListByStatus" endpoint HTTP request body.
+type GetAuctionProductListByStatusRequestBody struct {
+	// 拍卖状态
+	AuctionStatus *int `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	// 当前页数
+	CurrentPage *int `form:"current_page,omitempty" json:"current_page,omitempty" xml:"current_page,omitempty"`
+	// 每页返回的条数
+	PageSize *int `form:"page_size,omitempty" json:"page_size,omitempty" xml:"page_size,omitempty"`
 }
 
-// PickResponseBody is the type of the "auction" service "pick" endpoint HTTP
-// response body.
-type PickResponseBody []*StoredBottleResponse
+// GetAuctionProductListByStatusResponseBody is the type of the "auction"
+// service "getAuctionProductListByStatus" endpoint HTTP response body.
+type GetAuctionProductListByStatusResponseBody []*AuctionProductResponse
 
-// GetResponseBody is the type of the "auction" service "get" endpoint HTTP
-// response body.
-type GetResponseBody []*StoredBottleResponse
-
-// PickNoCriteriaResponseBody is the type of the "auction" service "pick"
-// endpoint HTTP response body for the "no_criteria" error.
-type PickNoCriteriaResponseBody string
-
-// PickNoMatchResponseBody is the type of the "auction" service "pick" endpoint
-// HTTP response body for the "no_match" error.
-type PickNoMatchResponseBody string
-
-// StoredBottleResponse is used to define fields on response body types.
-type StoredBottleResponse struct {
-	// ID is the unique id of the bottle.
-	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	// Name of bottle
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	// Winery that produces wine
-	Winery *WineryResponse `form:"winery,omitempty" json:"winery,omitempty" xml:"winery,omitempty"`
-	// Vintage of bottle
-	Vintage *uint32 `form:"vintage,omitempty" json:"vintage,omitempty" xml:"vintage,omitempty"`
-	// Composition is the list of grape varietals and associated percentage.
-	Composition []*ComponentResponse `form:"composition,omitempty" json:"composition,omitempty" xml:"composition,omitempty"`
-	// Description of bottle
-	Description *string `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-	// Rating of bottle from 1 (worst) to 5 (best)
-	Rating *uint32 `form:"rating,omitempty" json:"rating,omitempty" xml:"rating,omitempty"`
+// AuctionProductResponse is used to define fields on response body types.
+type AuctionProductResponse struct {
+	ID                    *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	AddPrice              *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	ArtNo                 *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
+	AuctionStatus         *int    `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	AuctionType           *int    `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
+	BidSceneID            *int    `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
+	BondPrice             *int    `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
+	BuyNumber             *int    `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
+	BuyUnitPrice          *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
+	BuyoutPrice           *int    `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
+	CapPrice              *int    `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	CrowdfundingPackageID *string `form:"crowdfunding_package_id,omitempty" json:"crowdfunding_package_id,omitempty" xml:"crowdfunding_package_id,omitempty"`
+	CurrentPrice          *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
+	EndTime               *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
+	HeadPortrait          *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
+	IsHaveProxy           *int    `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
+	IsReservePrice        *int    `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
+	LastTime              *int64  `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
+	LimitNumber           *int    `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
+	MktPrice              *int    `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
+	PicturesURL           *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
+	ProdID                *int32  `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
+	ProdName              *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
+	QrURL                 *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
+	RemindTime            *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
+	ReservePrice          *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
+	ResultStatus          *int    `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
+	RuleID                *int    `form:"rule_id,omitempty" json:"rule_id,omitempty" xml:"rule_id,omitempty"`
+	SerialNum             *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
+	ShareURL              *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
+	StartAuctionPrice     *int    `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
+	StartTime             *int64  `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
+	Title                 *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	TotalNumber           *int    `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
+	TransactionNumber     *int    `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
+	TransactionPrice      *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
+	UserID                *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	UserName              *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
-// WineryResponse is used to define fields on response body types.
-type WineryResponse struct {
-	// Name of winery
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	// Region of winery
-	Region *string `form:"region,omitempty" json:"region,omitempty" xml:"region,omitempty"`
-	// Country of winery
-	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
-	// Winery website URL
-	URL *string `form:"url,omitempty" json:"url,omitempty" xml:"url,omitempty"`
-}
-
-// ComponentResponse is used to define fields on response body types.
-type ComponentResponse struct {
-	// Grape varietal
-	Varietal *string `form:"varietal,omitempty" json:"varietal,omitempty" xml:"varietal,omitempty"`
-	// Percentage of varietal in wine
-	Percentage *uint32 `form:"percentage,omitempty" json:"percentage,omitempty" xml:"percentage,omitempty"`
-}
-
-// NewPickRequestBody builds the HTTP request body from the payload of the
-// "pick" endpoint of the "auction" service.
-func NewPickRequestBody(p *auction.Criteria) *PickRequestBody {
-	body := &PickRequestBody{
-		Name:   p.Name,
-		Winery: p.Winery,
-	}
-	if p.Varietal != nil {
-		body.Varietal = make([]string, len(p.Varietal))
-		for i, val := range p.Varietal {
-			body.Varietal[i] = val
-		}
+// NewGetAuctionProductListByStatusRequestBody builds the HTTP request body
+// from the payload of the "getAuctionProductListByStatus" endpoint of the
+// "auction" service.
+func NewGetAuctionProductListByStatusRequestBody(p *auction.ListData) *GetAuctionProductListByStatusRequestBody {
+	body := &GetAuctionProductListByStatusRequestBody{
+		AuctionStatus: p.AuctionStatus,
+		CurrentPage:   p.CurrentPage,
+		PageSize:      p.PageSize,
 	}
 	return body
 }
 
-// NewPickStoredBottleCollectionOK builds a "auction" service "pick" endpoint
-// result from a HTTP "OK" response.
-func NewPickStoredBottleCollectionOK(body PickResponseBody) auctionviews.StoredBottleCollectionView {
-	v := make([]*auctionviews.StoredBottleView, len(body))
+// NewGetAuctionProductListByStatusAuctionProductCollectionOK builds a
+// "auction" service "getAuctionProductListByStatus" endpoint result from a
+// HTTP "OK" response.
+func NewGetAuctionProductListByStatusAuctionProductCollectionOK(body GetAuctionProductListByStatusResponseBody) auctionviews.AuctionProductCollectionView {
+	v := make([]*auctionviews.AuctionProductView, len(body))
 	for i, val := range body {
-		v[i] = &auctionviews.StoredBottleView{
-			ID:          val.ID,
-			Name:        val.Name,
-			Vintage:     val.Vintage,
-			Description: val.Description,
-			Rating:      val.Rating,
-		}
-		v[i].Winery = unmarshalWineryResponseToAuctionviewsWineryView(val.Winery)
-		if val.Composition != nil {
-			v[i].Composition = make([]*auctionviews.ComponentView, len(val.Composition))
-			for j, val := range val.Composition {
-				v[i].Composition[j] = unmarshalComponentResponseToAuctionviewsComponentView(val)
-			}
-		}
-	}
-	return v
-}
-
-// NewPickNoCriteria builds a auction service pick endpoint no_criteria error.
-func NewPickNoCriteria(body PickNoCriteriaResponseBody) auction.NoCriteria {
-	v := auction.NoCriteria(body)
-	return v
-}
-
-// NewPickNoMatch builds a auction service pick endpoint no_match error.
-func NewPickNoMatch(body PickNoMatchResponseBody) auction.NoMatch {
-	v := auction.NoMatch(body)
-	return v
-}
-
-// NewGetStoredBottleCollectionOK builds a "auction" service "get" endpoint
-// result from a HTTP "OK" response.
-func NewGetStoredBottleCollectionOK(body GetResponseBody) auctionviews.StoredBottleCollectionView {
-	v := make([]*auctionviews.StoredBottleView, len(body))
-	for i, val := range body {
-		v[i] = &auctionviews.StoredBottleView{
-			ID:          val.ID,
-			Name:        val.Name,
-			Vintage:     val.Vintage,
-			Description: val.Description,
-			Rating:      val.Rating,
-		}
-		v[i].Winery = unmarshalWineryResponseToAuctionviewsWineryView(val.Winery)
-		if val.Composition != nil {
-			v[i].Composition = make([]*auctionviews.ComponentView, len(val.Composition))
-			for j, val := range val.Composition {
-				v[i].Composition[j] = unmarshalComponentResponseToAuctionviewsComponentView(val)
-			}
+		v[i] = &auctionviews.AuctionProductView{
+			ID:                    val.ID,
+			AddPrice:              val.AddPrice,
+			ArtNo:                 val.ArtNo,
+			AuctionStatus:         val.AuctionStatus,
+			AuctionType:           val.AuctionType,
+			BidSceneID:            val.BidSceneID,
+			BondPrice:             val.BondPrice,
+			BuyNumber:             val.BuyNumber,
+			BuyUnitPrice:          val.BuyUnitPrice,
+			BuyoutPrice:           val.BuyoutPrice,
+			CapPrice:              val.CapPrice,
+			CrowdfundingPackageID: val.CrowdfundingPackageID,
+			CurrentPrice:          val.CurrentPrice,
+			EndTime:               val.EndTime,
+			HeadPortrait:          val.HeadPortrait,
+			IsHaveProxy:           val.IsHaveProxy,
+			IsReservePrice:        val.IsReservePrice,
+			LastTime:              val.LastTime,
+			LimitNumber:           val.LimitNumber,
+			MktPrice:              val.MktPrice,
+			PicturesURL:           val.PicturesURL,
+			ProdID:                val.ProdID,
+			ProdName:              val.ProdName,
+			QrURL:                 val.QrURL,
+			RemindTime:            val.RemindTime,
+			ReservePrice:          val.ReservePrice,
+			ResultStatus:          val.ResultStatus,
+			RuleID:                val.RuleID,
+			SerialNum:             val.SerialNum,
+			ShareURL:              val.ShareURL,
+			StartAuctionPrice:     val.StartAuctionPrice,
+			StartTime:             val.StartTime,
+			Title:                 val.Title,
+			TotalNumber:           val.TotalNumber,
+			TransactionNumber:     val.TransactionNumber,
+			TransactionPrice:      val.TransactionPrice,
+			UserID:                val.UserID,
+			UserName:              val.UserName,
 		}
 	}
 	return v
-}
-
-// ValidateStoredBottleResponse runs the validations defined on
-// StoredBottleResponse
-func ValidateStoredBottleResponse(body *StoredBottleResponse) (err error) {
-	if body.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
-	}
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
-	}
-	if body.Winery == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("winery", "body"))
-	}
-	if body.Vintage == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("vintage", "body"))
-	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 100 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 100, false))
-		}
-	}
-	if body.Winery != nil {
-		if err2 := ValidateWineryResponse(body.Winery); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	if body.Vintage != nil {
-		if *body.Vintage < 1900 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.vintage", *body.Vintage, 1900, true))
-		}
-	}
-	if body.Vintage != nil {
-		if *body.Vintage > 2020 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.vintage", *body.Vintage, 2020, false))
-		}
-	}
-	for _, e := range body.Composition {
-		if e != nil {
-			if err2 := ValidateComponentResponse(e); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	if body.Description != nil {
-		if utf8.RuneCountInString(*body.Description) > 2000 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.description", *body.Description, utf8.RuneCountInString(*body.Description), 2000, false))
-		}
-	}
-	if body.Rating != nil {
-		if *body.Rating < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.rating", *body.Rating, 1, true))
-		}
-	}
-	if body.Rating != nil {
-		if *body.Rating > 5 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.rating", *body.Rating, 5, false))
-		}
-	}
-	return
-}
-
-// ValidateWineryResponse runs the validations defined on WineryResponse
-func ValidateWineryResponse(body *WineryResponse) (err error) {
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
-	}
-	if body.Region == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("region", "body"))
-	}
-	if body.Country == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("country", "body"))
-	}
-	if body.Region != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("body.region", *body.Region, "(?i)[a-z '\\.]+"))
-	}
-	if body.Country != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("body.country", *body.Country, "(?i)[a-z '\\.]+"))
-	}
-	if body.URL != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("body.url", *body.URL, "(?i)^(https?|ftp)://[^\\s/$.?#].[^\\s]*$"))
-	}
-	return
-}
-
-// ValidateComponentResponse runs the validations defined on ComponentResponse
-func ValidateComponentResponse(body *ComponentResponse) (err error) {
-	if body.Varietal == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("varietal", "body"))
-	}
-	if body.Varietal != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("body.varietal", *body.Varietal, "[A-Za-z' ]+"))
-	}
-	if body.Varietal != nil {
-		if utf8.RuneCountInString(*body.Varietal) > 100 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.varietal", *body.Varietal, utf8.RuneCountInString(*body.Varietal), 100, false))
-		}
-	}
-	if body.Percentage != nil {
-		if *body.Percentage < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.percentage", *body.Percentage, 1, true))
-		}
-	}
-	if body.Percentage != nil {
-		if *body.Percentage > 100 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.percentage", *body.Percentage, 100, false))
-		}
-	}
-	return
 }

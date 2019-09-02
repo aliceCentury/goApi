@@ -8,284 +8,309 @@
 package views
 
 import (
-	"unicode/utf8"
-
 	goa "goa.design/goa/v3/pkg"
 )
 
-// StoredBottleCollection is the viewed result type that is projected based on
-// a view.
-type StoredBottleCollection struct {
+// AuctionProductCollection is the viewed result type that is projected based
+// on a view.
+type AuctionProductCollection struct {
 	// Type to project
-	Projected StoredBottleCollectionView
+	Projected AuctionProductCollectionView
 	// View to render
 	View string
 }
 
-// StoredBottleCollectionView is a type that runs validations on a projected
+// AuctionProductCollectionView is a type that runs validations on a projected
 // type.
-type StoredBottleCollectionView []*StoredBottleView
+type AuctionProductCollectionView []*AuctionProductView
 
-// StoredBottleView is a type that runs validations on a projected type.
-type StoredBottleView struct {
-	// ID is the unique id of the bottle.
-	ID *string
-	// Name of bottle
-	Name *string
-	// Winery that produces wine
-	Winery *WineryView
-	// Vintage of bottle
-	Vintage *uint32
-	// Composition is the list of grape varietals and associated percentage.
-	Composition []*ComponentView
-	// Description of bottle
-	Description *string
-	// Rating of bottle from 1 (worst) to 5 (best)
-	Rating *uint32
-}
-
-// WineryView is a type that runs validations on a projected type.
-type WineryView struct {
-	// Name of winery
-	Name *string
-	// Region of winery
-	Region *string
-	// Country of winery
-	Country *string
-	// Winery website URL
-	URL *string
-}
-
-// ComponentView is a type that runs validations on a projected type.
-type ComponentView struct {
-	// Grape varietal
-	Varietal *string
-	// Percentage of varietal in wine
-	Percentage *uint32
+// AuctionProductView is a type that runs validations on a projected type.
+type AuctionProductView struct {
+	ID                    *string
+	AddPrice              *int
+	ArtNo                 *string
+	AuctionStatus         *int
+	AuctionType           *int
+	BidSceneID            *int
+	BondPrice             *int
+	BuyNumber             *int
+	BuyUnitPrice          *string
+	BuyoutPrice           *int
+	CapPrice              *int
+	CrowdfundingPackageID *string
+	CurrentPrice          *int
+	EndTime               *int64
+	HeadPortrait          *string
+	IsHaveProxy           *int
+	IsReservePrice        *int
+	LastTime              *int64
+	LimitNumber           *int
+	MktPrice              *int
+	PicturesURL           *string
+	ProdID                *int32
+	ProdName              *string
+	QrURL                 *string
+	RemindTime            *int64
+	ReservePrice          *string
+	ResultStatus          *int
+	RuleID                *int
+	SerialNum             *string
+	ShareURL              *string
+	StartAuctionPrice     *int
+	StartTime             *int64
+	Title                 *string
+	TotalNumber           *int
+	TransactionNumber     *int
+	TransactionPrice      *string
+	UserID                *string
+	UserName              *string
 }
 
 var (
-	// StoredBottleCollectionMap is a map of attribute names in result type
-	// StoredBottleCollection indexed by view name.
-	StoredBottleCollectionMap = map[string][]string{
+	// AuctionProductCollectionMap is a map of attribute names in result type
+	// AuctionProductCollection indexed by view name.
+	AuctionProductCollectionMap = map[string][]string{
+		"bid": []string{
+			"add_price",
+			"art_no",
+			"head_portrait",
+		},
+		"auctionList": []string{
+			"add_price",
+			"art_no",
+			"auction_status",
+			"auction_type",
+			"bid_scene_id",
+			"bond_price",
+			"buy_number",
+			"buy_unit_price",
+			"buyout_price",
+			"cap_price",
+			"crowdfunding_package_id",
+			"current_price",
+			"end_time",
+			"head_portrait",
+			"id",
+			"is_have_proxy",
+			"is_reserve_price",
+			"last_time",
+			"limit_number",
+			"mkt_price",
+			"pictures_url",
+			"prod_id",
+			"prod_name",
+			"qr_url",
+			"remind_time",
+			"reserve_price",
+			"result_status",
+			"serial_num",
+			"share_url",
+			"start_auction_price",
+			"start_time",
+			"title",
+			"total_number",
+			"transaction_number",
+			"transaction_price",
+			"user_id",
+			"user_name",
+		},
 		"default": []string{
 			"id",
-			"name",
-			"winery",
-			"vintage",
-			"composition",
-			"description",
-			"rating",
-		},
-		"tiny": []string{
-			"id",
-			"name",
-			"winery",
+			"add_price",
+			"art_no",
+			"auction_status",
+			"auction_type",
+			"bid_scene_id",
+			"bond_price",
+			"buy_number",
+			"buy_unit_price",
+			"buyout_price",
+			"cap_price",
+			"crowdfunding_package_id",
+			"current_price",
+			"end_time",
+			"head_portrait",
+			"is_have_proxy",
+			"is_reserve_price",
+			"last_time",
+			"limit_number",
+			"mkt_price",
+			"pictures_url",
+			"prod_id",
+			"prod_name",
+			"qr_url",
+			"remind_time",
+			"reserve_price",
+			"result_status",
+			"rule_id",
+			"serial_num",
+			"share_url",
+			"start_auction_price",
+			"start_time",
+			"title",
+			"total_number",
+			"transaction_number",
+			"transaction_price",
+			"user_id",
+			"user_name",
 		},
 	}
-	// StoredBottleMap is a map of attribute names in result type StoredBottle
+	// AuctionProductMap is a map of attribute names in result type AuctionProduct
 	// indexed by view name.
-	StoredBottleMap = map[string][]string{
+	AuctionProductMap = map[string][]string{
+		"bid": []string{
+			"add_price",
+			"art_no",
+			"head_portrait",
+		},
+		"auctionList": []string{
+			"add_price",
+			"art_no",
+			"auction_status",
+			"auction_type",
+			"bid_scene_id",
+			"bond_price",
+			"buy_number",
+			"buy_unit_price",
+			"buyout_price",
+			"cap_price",
+			"crowdfunding_package_id",
+			"current_price",
+			"end_time",
+			"head_portrait",
+			"id",
+			"is_have_proxy",
+			"is_reserve_price",
+			"last_time",
+			"limit_number",
+			"mkt_price",
+			"pictures_url",
+			"prod_id",
+			"prod_name",
+			"qr_url",
+			"remind_time",
+			"reserve_price",
+			"result_status",
+			"serial_num",
+			"share_url",
+			"start_auction_price",
+			"start_time",
+			"title",
+			"total_number",
+			"transaction_number",
+			"transaction_price",
+			"user_id",
+			"user_name",
+		},
 		"default": []string{
 			"id",
-			"name",
-			"winery",
-			"vintage",
-			"composition",
-			"description",
-			"rating",
-		},
-		"tiny": []string{
-			"id",
-			"name",
-			"winery",
-		},
-	}
-	// WineryMap is a map of attribute names in result type Winery indexed by view
-	// name.
-	WineryMap = map[string][]string{
-		"default": []string{
-			"name",
-			"region",
-			"country",
-			"url",
-		},
-		"tiny": []string{
-			"name",
+			"add_price",
+			"art_no",
+			"auction_status",
+			"auction_type",
+			"bid_scene_id",
+			"bond_price",
+			"buy_number",
+			"buy_unit_price",
+			"buyout_price",
+			"cap_price",
+			"crowdfunding_package_id",
+			"current_price",
+			"end_time",
+			"head_portrait",
+			"is_have_proxy",
+			"is_reserve_price",
+			"last_time",
+			"limit_number",
+			"mkt_price",
+			"pictures_url",
+			"prod_id",
+			"prod_name",
+			"qr_url",
+			"remind_time",
+			"reserve_price",
+			"result_status",
+			"rule_id",
+			"serial_num",
+			"share_url",
+			"start_auction_price",
+			"start_time",
+			"title",
+			"total_number",
+			"transaction_number",
+			"transaction_price",
+			"user_id",
+			"user_name",
 		},
 	}
 )
 
-// ValidateStoredBottleCollection runs the validations defined on the viewed
-// result type StoredBottleCollection.
-func ValidateStoredBottleCollection(result StoredBottleCollection) (err error) {
+// ValidateAuctionProductCollection runs the validations defined on the viewed
+// result type AuctionProductCollection.
+func ValidateAuctionProductCollection(result AuctionProductCollection) (err error) {
 	switch result.View {
+	case "bid":
+		err = ValidateAuctionProductCollectionViewBid(result.Projected)
+	case "auctionList":
+		err = ValidateAuctionProductCollectionViewAuctionList(result.Projected)
 	case "default", "":
-		err = ValidateStoredBottleCollectionView(result.Projected)
-	case "tiny":
-		err = ValidateStoredBottleCollectionViewTiny(result.Projected)
+		err = ValidateAuctionProductCollectionView(result.Projected)
 	default:
-		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "tiny"})
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"bid", "auctionList", "default"})
 	}
 	return
 }
 
-// ValidateStoredBottleCollectionView runs the validations defined on
-// StoredBottleCollectionView using the "default" view.
-func ValidateStoredBottleCollectionView(result StoredBottleCollectionView) (err error) {
+// ValidateAuctionProductCollectionViewBid runs the validations defined on
+// AuctionProductCollectionView using the "bid" view.
+func ValidateAuctionProductCollectionViewBid(result AuctionProductCollectionView) (err error) {
 	for _, item := range result {
-		if err2 := ValidateStoredBottleView(item); err2 != nil {
+		if err2 := ValidateAuctionProductViewBid(item); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
 	return
 }
 
-// ValidateStoredBottleCollectionViewTiny runs the validations defined on
-// StoredBottleCollectionView using the "tiny" view.
-func ValidateStoredBottleCollectionViewTiny(result StoredBottleCollectionView) (err error) {
+// ValidateAuctionProductCollectionViewAuctionList runs the validations defined
+// on AuctionProductCollectionView using the "auctionList" view.
+func ValidateAuctionProductCollectionViewAuctionList(result AuctionProductCollectionView) (err error) {
 	for _, item := range result {
-		if err2 := ValidateStoredBottleViewTiny(item); err2 != nil {
+		if err2 := ValidateAuctionProductViewAuctionList(item); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
 	return
 }
 
-// ValidateStoredBottleView runs the validations defined on StoredBottleView
-// using the "default" view.
-func ValidateStoredBottleView(result *StoredBottleView) (err error) {
-	if result.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "result"))
-	}
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	if result.Vintage == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("vintage", "result"))
-	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) > 100 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 100, false))
-		}
-	}
-	if result.Vintage != nil {
-		if *result.Vintage < 1900 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.vintage", *result.Vintage, 1900, true))
-		}
-	}
-	if result.Vintage != nil {
-		if *result.Vintage > 2020 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.vintage", *result.Vintage, 2020, false))
-		}
-	}
-	for _, e := range result.Composition {
-		if e != nil {
-			if err2 := ValidateComponentView(e); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	if result.Description != nil {
-		if utf8.RuneCountInString(*result.Description) > 2000 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.description", *result.Description, utf8.RuneCountInString(*result.Description), 2000, false))
-		}
-	}
-	if result.Rating != nil {
-		if *result.Rating < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.rating", *result.Rating, 1, true))
-		}
-	}
-	if result.Rating != nil {
-		if *result.Rating > 5 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.rating", *result.Rating, 5, false))
-		}
-	}
-	if result.Winery != nil {
-		if err2 := ValidateWineryViewTiny(result.Winery); err2 != nil {
+// ValidateAuctionProductCollectionView runs the validations defined on
+// AuctionProductCollectionView using the "default" view.
+func ValidateAuctionProductCollectionView(result AuctionProductCollectionView) (err error) {
+	for _, item := range result {
+		if err2 := ValidateAuctionProductView(item); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
 	return
 }
 
-// ValidateStoredBottleViewTiny runs the validations defined on
-// StoredBottleView using the "tiny" view.
-func ValidateStoredBottleViewTiny(result *StoredBottleView) (err error) {
-	if result.ID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("id", "result"))
-	}
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) > 100 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 100, false))
-		}
-	}
-	if result.Winery != nil {
-		if err2 := ValidateWineryViewTiny(result.Winery); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
+// ValidateAuctionProductViewBid runs the validations defined on
+// AuctionProductView using the "bid" view.
+func ValidateAuctionProductViewBid(result *AuctionProductView) (err error) {
+
 	return
 }
 
-// ValidateWineryView runs the validations defined on WineryView using the
-// "default" view.
-func ValidateWineryView(result *WineryView) (err error) {
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	if result.Region == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("region", "result"))
-	}
-	if result.Country == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("country", "result"))
-	}
-	if result.Region != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("result.region", *result.Region, "(?i)[a-z '\\.]+"))
-	}
-	if result.Country != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("result.country", *result.Country, "(?i)[a-z '\\.]+"))
-	}
-	if result.URL != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("result.url", *result.URL, "(?i)^(https?|ftp)://[^\\s/$.?#].[^\\s]*$"))
-	}
+// ValidateAuctionProductViewAuctionList runs the validations defined on
+// AuctionProductView using the "auctionList" view.
+func ValidateAuctionProductViewAuctionList(result *AuctionProductView) (err error) {
+
 	return
 }
 
-// ValidateWineryViewTiny runs the validations defined on WineryView using the
-// "tiny" view.
-func ValidateWineryViewTiny(result *WineryView) (err error) {
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	return
-}
+// ValidateAuctionProductView runs the validations defined on
+// AuctionProductView using the "default" view.
+func ValidateAuctionProductView(result *AuctionProductView) (err error) {
 
-// ValidateComponentView runs the validations defined on ComponentView.
-func ValidateComponentView(result *ComponentView) (err error) {
-	if result.Varietal == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("varietal", "result"))
-	}
-	if result.Varietal != nil {
-		err = goa.MergeErrors(err, goa.ValidatePattern("result.varietal", *result.Varietal, "[A-Za-z' ]+"))
-	}
-	if result.Varietal != nil {
-		if utf8.RuneCountInString(*result.Varietal) > 100 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.varietal", *result.Varietal, utf8.RuneCountInString(*result.Varietal), 100, false))
-		}
-	}
-	if result.Percentage != nil {
-		if *result.Percentage < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.percentage", *result.Percentage, 1, true))
-		}
-	}
-	if result.Percentage != nil {
-		if *result.Percentage > 100 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.percentage", *result.Percentage, 100, false))
-		}
-	}
 	return
 }

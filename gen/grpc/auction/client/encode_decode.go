@@ -18,79 +18,47 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-// BuildPickFunc builds the remote method to invoke for "auction" service
-// "pick" endpoint.
-func BuildPickFunc(grpccli auctionpb.AuctionClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
+// BuildGetAuctionProductListByStatusFunc builds the remote method to invoke
+// for "auction" service "getAuctionProductListByStatus" endpoint.
+func BuildGetAuctionProductListByStatusFunc(grpccli auctionpb.AuctionClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
 	return func(ctx context.Context, reqpb interface{}, opts ...grpc.CallOption) (interface{}, error) {
 		for _, opt := range cliopts {
 			opts = append(opts, opt)
 		}
 		if reqpb != nil {
-			return grpccli.Pick(ctx, reqpb.(*auctionpb.PickRequest), opts...)
+			return grpccli.GetAuctionProductListByStatus(ctx, reqpb.(*auctionpb.GetAuctionProductListByStatusRequest), opts...)
 		}
-		return grpccli.Pick(ctx, &auctionpb.PickRequest{}, opts...)
+		return grpccli.GetAuctionProductListByStatus(ctx, &auctionpb.GetAuctionProductListByStatusRequest{}, opts...)
 	}
 }
 
-// EncodePickRequest encodes requests sent to auction pick endpoint.
-func EncodePickRequest(ctx context.Context, v interface{}, md *metadata.MD) (interface{}, error) {
-	payload, ok := v.(*auction.Criteria)
+// EncodeGetAuctionProductListByStatusRequest encodes requests sent to auction
+// getAuctionProductListByStatus endpoint.
+func EncodeGetAuctionProductListByStatusRequest(ctx context.Context, v interface{}, md *metadata.MD) (interface{}, error) {
+	payload, ok := v.(*auction.ListData)
 	if !ok {
-		return nil, goagrpc.ErrInvalidType("auction", "pick", "*auction.Criteria", v)
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductListByStatus", "*auction.ListData", v)
 	}
-	return NewPickRequest(payload), nil
+	return NewGetAuctionProductListByStatusRequest(payload), nil
 }
 
-// DecodePickResponse decodes responses from the auction pick endpoint.
-func DecodePickResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
+// DecodeGetAuctionProductListByStatusResponse decodes responses from the
+// auction getAuctionProductListByStatus endpoint.
+func DecodeGetAuctionProductListByStatusResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
 	var view string
 	{
 		if vals := hdr.Get("goa-view"); len(vals) > 0 {
 			view = vals[0]
 		}
 	}
-	message, ok := v.(*auctionpb.StoredBottleCollection)
+	message, ok := v.(*auctionpb.AuctionProductCollection)
 	if !ok {
-		return nil, goagrpc.ErrInvalidType("auction", "pick", "*auctionpb.StoredBottleCollection", v)
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductListByStatus", "*auctionpb.AuctionProductCollection", v)
 	}
-	res := NewPickResult(message)
-	vres := auctionviews.StoredBottleCollection{Projected: res, View: view}
-	if err := auctionviews.ValidateStoredBottleCollection(vres); err != nil {
+	res := NewGetAuctionProductListByStatusResult(message)
+	vres := auctionviews.AuctionProductCollection{Projected: res, View: view}
+	if err := auctionviews.ValidateAuctionProductCollection(vres); err != nil {
 		return nil, err
 	}
-	return auction.NewStoredBottleCollection(vres), nil
-}
-
-// BuildGetFunc builds the remote method to invoke for "auction" service "get"
-// endpoint.
-func BuildGetFunc(grpccli auctionpb.AuctionClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
-	return func(ctx context.Context, reqpb interface{}, opts ...grpc.CallOption) (interface{}, error) {
-		for _, opt := range cliopts {
-			opts = append(opts, opt)
-		}
-		if reqpb != nil {
-			return grpccli.Get(ctx, reqpb.(*auctionpb.GetRequest), opts...)
-		}
-		return grpccli.Get(ctx, &auctionpb.GetRequest{}, opts...)
-	}
-}
-
-// DecodeGetResponse decodes responses from the auction get endpoint.
-func DecodeGetResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
-	var view string
-	{
-		if vals := hdr.Get("goa-view"); len(vals) > 0 {
-			view = vals[0]
-		}
-	}
-	message, ok := v.(*auctionpb.StoredBottleCollection)
-	if !ok {
-		return nil, goagrpc.ErrInvalidType("auction", "get", "*auctionpb.StoredBottleCollection", v)
-	}
-	res := NewGetResult(message)
-	vres := auctionviews.StoredBottleCollection{Projected: res, View: view}
-	if err := auctionviews.ValidateStoredBottleCollection(vres); err != nil {
-		return nil, err
-	}
-	return auction.NewStoredBottleCollection(vres), nil
+	return auction.NewAuctionProductCollection(vres), nil
 }

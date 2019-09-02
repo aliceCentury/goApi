@@ -17,46 +17,34 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-// EncodePickResponse encodes responses from the "auction" service "pick"
-// endpoint.
-func EncodePickResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
-	vres, ok := v.(auctionviews.StoredBottleCollection)
+// EncodeGetAuctionProductListByStatusResponse encodes responses from the
+// "auction" service "getAuctionProductListByStatus" endpoint.
+func EncodeGetAuctionProductListByStatusResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
+	vres, ok := v.(auctionviews.AuctionProductCollection)
 	if !ok {
-		return nil, goagrpc.ErrInvalidType("auction", "pick", "auctionviews.StoredBottleCollection", v)
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductListByStatus", "auctionviews.AuctionProductCollection", v)
 	}
 	result := vres.Projected
 	(*hdr).Append("goa-view", vres.View)
-	resp := NewStoredBottleCollection(result)
+	resp := NewAuctionProductCollection(result)
 	return resp, nil
 }
 
-// DecodePickRequest decodes requests sent to "auction" service "pick" endpoint.
-func DecodePickRequest(ctx context.Context, v interface{}, md metadata.MD) (interface{}, error) {
+// DecodeGetAuctionProductListByStatusRequest decodes requests sent to
+// "auction" service "getAuctionProductListByStatus" endpoint.
+func DecodeGetAuctionProductListByStatusRequest(ctx context.Context, v interface{}, md metadata.MD) (interface{}, error) {
 	var (
-		message *auctionpb.PickRequest
+		message *auctionpb.GetAuctionProductListByStatusRequest
 		ok      bool
 	)
 	{
-		if message, ok = v.(*auctionpb.PickRequest); !ok {
-			return nil, goagrpc.ErrInvalidType("auction", "pick", "*auctionpb.PickRequest", v)
+		if message, ok = v.(*auctionpb.GetAuctionProductListByStatusRequest); !ok {
+			return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductListByStatus", "*auctionpb.GetAuctionProductListByStatusRequest", v)
 		}
 	}
-	var payload *auction.Criteria
+	var payload *auction.ListData
 	{
-		payload = NewPickPayload(message)
+		payload = NewGetAuctionProductListByStatusPayload(message)
 	}
 	return payload, nil
-}
-
-// EncodeGetResponse encodes responses from the "auction" service "get"
-// endpoint.
-func EncodeGetResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
-	vres, ok := v.(auctionviews.StoredBottleCollection)
-	if !ok {
-		return nil, goagrpc.ErrInvalidType("auction", "get", "auctionviews.StoredBottleCollection", v)
-	}
-	result := vres.Projected
-	(*hdr).Append("goa-view", vres.View)
-	resp := NewStoredBottleCollection(result)
-	return resp, nil
 }
