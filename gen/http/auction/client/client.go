@@ -21,6 +21,10 @@ type Client struct {
 	// to the getAuctionProductListByStatus endpoint.
 	GetAuctionProductListByStatusDoer goahttp.Doer
 
+	// GetAuctionProductDetail Doer is the HTTP client used to make requests to the
+	// getAuctionProductDetail endpoint.
+	GetAuctionProductDetailDoer goahttp.Doer
+
 	// RestoreResponseBody controls whether the response bodies are reset after
 	// decoding so they can be read again.
 	RestoreResponseBody bool
@@ -42,6 +46,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		GetAuctionProductListByStatusDoer: doer,
+		GetAuctionProductDetailDoer:       doer,
 		RestoreResponseBody:               restoreBody,
 		scheme:                            scheme,
 		host:                              host,
@@ -70,6 +75,26 @@ func (c *Client) GetAuctionProductListByStatus() goa.Endpoint {
 
 		if err != nil {
 			return nil, goahttp.ErrRequestError("auction", "getAuctionProductListByStatus", err)
+		}
+		return decodeResponse(resp)
+	}
+}
+
+// GetAuctionProductDetail returns an endpoint that makes HTTP requests to the
+// auction service getAuctionProductDetail server.
+func (c *Client) GetAuctionProductDetail() goa.Endpoint {
+	var (
+		decodeResponse = DecodeGetAuctionProductDetailResponse(c.decoder, c.RestoreResponseBody)
+	)
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		req, err := c.BuildGetAuctionProductDetailRequest(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+		resp, err := c.GetAuctionProductDetailDoer.Do(req)
+
+		if err != nil {
+			return nil, goahttp.ErrRequestError("auction", "getAuctionProductDetail", err)
 		}
 		return decodeResponse(resp)
 	}

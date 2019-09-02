@@ -42,3 +42,22 @@ func BuildGetAuctionProductListByStatusPayload(auctionGetAuctionProductListBySta
 	}
 	return v, nil
 }
+
+// BuildGetAuctionProductDetailPayload builds the payload for the auction
+// getAuctionProductDetail endpoint from CLI flags.
+func BuildGetAuctionProductDetailPayload(auctionGetAuctionProductDetailMessage string) (*auction.GetAuctionProductDetailPayload, error) {
+	var err error
+	var message auctionpb.GetAuctionProductDetailRequest
+	{
+		if auctionGetAuctionProductDetailMessage != "" {
+			err = json.Unmarshal([]byte(auctionGetAuctionProductDetailMessage), &message)
+			if err != nil {
+				return nil, fmt.Errorf("invalid JSON for message, example of valid JSON:\n%s", "'{\n      \"id\": \"Doloremque dolorem dignissimos consequatur ad officia.\"\n   }'")
+			}
+		}
+	}
+	v := &auction.GetAuctionProductDetailPayload{
+		ID: message.Id,
+	}
+	return v, nil
+}

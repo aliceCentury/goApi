@@ -157,3 +157,145 @@ func NewAuctionProductCollection(result auctionviews.AuctionProductCollectionVie
 	}
 	return message
 }
+
+// NewGetAuctionProductDetailPayload builds the payload of the
+// "getAuctionProductDetail" endpoint of the "auction" service from the gRPC
+// request type.
+func NewGetAuctionProductDetailPayload(message *auctionpb.GetAuctionProductDetailRequest) *auction.GetAuctionProductDetailPayload {
+	v := &auction.GetAuctionProductDetailPayload{
+		ID: message.Id,
+	}
+	return v
+}
+
+// NewGetAuctionProductDetailResponse builds the gRPC response type from the
+// result of the "getAuctionProductDetail" endpoint of the "auction" service.
+func NewGetAuctionProductDetailResponse(result *auctionviews.AuctionProductView) *auctionpb.GetAuctionProductDetailResponse {
+	message := &auctionpb.GetAuctionProductDetailResponse{}
+	if result.ID != nil {
+		message.Id = *result.ID
+	}
+	if result.AddPrice != nil {
+		message.AddPrice = int32(*result.AddPrice)
+	}
+	if result.ArtNo != nil {
+		message.ArtNo = *result.ArtNo
+	}
+	if result.AuctionStatus != nil {
+		message.AuctionStatus = int32(*result.AuctionStatus)
+	}
+	if result.AuctionType != nil {
+		message.AuctionType = int32(*result.AuctionType)
+	}
+	if result.BidSceneID != nil {
+		message.BidSceneId = int32(*result.BidSceneID)
+	}
+	if result.BondPrice != nil {
+		message.BondPrice = int32(*result.BondPrice)
+	}
+	if result.BuyNumber != nil {
+		message.BuyNumber = int32(*result.BuyNumber)
+	}
+	if result.BuyUnitPrice != nil {
+		message.BuyUnitPrice = *result.BuyUnitPrice
+	}
+	if result.BuyoutPrice != nil {
+		message.BuyoutPrice = int32(*result.BuyoutPrice)
+	}
+	if result.CapPrice != nil {
+		message.CapPrice = int32(*result.CapPrice)
+	}
+	if result.CrowdfundingPackageID != nil {
+		message.CrowdfundingPackageId = *result.CrowdfundingPackageID
+	}
+	if result.CurrentPrice != nil {
+		message.CurrentPrice = int32(*result.CurrentPrice)
+	}
+	if result.EndTime != nil {
+		message.EndTime = *result.EndTime
+	}
+	if result.HeadPortrait != nil {
+		message.HeadPortrait = *result.HeadPortrait
+	}
+	if result.IsHaveProxy != nil {
+		message.IsHaveProxy = int32(*result.IsHaveProxy)
+	}
+	if result.IsReservePrice != nil {
+		message.IsReservePrice = int32(*result.IsReservePrice)
+	}
+	if result.LastTime != nil {
+		message.LastTime = *result.LastTime
+	}
+	if result.LimitNumber != nil {
+		message.LimitNumber = int32(*result.LimitNumber)
+	}
+	if result.MktPrice != nil {
+		message.MktPrice = int32(*result.MktPrice)
+	}
+	if result.PicturesURL != nil {
+		message.PicturesUrl = *result.PicturesURL
+	}
+	if result.ProdID != nil {
+		message.ProdId = *result.ProdID
+	}
+	if result.ProdName != nil {
+		message.ProdName = *result.ProdName
+	}
+	if result.QrURL != nil {
+		message.QrUrl = *result.QrURL
+	}
+	if result.RemindTime != nil {
+		message.RemindTime = *result.RemindTime
+	}
+	if result.ReservePrice != nil {
+		message.ReservePrice = *result.ReservePrice
+	}
+	if result.ResultStatus != nil {
+		message.ResultStatus = int32(*result.ResultStatus)
+	}
+	if result.RuleID != nil {
+		message.RuleId = int32(*result.RuleID)
+	}
+	if result.SerialNum != nil {
+		message.SerialNum = *result.SerialNum
+	}
+	if result.ShareURL != nil {
+		message.ShareUrl = *result.ShareURL
+	}
+	if result.StartAuctionPrice != nil {
+		message.StartAuctionPrice = int32(*result.StartAuctionPrice)
+	}
+	if result.StartTime != nil {
+		message.StartTime = *result.StartTime
+	}
+	if result.Title != nil {
+		message.Title = *result.Title
+	}
+	if result.TotalNumber != nil {
+		message.TotalNumber = int32(*result.TotalNumber)
+	}
+	if result.TransactionNumber != nil {
+		message.TransactionNumber = int32(*result.TransactionNumber)
+	}
+	if result.TransactionPrice != nil {
+		message.TransactionPrice = *result.TransactionPrice
+	}
+	if result.UserID != nil {
+		message.UserId = *result.UserID
+	}
+	if result.UserName != nil {
+		message.UserName = *result.UserName
+	}
+	return message
+}
+
+// NewGetAuctionProductDetailNotFoundError builds the gRPC error response type
+// from the error of the "getAuctionProductDetail" endpoint of the "auction"
+// service.
+func NewGetAuctionProductDetailNotFoundError(er *auction.NotFound) *auctionpb.GetAuctionProductDetailNotFoundError {
+	message := &auctionpb.GetAuctionProductDetailNotFoundError{
+		Message_: er.Message,
+		Id:       er.ID,
+	}
+	return message
+}

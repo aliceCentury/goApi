@@ -15,10 +15,12 @@ option go_package = "auctionpb";
 service Auction {
 	// 获取拍卖列表
 	rpc GetAuctionProductListByStatus (GetAuctionProductListByStatusRequest) returns (AuctionProductCollection);
+	// 拍卖详情
+	rpc GetAuctionProductDetail (GetAuctionProductDetailRequest) returns (GetAuctionProductDetailResponse);
 }
 
 message GetAuctionProductListByStatusRequest {
-	// 拍卖状态
+	// 拍卖状态 1:历史 2:正在进行 3:即将开始
 	sint32 auction_status = 1;
 	// 当前页数
 	sint32 current_page = 2;
@@ -31,6 +33,59 @@ message AuctionProductCollection {
 }
 // A StoredBottle describes a bottle retrieved by the storage service.
 message AuctionProduct {
+	string id = 8;
+	sint32 add_price = 2;
+	string art_no = 3;
+	sint32 auction_status = 4;
+	sint32 auction_type = 5;
+	sint32 bid_scene_id = 6;
+	sint32 bond_price = 7;
+	sint32 buy_number = 10;
+	string buy_unit_price = 9;
+	sint32 buyout_price = 11;
+	sint32 cap_price = 12;
+	string crowdfunding_package_id = 13;
+	sint32 current_price = 14;
+	sint64 end_time = 15;
+	string head_portrait = 16;
+	sint32 is_have_proxy = 17;
+	sint32 is_reserve_price = 18;
+	sint64 last_time = 19;
+	sint32 limit_number = 20;
+	sint32 mkt_price = 21;
+	string pictures_url = 22;
+	sint32 prod_id = 23;
+	string prod_name = 24;
+	string qr_url = 25;
+	sint64 remind_time = 26;
+	string reserve_price = 27;
+	sint32 result_status = 28;
+	sint32 rule_id = 29;
+	string serial_num = 30;
+	string share_url = 31;
+	sint32 start_auction_price = 32;
+	sint64 start_time = 33;
+	string title = 34;
+	sint32 total_number = 35;
+	sint32 transaction_number = 36;
+	string transaction_price = 37;
+	string user_id = 38;
+	string user_name = 39;
+}
+
+message GetAuctionProductDetailNotFoundError {
+	// Message of error
+	string message_ = 1;
+	// ID of missing bottle
+	string id = 2;
+}
+
+message GetAuctionProductDetailRequest {
+	// auctionId
+	string id = 1;
+}
+
+message GetAuctionProductDetailResponse {
 	string id = 8;
 	sint32 add_price = 2;
 	string art_no = 3;

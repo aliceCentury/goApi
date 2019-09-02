@@ -92,3 +92,88 @@ func DecodeGetAuctionProductListByStatusResponse(decoder func(*http.Response) go
 		}
 	}
 }
+
+// BuildGetAuctionProductDetailRequest instantiates a HTTP request object with
+// method and path set to call the "auction" service "getAuctionProductDetail"
+// endpoint
+func (c *Client) BuildGetAuctionProductDetailRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+	var (
+		id string
+	)
+	{
+		p, ok := v.(*auction.GetAuctionProductDetailPayload)
+		if !ok {
+			return nil, goahttp.ErrInvalidType("auction", "getAuctionProductDetail", "*auction.GetAuctionProductDetailPayload", v)
+		}
+		id = p.ID
+	}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetAuctionProductDetailAuctionPath(id)}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, goahttp.ErrInvalidURL("auction", "getAuctionProductDetail", u.String(), err)
+	}
+	if ctx != nil {
+		req = req.WithContext(ctx)
+	}
+
+	return req, nil
+}
+
+// DecodeGetAuctionProductDetailResponse returns a decoder for responses
+// returned by the auction getAuctionProductDetail endpoint. restoreBody
+// controls whether the response body should be restored after having been read.
+// DecodeGetAuctionProductDetailResponse may return the following errors:
+//	- "not_found" (type *auction.NotFound): http.StatusNotFound
+//	- error: internal error
+func DecodeGetAuctionProductDetailResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+	return func(resp *http.Response) (interface{}, error) {
+		if restoreBody {
+			b, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return nil, err
+			}
+			resp.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+			defer func() {
+				resp.Body = ioutil.NopCloser(bytes.NewBuffer(b))
+			}()
+		} else {
+			defer resp.Body.Close()
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			var (
+				body GetAuctionProductDetailResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("auction", "getAuctionProductDetail", err)
+			}
+			p := NewGetAuctionProductDetailAuctionProductOK(&body)
+			view := resp.Header.Get("goa-view")
+			vres := &auctionviews.AuctionProduct{p, view}
+			if err = auctionviews.ValidateAuctionProduct(vres); err != nil {
+				return nil, goahttp.ErrValidationError("auction", "getAuctionProductDetail", err)
+			}
+			res := auction.NewAuctionProduct(vres)
+			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetAuctionProductDetailNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("auction", "getAuctionProductDetail", err)
+			}
+			err = ValidateGetAuctionProductDetailNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("auction", "getAuctionProductDetail", err)
+			}
+			return nil, NewGetAuctionProductDetailNotFound(&body)
+		default:
+			body, _ := ioutil.ReadAll(resp.Body)
+			return nil, goahttp.ErrInvalidResponse("auction", "getAuctionProductDetail", resp.StatusCode, string(body))
+		}
+	}
+}

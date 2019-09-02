@@ -16,6 +16,12 @@ import (
 type Service interface {
 	// 获取拍卖列表
 	GetAuctionProductListByStatus(context.Context, *ListData) (res AuctionProductCollection, err error)
+	// 拍卖详情
+	// The "view" return value must have one of the following views
+	//	- "bid"
+	//	- "auctionList"
+	//	- "default": A StoredBottle describes a bottle retrieved by the storage service.
+	GetAuctionProductDetail(context.Context, *GetAuctionProductDetailPayload) (res *AuctionProduct, view string, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -26,12 +32,12 @@ const ServiceName = "auction"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"getAuctionProductListByStatus"}
+var MethodNames = [2]string{"getAuctionProductListByStatus", "getAuctionProductDetail"}
 
 // ListData is the payload type of the auction service
 // getAuctionProductListByStatus method.
 type ListData struct {
-	// 拍卖状态
+	// 拍卖状态 1:历史 2:正在进行 3:即将开始
 	AuctionStatus *int
 	// 当前页数
 	CurrentPage *int
@@ -43,7 +49,15 @@ type ListData struct {
 // getAuctionProductListByStatus method.
 type AuctionProductCollection []*AuctionProduct
 
-// A StoredBottle describes a bottle retrieved by the storage service.
+// GetAuctionProductDetailPayload is the payload type of the auction service
+// getAuctionProductDetail method.
+type GetAuctionProductDetailPayload struct {
+	// auctionId
+	ID string
+}
+
+// AuctionProduct is the result type of the auction service
+// getAuctionProductDetail method.
 type AuctionProduct struct {
 	ID                    *string
 	AddPrice              *int
@@ -85,6 +99,25 @@ type AuctionProduct struct {
 	UserName              *string
 }
 
+// NotFound is the type returned when attempting to show or delete a bottle
+// that does not exist.
+type NotFound struct {
+	// Message of error
+	Message string
+	// ID of missing bottle
+	ID string
+}
+
+// Error returns an error description.
+func (e *NotFound) Error() string {
+	return "NotFound is the type returned when attempting to show or delete a bottle that does not exist."
+}
+
+// ErrorName returns "NotFound".
+func (e *NotFound) ErrorName() string {
+	return e.Message
+}
+
 // NewAuctionProductCollection initializes result type AuctionProductCollection
 // from viewed result type AuctionProductCollection.
 func NewAuctionProductCollection(vres auctionviews.AuctionProductCollection) AuctionProductCollection {
@@ -115,6 +148,39 @@ func NewViewedAuctionProductCollection(res AuctionProductCollection, view string
 	case "default", "":
 		p := newAuctionProductCollectionView(res)
 		vres = auctionviews.AuctionProductCollection{p, "default"}
+	}
+	return vres
+}
+
+// NewAuctionProduct initializes result type AuctionProduct from viewed result
+// type AuctionProduct.
+func NewAuctionProduct(vres *auctionviews.AuctionProduct) *AuctionProduct {
+	var res *AuctionProduct
+	switch vres.View {
+	case "bid":
+		res = newAuctionProductBid(vres.Projected)
+	case "auctionList":
+		res = newAuctionProductAuctionList(vres.Projected)
+	case "default", "":
+		res = newAuctionProduct(vres.Projected)
+	}
+	return res
+}
+
+// NewViewedAuctionProduct initializes viewed result type AuctionProduct from
+// result type AuctionProduct using the given view.
+func NewViewedAuctionProduct(res *AuctionProduct, view string) *auctionviews.AuctionProduct {
+	var vres *auctionviews.AuctionProduct
+	switch view {
+	case "bid":
+		p := newAuctionProductViewBid(res)
+		vres = &auctionviews.AuctionProduct{p, "bid"}
+	case "auctionList":
+		p := newAuctionProductViewAuctionList(res)
+		vres = &auctionviews.AuctionProduct{p, "auctionList"}
+	case "default", "":
+		p := newAuctionProductView(res)
+		vres = &auctionviews.AuctionProduct{p, "default"}
 	}
 	return vres
 }

@@ -16,18 +16,21 @@ import (
 // Endpoints wraps the "auction" service endpoints.
 type Endpoints struct {
 	GetAuctionProductListByStatus goa.Endpoint
+	GetAuctionProductDetail       goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "auction" service with endpoints.
 func NewEndpoints(s Service) *Endpoints {
 	return &Endpoints{
 		GetAuctionProductListByStatus: NewGetAuctionProductListByStatusEndpoint(s),
+		GetAuctionProductDetail:       NewGetAuctionProductDetailEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "auction" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.GetAuctionProductListByStatus = m(e.GetAuctionProductListByStatus)
+	e.GetAuctionProductDetail = m(e.GetAuctionProductDetail)
 }
 
 // NewGetAuctionProductListByStatusEndpoint returns an endpoint function that
@@ -40,6 +43,20 @@ func NewGetAuctionProductListByStatusEndpoint(s Service) goa.Endpoint {
 			return nil, err
 		}
 		vres := NewViewedAuctionProductCollection(res, "auctionList")
+		return vres, nil
+	}
+}
+
+// NewGetAuctionProductDetailEndpoint returns an endpoint function that calls
+// the method "getAuctionProductDetail" of service "auction".
+func NewGetAuctionProductDetailEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		p := req.(*GetAuctionProductDetailPayload)
+		res, view, err := s.GetAuctionProductDetail(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedAuctionProduct(res, view)
 		return vres, nil
 	}
 }

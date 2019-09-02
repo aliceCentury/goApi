@@ -16,12 +16,14 @@ import (
 // Client is the "auction" service client.
 type Client struct {
 	GetAuctionProductListByStatusEndpoint goa.Endpoint
+	GetAuctionProductDetailEndpoint       goa.Endpoint
 }
 
 // NewClient initializes a "auction" service client given the endpoints.
-func NewClient(getAuctionProductListByStatus goa.Endpoint) *Client {
+func NewClient(getAuctionProductListByStatus, getAuctionProductDetail goa.Endpoint) *Client {
 	return &Client{
 		GetAuctionProductListByStatusEndpoint: getAuctionProductListByStatus,
+		GetAuctionProductDetailEndpoint:       getAuctionProductDetail,
 	}
 }
 
@@ -34,4 +36,18 @@ func (c *Client) GetAuctionProductListByStatus(ctx context.Context, p *ListData)
 		return
 	}
 	return ires.(AuctionProductCollection), nil
+}
+
+// GetAuctionProductDetail calls the "getAuctionProductDetail" endpoint of the
+// "auction" service.
+// GetAuctionProductDetail may return the following errors:
+//	- "not_found" (type *NotFound): Bottle not found
+//	- error: internal error
+func (c *Client) GetAuctionProductDetail(ctx context.Context, p *GetAuctionProductDetailPayload) (res *AuctionProduct, err error) {
+	var ires interface{}
+	ires, err = c.GetAuctionProductDetailEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*AuctionProduct), nil
 }

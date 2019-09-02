@@ -48,3 +48,35 @@ func DecodeGetAuctionProductListByStatusRequest(ctx context.Context, v interface
 	}
 	return payload, nil
 }
+
+// EncodeGetAuctionProductDetailResponse encodes responses from the "auction"
+// service "getAuctionProductDetail" endpoint.
+func EncodeGetAuctionProductDetailResponse(ctx context.Context, v interface{}, hdr, trlr *metadata.MD) (interface{}, error) {
+	vres, ok := v.(*auctionviews.AuctionProduct)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductDetail", "*auctionviews.AuctionProduct", v)
+	}
+	result := vres.Projected
+	(*hdr).Append("goa-view", vres.View)
+	resp := NewGetAuctionProductDetailResponse(result)
+	return resp, nil
+}
+
+// DecodeGetAuctionProductDetailRequest decodes requests sent to "auction"
+// service "getAuctionProductDetail" endpoint.
+func DecodeGetAuctionProductDetailRequest(ctx context.Context, v interface{}, md metadata.MD) (interface{}, error) {
+	var (
+		message *auctionpb.GetAuctionProductDetailRequest
+		ok      bool
+	)
+	{
+		if message, ok = v.(*auctionpb.GetAuctionProductDetailRequest); !ok {
+			return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductDetail", "*auctionpb.GetAuctionProductDetailRequest", v)
+		}
+	}
+	var payload *auction.GetAuctionProductDetailPayload
+	{
+		payload = NewGetAuctionProductDetailPayload(message)
+	}
+	return payload, nil
+}

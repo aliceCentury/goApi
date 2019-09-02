@@ -31,3 +31,16 @@ func BuildGetAuctionProductListByStatusPayload(auctionGetAuctionProductListBySta
 	}
 	return v, nil
 }
+
+// BuildGetAuctionProductDetailPayload builds the payload for the auction
+// getAuctionProductDetail endpoint from CLI flags.
+func BuildGetAuctionProductDetailPayload(auctionGetAuctionProductDetailID string) (*auction.GetAuctionProductDetailPayload, error) {
+	var id string
+	{
+		id = auctionGetAuctionProductDetailID
+	}
+	payload := &auction.GetAuctionProductDetailPayload{
+		ID: id,
+	}
+	return payload, nil
+}

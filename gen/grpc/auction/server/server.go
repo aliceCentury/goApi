@@ -14,11 +14,13 @@ import (
 
 	goagrpc "goa.design/goa/v3/grpc"
 	goa "goa.design/goa/v3/pkg"
+	"google.golang.org/grpc/codes"
 )
 
 // Server implements the auctionpb.AuctionServer interface.
 type Server struct {
 	GetAuctionProductListByStatusH goagrpc.UnaryHandler
+	GetAuctionProductDetailH       goagrpc.UnaryHandler
 }
 
 // ErrorNamer is an interface implemented by generated error structs that
@@ -31,6 +33,7 @@ type ErrorNamer interface {
 func New(e *auction.Endpoints, uh goagrpc.UnaryHandler) *Server {
 	return &Server{
 		GetAuctionProductListByStatusH: NewGetAuctionProductListByStatusHandler(e.GetAuctionProductListByStatus, uh),
+		GetAuctionProductDetailH:       NewGetAuctionProductDetailHandler(e.GetAuctionProductDetail, uh),
 	}
 }
 
@@ -53,4 +56,32 @@ func (s *Server) GetAuctionProductListByStatus(ctx context.Context, message *auc
 		return nil, goagrpc.EncodeError(err)
 	}
 	return resp.(*auctionpb.AuctionProductCollection), nil
+}
+
+// NewGetAuctionProductDetailHandler creates a gRPC handler which serves the
+// "auction" service "getAuctionProductDetail" endpoint.
+func NewGetAuctionProductDetailHandler(endpoint goa.Endpoint, h goagrpc.UnaryHandler) goagrpc.UnaryHandler {
+	if h == nil {
+		h = goagrpc.NewUnaryHandler(endpoint, DecodeGetAuctionProductDetailRequest, EncodeGetAuctionProductDetailResponse)
+	}
+	return h
+}
+
+// GetAuctionProductDetail implements the "GetAuctionProductDetail" method in
+// auctionpb.AuctionServer interface.
+func (s *Server) GetAuctionProductDetail(ctx context.Context, message *auctionpb.GetAuctionProductDetailRequest) (*auctionpb.GetAuctionProductDetailResponse, error) {
+	ctx = context.WithValue(ctx, goa.MethodKey, "getAuctionProductDetail")
+	ctx = context.WithValue(ctx, goa.ServiceKey, "auction")
+	resp, err := s.GetAuctionProductDetailH.Handle(ctx, message)
+	if err != nil {
+		if en, ok := err.(ErrorNamer); ok {
+			switch en.ErrorName() {
+			case "not_found":
+				er := err.(*auction.NotFound)
+				return nil, goagrpc.NewStatusError(codes.NotFound, err, NewGetAuctionProductDetailNotFoundError(er))
+			}
+		}
+		return nil, goagrpc.EncodeError(err)
+	}
+	return resp.(*auctionpb.GetAuctionProductDetailResponse), nil
 }

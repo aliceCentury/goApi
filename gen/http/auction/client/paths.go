@@ -7,7 +7,16 @@
 
 package client
 
+import (
+	"fmt"
+)
+
 // GetAuctionProductListByStatusAuctionPath returns the URL path to the auction service getAuctionProductListByStatus HTTP endpoint.
 func GetAuctionProductListByStatusAuctionPath() string {
 	return "/api-auction/getAuctionProductListByStatus"
+}
+
+// GetAuctionProductDetailAuctionPath returns the URL path to the auction service getAuctionProductDetail HTTP endpoint.
+func GetAuctionProductDetailAuctionPath(id string) string {
+	return fmt.Sprintf("/api-auction/getAuctionProductDetail/%v", id)
 }

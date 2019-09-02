@@ -20,6 +20,7 @@ import (
 type Server struct {
 	Mounts                        []*MountPoint
 	GetAuctionProductListByStatus http.Handler
+	GetAuctionProductDetail       http.Handler
 }
 
 // ErrorNamer is an interface implemented by generated error structs that
@@ -50,8 +51,10 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"GetAuctionProductListByStatus", "POST", "/api-auction/getAuctionProductListByStatus"},
+			{"GetAuctionProductDetail", "GET", "/api-auction/getAuctionProductDetail/{id}"},
 		},
 		GetAuctionProductListByStatus: NewGetAuctionProductListByStatusHandler(e.GetAuctionProductListByStatus, mux, dec, enc, eh),
+		GetAuctionProductDetail:       NewGetAuctionProductDetailHandler(e.GetAuctionProductDetail, mux, dec, enc, eh),
 	}
 }
 
@@ -61,11 +64,13 @@ func (s *Server) Service() string { return "auction" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.GetAuctionProductListByStatus = m(s.GetAuctionProductListByStatus)
+	s.GetAuctionProductDetail = m(s.GetAuctionProductDetail)
 }
 
 // Mount configures the mux to serve the auction endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountGetAuctionProductListByStatusHandler(mux, h.GetAuctionProductListByStatus)
+	MountGetAuctionProductDetailHandler(mux, h.GetAuctionProductDetail)
 }
 
 // MountGetAuctionProductListByStatusHandler configures the mux to serve the
@@ -98,6 +103,59 @@ func NewGetAuctionProductListByStatusHandler(
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
 		ctx = context.WithValue(ctx, goa.MethodKey, "getAuctionProductListByStatus")
+		ctx = context.WithValue(ctx, goa.ServiceKey, "auction")
+		payload, err := decodeRequest(r)
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				eh(ctx, w, err)
+			}
+			return
+		}
+
+		res, err := endpoint(ctx, payload)
+
+		if err != nil {
+			if err := encodeError(ctx, w, err); err != nil {
+				eh(ctx, w, err)
+			}
+			return
+		}
+		if err := encodeResponse(ctx, w, res); err != nil {
+			eh(ctx, w, err)
+		}
+	})
+}
+
+// MountGetAuctionProductDetailHandler configures the mux to serve the
+// "auction" service "getAuctionProductDetail" endpoint.
+func MountGetAuctionProductDetailHandler(mux goahttp.Muxer, h http.Handler) {
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("GET", "/api-auction/getAuctionProductDetail/{id}", f)
+}
+
+// NewGetAuctionProductDetailHandler creates a HTTP handler which loads the
+// HTTP request and calls the "auction" service "getAuctionProductDetail"
+// endpoint.
+func NewGetAuctionProductDetailHandler(
+	endpoint goa.Endpoint,
+	mux goahttp.Muxer,
+	dec func(*http.Request) goahttp.Decoder,
+	enc func(context.Context, http.ResponseWriter) goahttp.Encoder,
+	eh func(context.Context, http.ResponseWriter, error),
+) http.Handler {
+	var (
+		decodeRequest  = DecodeGetAuctionProductDetailRequest(mux, dec)
+		encodeResponse = EncodeGetAuctionProductDetailResponse(enc)
+		encodeError    = EncodeGetAuctionProductDetailError(enc)
+	)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
+		ctx = context.WithValue(ctx, goa.MethodKey, "getAuctionProductDetail")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "auction")
 		payload, err := decodeRequest(r)
 		if err != nil {

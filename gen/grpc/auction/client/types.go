@@ -172,3 +172,163 @@ func NewGetAuctionProductListByStatusResult(message *auctionpb.AuctionProductCol
 	}
 	return result
 }
+
+// NewGetAuctionProductDetailRequest builds the gRPC request type from the
+// payload of the "getAuctionProductDetail" endpoint of the "auction" service.
+func NewGetAuctionProductDetailRequest(payload *auction.GetAuctionProductDetailPayload) *auctionpb.GetAuctionProductDetailRequest {
+	message := &auctionpb.GetAuctionProductDetailRequest{
+		Id: payload.ID,
+	}
+	return message
+}
+
+// NewGetAuctionProductDetailResult builds the result type of the
+// "getAuctionProductDetail" endpoint of the "auction" service from the gRPC
+// response type.
+func NewGetAuctionProductDetailResult(message *auctionpb.GetAuctionProductDetailResponse) *auctionviews.AuctionProductView {
+	result := &auctionviews.AuctionProductView{}
+	if message.Id != "" {
+		result.ID = &message.Id
+	}
+	if message.AddPrice != 0 {
+		addPriceptr := int(message.AddPrice)
+		result.AddPrice = &addPriceptr
+	}
+	if message.ArtNo != "" {
+		result.ArtNo = &message.ArtNo
+	}
+	if message.AuctionStatus != 0 {
+		auctionStatusptr := int(message.AuctionStatus)
+		result.AuctionStatus = &auctionStatusptr
+	}
+	if message.AuctionType != 0 {
+		auctionTypeptr := int(message.AuctionType)
+		result.AuctionType = &auctionTypeptr
+	}
+	if message.BidSceneId != 0 {
+		bidSceneIDptr := int(message.BidSceneId)
+		result.BidSceneID = &bidSceneIDptr
+	}
+	if message.BondPrice != 0 {
+		bondPriceptr := int(message.BondPrice)
+		result.BondPrice = &bondPriceptr
+	}
+	if message.BuyNumber != 0 {
+		buyNumberptr := int(message.BuyNumber)
+		result.BuyNumber = &buyNumberptr
+	}
+	if message.BuyUnitPrice != "" {
+		result.BuyUnitPrice = &message.BuyUnitPrice
+	}
+	if message.BuyoutPrice != 0 {
+		buyoutPriceptr := int(message.BuyoutPrice)
+		result.BuyoutPrice = &buyoutPriceptr
+	}
+	if message.CapPrice != 0 {
+		capPriceptr := int(message.CapPrice)
+		result.CapPrice = &capPriceptr
+	}
+	if message.CrowdfundingPackageId != "" {
+		result.CrowdfundingPackageID = &message.CrowdfundingPackageId
+	}
+	if message.CurrentPrice != 0 {
+		currentPriceptr := int(message.CurrentPrice)
+		result.CurrentPrice = &currentPriceptr
+	}
+	if message.EndTime != 0 {
+		result.EndTime = &message.EndTime
+	}
+	if message.HeadPortrait != "" {
+		result.HeadPortrait = &message.HeadPortrait
+	}
+	if message.IsHaveProxy != 0 {
+		isHaveProxyptr := int(message.IsHaveProxy)
+		result.IsHaveProxy = &isHaveProxyptr
+	}
+	if message.IsReservePrice != 0 {
+		isReservePriceptr := int(message.IsReservePrice)
+		result.IsReservePrice = &isReservePriceptr
+	}
+	if message.LastTime != 0 {
+		result.LastTime = &message.LastTime
+	}
+	if message.LimitNumber != 0 {
+		limitNumberptr := int(message.LimitNumber)
+		result.LimitNumber = &limitNumberptr
+	}
+	if message.MktPrice != 0 {
+		mktPriceptr := int(message.MktPrice)
+		result.MktPrice = &mktPriceptr
+	}
+	if message.PicturesUrl != "" {
+		result.PicturesURL = &message.PicturesUrl
+	}
+	if message.ProdId != 0 {
+		result.ProdID = &message.ProdId
+	}
+	if message.ProdName != "" {
+		result.ProdName = &message.ProdName
+	}
+	if message.QrUrl != "" {
+		result.QrURL = &message.QrUrl
+	}
+	if message.RemindTime != 0 {
+		result.RemindTime = &message.RemindTime
+	}
+	if message.ReservePrice != "" {
+		result.ReservePrice = &message.ReservePrice
+	}
+	if message.ResultStatus != 0 {
+		resultStatusptr := int(message.ResultStatus)
+		result.ResultStatus = &resultStatusptr
+	}
+	if message.RuleId != 0 {
+		ruleIDptr := int(message.RuleId)
+		result.RuleID = &ruleIDptr
+	}
+	if message.SerialNum != "" {
+		result.SerialNum = &message.SerialNum
+	}
+	if message.ShareUrl != "" {
+		result.ShareURL = &message.ShareUrl
+	}
+	if message.StartAuctionPrice != 0 {
+		startAuctionPriceptr := int(message.StartAuctionPrice)
+		result.StartAuctionPrice = &startAuctionPriceptr
+	}
+	if message.StartTime != 0 {
+		result.StartTime = &message.StartTime
+	}
+	if message.Title != "" {
+		result.Title = &message.Title
+	}
+	if message.TotalNumber != 0 {
+		totalNumberptr := int(message.TotalNumber)
+		result.TotalNumber = &totalNumberptr
+	}
+	if message.TransactionNumber != 0 {
+		transactionNumberptr := int(message.TransactionNumber)
+		result.TransactionNumber = &transactionNumberptr
+	}
+	if message.TransactionPrice != "" {
+		result.TransactionPrice = &message.TransactionPrice
+	}
+	if message.UserId != "" {
+		result.UserID = &message.UserId
+	}
+	if message.UserName != "" {
+		result.UserName = &message.UserName
+	}
+	return result
+}
+
+// NewGetAuctionProductDetailNotFoundError builds the error type of the
+// "getAuctionProductDetail" endpoint of the "auction" service from the gRPC
+// error response type.
+func NewGetAuctionProductDetailNotFoundError(message *auctionpb.GetAuctionProductDetailNotFoundError) *auction.NotFound {
+	er := &auction.NotFound{
+		Message: message.Message_,
+		ID:      message.Id,
+	}
+	return er
+}

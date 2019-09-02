@@ -20,6 +20,14 @@ type AuctionProductCollection struct {
 	View string
 }
 
+// AuctionProduct is the viewed result type that is projected based on a view.
+type AuctionProduct struct {
+	// Type to project
+	Projected *AuctionProductView
+	// View to render
+	View string
+}
+
 // AuctionProductCollectionView is a type that runs validations on a projected
 // type.
 type AuctionProductCollectionView []*AuctionProductView
@@ -255,6 +263,22 @@ func ValidateAuctionProductCollection(result AuctionProductCollection) (err erro
 		err = ValidateAuctionProductCollectionViewAuctionList(result.Projected)
 	case "default", "":
 		err = ValidateAuctionProductCollectionView(result.Projected)
+	default:
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"bid", "auctionList", "default"})
+	}
+	return
+}
+
+// ValidateAuctionProduct runs the validations defined on the viewed result
+// type AuctionProduct.
+func ValidateAuctionProduct(result *AuctionProduct) (err error) {
+	switch result.View {
+	case "bid":
+		err = ValidateAuctionProductViewBid(result.Projected)
+	case "auctionList":
+		err = ValidateAuctionProductViewAuctionList(result.Projected)
+	case "default", "":
+		err = ValidateAuctionProductView(result.Projected)
 	default:
 		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"bid", "auctionList", "default"})
 	}

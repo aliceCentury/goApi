@@ -12,6 +12,7 @@ import (
 	"context"
 
 	goagrpc "goa.design/goa/v3/grpc"
+	goapb "goa.design/goa/v3/grpc/pb"
 	goa "goa.design/goa/v3/pkg"
 	"google.golang.org/grpc"
 )
@@ -41,6 +42,30 @@ func (c *Client) GetAuctionProductListByStatus() goa.Endpoint {
 		res, err := inv.Invoke(ctx, v)
 		if err != nil {
 			return nil, goa.Fault(err.Error())
+		}
+		return res, nil
+	}
+}
+
+// GetAuctionProductDetail calls the "GetAuctionProductDetail" function in
+// auctionpb.AuctionClient interface.
+func (c *Client) GetAuctionProductDetail() goa.Endpoint {
+	return func(ctx context.Context, v interface{}) (interface{}, error) {
+		inv := goagrpc.NewInvoker(
+			BuildGetAuctionProductDetailFunc(c.grpccli, c.opts...),
+			EncodeGetAuctionProductDetailRequest,
+			DecodeGetAuctionProductDetailResponse)
+		res, err := inv.Invoke(ctx, v)
+		if err != nil {
+			resp := goagrpc.DecodeError(err)
+			switch message := resp.(type) {
+			case *auctionpb.GetAuctionProductDetailNotFoundError:
+				return nil, NewGetAuctionProductDetailNotFoundError(message)
+			case *goapb.ErrorResponse:
+				return nil, goagrpc.NewServiceError(message)
+			default:
+				return nil, goa.Fault(err.Error())
+			}
 		}
 		return res, nil
 	}

@@ -5,65 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/design/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/design/api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/design/auction.go" beforeDir="false" afterPath="$PROJECT_DIR$/design/auction.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/auction/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/auction/endpoints.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/auction/service.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/auction/views/view.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/client/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/pb/auction.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/auction/server/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/cli/api/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/client/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/pb/user.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/pb/user.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/grpc/user/server/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/client/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/server/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/server/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/auction/server/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/cli/api/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/openapi.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/openapi.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/client/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/client/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/client/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/server/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/server/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/swagger/server/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/client/cli.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/client/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/client/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/client/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/client/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/server/encode_decode.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/server/paths.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/http/user/server/types.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/swagger/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/swagger/endpoints.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/swagger/service.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/user/client.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/user/endpoints.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/user/service.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gen/user/views/view.go" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

@@ -62,3 +62,48 @@ func DecodeGetAuctionProductListByStatusResponse(ctx context.Context, v interfac
 	}
 	return auction.NewAuctionProductCollection(vres), nil
 }
+
+// BuildGetAuctionProductDetailFunc builds the remote method to invoke for
+// "auction" service "getAuctionProductDetail" endpoint.
+func BuildGetAuctionProductDetailFunc(grpccli auctionpb.AuctionClient, cliopts ...grpc.CallOption) goagrpc.RemoteFunc {
+	return func(ctx context.Context, reqpb interface{}, opts ...grpc.CallOption) (interface{}, error) {
+		for _, opt := range cliopts {
+			opts = append(opts, opt)
+		}
+		if reqpb != nil {
+			return grpccli.GetAuctionProductDetail(ctx, reqpb.(*auctionpb.GetAuctionProductDetailRequest), opts...)
+		}
+		return grpccli.GetAuctionProductDetail(ctx, &auctionpb.GetAuctionProductDetailRequest{}, opts...)
+	}
+}
+
+// EncodeGetAuctionProductDetailRequest encodes requests sent to auction
+// getAuctionProductDetail endpoint.
+func EncodeGetAuctionProductDetailRequest(ctx context.Context, v interface{}, md *metadata.MD) (interface{}, error) {
+	payload, ok := v.(*auction.GetAuctionProductDetailPayload)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductDetail", "*auction.GetAuctionProductDetailPayload", v)
+	}
+	return NewGetAuctionProductDetailRequest(payload), nil
+}
+
+// DecodeGetAuctionProductDetailResponse decodes responses from the auction
+// getAuctionProductDetail endpoint.
+func DecodeGetAuctionProductDetailResponse(ctx context.Context, v interface{}, hdr, trlr metadata.MD) (interface{}, error) {
+	var view string
+	{
+		if vals := hdr.Get("goa-view"); len(vals) > 0 {
+			view = vals[0]
+		}
+	}
+	message, ok := v.(*auctionpb.GetAuctionProductDetailResponse)
+	if !ok {
+		return nil, goagrpc.ErrInvalidType("auction", "getAuctionProductDetail", "*auctionpb.GetAuctionProductDetailResponse", v)
+	}
+	res := NewGetAuctionProductDetailResult(message)
+	vres := &auctionviews.AuctionProduct{Projected: res, View: view}
+	if err := auctionviews.ValidateAuctionProduct(vres); err != nil {
+		return nil, err
+	}
+	return auction.NewAuctionProduct(vres), nil
+}

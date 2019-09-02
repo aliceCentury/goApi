@@ -328,7 +328,7 @@ var AuctionProduct = ResultType("application/vnd.cellar.stored-bottle", func() {
 })
 var ListData = Type("ListData", func() {
 	Description("拍卖投标列表的参数")//{"auction_status":2,"current_page":1,"page_size":30}
-	Attribute("auction_status", Int, "拍卖状态", func() {
+	Attribute("auction_status", Int, "拍卖状态 1:历史 2:正在进行 3:即将开始 ", func() {
 		Example(2)
 		Meta("rpc:tag", "1")
 	})

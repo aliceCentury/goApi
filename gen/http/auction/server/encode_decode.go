@@ -8,6 +8,7 @@
 package server
 
 import (
+	auction "calcsvc/gen/auction"
 	auctionviews "calcsvc/gen/auction/views"
 	"context"
 	"io"
@@ -47,5 +48,65 @@ func DecodeGetAuctionProductListByStatusRequest(mux goahttp.Muxer, decoder func(
 		payload := NewGetAuctionProductListByStatusListData(&body)
 
 		return payload, nil
+	}
+}
+
+// EncodeGetAuctionProductDetailResponse returns an encoder for responses
+// returned by the auction getAuctionProductDetail endpoint.
+func EncodeGetAuctionProductDetailResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res := v.(*auctionviews.AuctionProduct)
+		w.Header().Set("goa-view", res.View)
+		enc := encoder(ctx, w)
+		var body interface{}
+		switch res.View {
+		case "bid":
+			body = NewGetAuctionProductDetailResponseBodyBid(res.Projected)
+		case "auctionList":
+			body = NewGetAuctionProductDetailResponseBodyAuctionList(res.Projected)
+		case "default", "":
+			body = NewGetAuctionProductDetailResponseBody(res.Projected)
+		}
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// DecodeGetAuctionProductDetailRequest returns a decoder for requests sent to
+// the auction getAuctionProductDetail endpoint.
+func DecodeGetAuctionProductDetailRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+	return func(r *http.Request) (interface{}, error) {
+		var (
+			id string
+
+			params = mux.Vars(r)
+		)
+		id = params["id"]
+		payload := NewGetAuctionProductDetailPayload(id)
+
+		return payload, nil
+	}
+}
+
+// EncodeGetAuctionProductDetailError returns an encoder for errors returned by
+// the getAuctionProductDetail auction endpoint.
+func EncodeGetAuctionProductDetailError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		en, ok := v.(ErrorNamer)
+		if !ok {
+			return encodeError(ctx, w, v)
+		}
+		switch en.ErrorName() {
+		case "not_found":
+			res := v.(*auction.NotFound)
+			enc := encoder(ctx, w)
+			body := NewGetAuctionProductDetailNotFoundResponseBody(res)
+			w.Header().Set("goa-error", "not_found")
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
 	}
 }

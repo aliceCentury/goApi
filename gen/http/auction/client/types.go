@@ -10,12 +10,14 @@ package client
 import (
 	auction "calcsvc/gen/auction"
 	auctionviews "calcsvc/gen/auction/views"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // GetAuctionProductListByStatusRequestBody is the type of the "auction"
 // service "getAuctionProductListByStatus" endpoint HTTP request body.
 type GetAuctionProductListByStatusRequestBody struct {
-	// 拍卖状态
+	// 拍卖状态 1:历史 2:正在进行 3:即将开始
 	AuctionStatus *int `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
 	// 当前页数
 	CurrentPage *int `form:"current_page,omitempty" json:"current_page,omitempty" xml:"current_page,omitempty"`
@@ -26,6 +28,59 @@ type GetAuctionProductListByStatusRequestBody struct {
 // GetAuctionProductListByStatusResponseBody is the type of the "auction"
 // service "getAuctionProductListByStatus" endpoint HTTP response body.
 type GetAuctionProductListByStatusResponseBody []*AuctionProductResponse
+
+// GetAuctionProductDetailResponseBody is the type of the "auction" service
+// "getAuctionProductDetail" endpoint HTTP response body.
+type GetAuctionProductDetailResponseBody struct {
+	ID                    *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	AddPrice              *int    `form:"add_price,omitempty" json:"add_price,omitempty" xml:"add_price,omitempty"`
+	ArtNo                 *string `form:"art_no,omitempty" json:"art_no,omitempty" xml:"art_no,omitempty"`
+	AuctionStatus         *int    `form:"auction_status,omitempty" json:"auction_status,omitempty" xml:"auction_status,omitempty"`
+	AuctionType           *int    `form:"auction_type,omitempty" json:"auction_type,omitempty" xml:"auction_type,omitempty"`
+	BidSceneID            *int    `form:"bid_scene_id,omitempty" json:"bid_scene_id,omitempty" xml:"bid_scene_id,omitempty"`
+	BondPrice             *int    `form:"bond_price,omitempty" json:"bond_price,omitempty" xml:"bond_price,omitempty"`
+	BuyNumber             *int    `form:"buy_number,omitempty" json:"buy_number,omitempty" xml:"buy_number,omitempty"`
+	BuyUnitPrice          *string `form:"buy_unit_price,omitempty" json:"buy_unit_price,omitempty" xml:"buy_unit_price,omitempty"`
+	BuyoutPrice           *int    `form:"buyout_price,omitempty" json:"buyout_price,omitempty" xml:"buyout_price,omitempty"`
+	CapPrice              *int    `form:"cap_price,omitempty" json:"cap_price,omitempty" xml:"cap_price,omitempty"`
+	CrowdfundingPackageID *string `form:"crowdfunding_package_id,omitempty" json:"crowdfunding_package_id,omitempty" xml:"crowdfunding_package_id,omitempty"`
+	CurrentPrice          *int    `form:"current_price,omitempty" json:"current_price,omitempty" xml:"current_price,omitempty"`
+	EndTime               *int64  `form:"end_time,omitempty" json:"end_time,omitempty" xml:"end_time,omitempty"`
+	HeadPortrait          *string `form:"head_portrait,omitempty" json:"head_portrait,omitempty" xml:"head_portrait,omitempty"`
+	IsHaveProxy           *int    `form:"is_have_proxy,omitempty" json:"is_have_proxy,omitempty" xml:"is_have_proxy,omitempty"`
+	IsReservePrice        *int    `form:"is_reserve_price,omitempty" json:"is_reserve_price,omitempty" xml:"is_reserve_price,omitempty"`
+	LastTime              *int64  `form:"last_time,omitempty" json:"last_time,omitempty" xml:"last_time,omitempty"`
+	LimitNumber           *int    `form:"limit_number,omitempty" json:"limit_number,omitempty" xml:"limit_number,omitempty"`
+	MktPrice              *int    `form:"mkt_price,omitempty" json:"mkt_price,omitempty" xml:"mkt_price,omitempty"`
+	PicturesURL           *string `form:"pictures_url,omitempty" json:"pictures_url,omitempty" xml:"pictures_url,omitempty"`
+	ProdID                *int32  `form:"prod_id,omitempty" json:"prod_id,omitempty" xml:"prod_id,omitempty"`
+	ProdName              *string `form:"prod_name,omitempty" json:"prod_name,omitempty" xml:"prod_name,omitempty"`
+	QrURL                 *string `form:"qr_url,omitempty" json:"qr_url,omitempty" xml:"qr_url,omitempty"`
+	RemindTime            *int64  `form:"remind_time,omitempty" json:"remind_time,omitempty" xml:"remind_time,omitempty"`
+	ReservePrice          *string `form:"reserve_price,omitempty" json:"reserve_price,omitempty" xml:"reserve_price,omitempty"`
+	ResultStatus          *int    `form:"result_status,omitempty" json:"result_status,omitempty" xml:"result_status,omitempty"`
+	RuleID                *int    `form:"rule_id,omitempty" json:"rule_id,omitempty" xml:"rule_id,omitempty"`
+	SerialNum             *string `form:"serial_num,omitempty" json:"serial_num,omitempty" xml:"serial_num,omitempty"`
+	ShareURL              *string `form:"share_url,omitempty" json:"share_url,omitempty" xml:"share_url,omitempty"`
+	StartAuctionPrice     *int    `form:"start_auction_price,omitempty" json:"start_auction_price,omitempty" xml:"start_auction_price,omitempty"`
+	StartTime             *int64  `form:"start_time,omitempty" json:"start_time,omitempty" xml:"start_time,omitempty"`
+	Title                 *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	TotalNumber           *int    `form:"total_number,omitempty" json:"total_number,omitempty" xml:"total_number,omitempty"`
+	TransactionNumber     *int    `form:"transaction_number,omitempty" json:"transaction_number,omitempty" xml:"transaction_number,omitempty"`
+	TransactionPrice      *string `form:"transaction_price,omitempty" json:"transaction_price,omitempty" xml:"transaction_price,omitempty"`
+	UserID                *string `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	UserName              *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+}
+
+// GetAuctionProductDetailNotFoundResponseBody is the type of the "auction"
+// service "getAuctionProductDetail" endpoint HTTP response body for the
+// "not_found" error.
+type GetAuctionProductDetailNotFoundResponseBody struct {
+	// Message of error
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// ID of missing bottle
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
 
 // AuctionProductResponse is used to define fields on response body types.
 type AuctionProductResponse struct {
@@ -129,4 +184,72 @@ func NewGetAuctionProductListByStatusAuctionProductCollectionOK(body GetAuctionP
 		}
 	}
 	return v
+}
+
+// NewGetAuctionProductDetailAuctionProductOK builds a "auction" service
+// "getAuctionProductDetail" endpoint result from a HTTP "OK" response.
+func NewGetAuctionProductDetailAuctionProductOK(body *GetAuctionProductDetailResponseBody) *auctionviews.AuctionProductView {
+	v := &auctionviews.AuctionProductView{
+		ID:                    body.ID,
+		AddPrice:              body.AddPrice,
+		ArtNo:                 body.ArtNo,
+		AuctionStatus:         body.AuctionStatus,
+		AuctionType:           body.AuctionType,
+		BidSceneID:            body.BidSceneID,
+		BondPrice:             body.BondPrice,
+		BuyNumber:             body.BuyNumber,
+		BuyUnitPrice:          body.BuyUnitPrice,
+		BuyoutPrice:           body.BuyoutPrice,
+		CapPrice:              body.CapPrice,
+		CrowdfundingPackageID: body.CrowdfundingPackageID,
+		CurrentPrice:          body.CurrentPrice,
+		EndTime:               body.EndTime,
+		HeadPortrait:          body.HeadPortrait,
+		IsHaveProxy:           body.IsHaveProxy,
+		IsReservePrice:        body.IsReservePrice,
+		LastTime:              body.LastTime,
+		LimitNumber:           body.LimitNumber,
+		MktPrice:              body.MktPrice,
+		PicturesURL:           body.PicturesURL,
+		ProdID:                body.ProdID,
+		ProdName:              body.ProdName,
+		QrURL:                 body.QrURL,
+		RemindTime:            body.RemindTime,
+		ReservePrice:          body.ReservePrice,
+		ResultStatus:          body.ResultStatus,
+		RuleID:                body.RuleID,
+		SerialNum:             body.SerialNum,
+		ShareURL:              body.ShareURL,
+		StartAuctionPrice:     body.StartAuctionPrice,
+		StartTime:             body.StartTime,
+		Title:                 body.Title,
+		TotalNumber:           body.TotalNumber,
+		TransactionNumber:     body.TransactionNumber,
+		TransactionPrice:      body.TransactionPrice,
+		UserID:                body.UserID,
+		UserName:              body.UserName,
+	}
+	return v
+}
+
+// NewGetAuctionProductDetailNotFound builds a auction service
+// getAuctionProductDetail endpoint not_found error.
+func NewGetAuctionProductDetailNotFound(body *GetAuctionProductDetailNotFoundResponseBody) *auction.NotFound {
+	v := &auction.NotFound{
+		Message: *body.Message,
+		ID:      *body.ID,
+	}
+	return v
+}
+
+// ValidateGetAuctionProductDetailNotFoundResponseBody runs the validations
+// defined on getAuctionProductDetail_not_found_response_body
+func ValidateGetAuctionProductDetailNotFoundResponseBody(body *GetAuctionProductDetailNotFoundResponseBody) (err error) {
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	return
 }
